@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model comments {
+  id      Int      @id @default(autoincrement())
+  user_id Int?
+  post_id Int?
+  content String
+  reviews reviews? @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model likes {
+  id           Int      @id @default(autoincrement())
+  user_id      Int?
+  liked_review Int?
+  reviews      reviews? @relation(fields: [liked_review], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users        users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model races {
+  id           Int       @id @default(autoincrement())
+  season       Int
+  round        Int
+  circuit_name String
+  location     String
+  date         DateTime  @db.Date
+  notes        String?
+  reviews      reviews[]
+}
+
+model reviews {
+  id         Int        @id @default(autoincrement())
+  user_id    Int?
+  race_id    Int?
+  rating     Int?
+  content    String
+  created_at DateTime   @db.Date
+  updated_at DateTime   @db.Date
+  comments   comments[]
+  likes      likes[]
+  races      races?     @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id       Int        @id @default(autoincrement())
+  username String     @unique @db.VarChar(50)
+  email    String     @unique @db.VarChar(30)
+  password String
+  comments comments[]
+  likes    likes[]
+  reviews  reviews[]
+}
