@@ -26,6 +26,19 @@ const getReview = async(req,res)=>{
     }
 }
 
+const getLatestReviews = async(req,res)=>{
+    try {
+        const reviews = await prisma.reviews.findMany({
+            take:10,
+            orderBy:{updated_at:"asc"},
+            include:{users:true,races:true},
+        });
+        return res.status(200).json(reviews);
+    } catch (error) {
+        
+    }
+}
+
 const newReview = [reviewValidator,async(req,res)=>{
     const userId = req.user.id;
     const data = req.body;
@@ -89,4 +102,4 @@ const deleteReview = async(req,res)=>{
         return res.status(500).json({message: error.message});
     }
 }
-module.exports = {getAllReviews,getReview,newReview,editReview,deleteReview}
+module.exports = {getAllReviews,getReview,getLatestReviews,newReview,editReview,deleteReview}

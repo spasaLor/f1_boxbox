@@ -24,7 +24,7 @@ const registerUser = [registerValidation,async(req,res)=>{
             }
         });
         if(user)
-            return res.status(400).json({message:"Username already taken"});
+            return res.status(400).json({errors:[{message:"Username already taken"}]});
     } catch (error) {
         console.log(error);
     }
@@ -39,7 +39,7 @@ const registerUser = [registerValidation,async(req,res)=>{
         });
     } catch (error) {
         console.log(error);
-        return res.status(400).json({message:"This email is already linked to a profile"});
+        return res.status(400).json({errors:[{message:"This email is already linked to a profile"}]});
     }
     res.status(200).json({redirect: "/"});
 }]

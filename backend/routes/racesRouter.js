@@ -1,11 +1,20 @@
 const {Router} = require("express");
 const controller = require("../controller/racesController");
 const router = Router();
+const ensureAuthenticated = require("../config/authMiddleware");
 
-router.post("/new",controller.addNewRace)
+router.post("/new",controller.addNewRace);
 router.get("/all",controller.getAllRaces);
-router.get("/search",controller.searchRace)
-router.put("/:id",controller.editRaceData)
+router.get("/latest",controller.getLatestRaces);
+router.get("/search",controller.searchRace);
+router.put("/:id",controller.editRaceData);
+router.post("/liked",ensureAuthenticated,controller.likedRace);
+router.get("/liked",ensureAuthenticated,controller.getLikedRaces);
+router.delete("/liked",ensureAuthenticated,controller.removeLikedRace);
+router.post("/viewed",ensureAuthenticated,controller.viewedRace);
+router.get("/viewed",ensureAuthenticated,controller.getViewedRaces);
+router.delete("/viewed",ensureAuthenticated,controller.removeViewedRace);
+router.post("/track",controller.getRacesByTrack);
 router.get("/:year",controller.getRacesByYear);
 router.get("/:year/:round",controller.getRaceByYear);
 router.delete("/:id",controller.deleteRace);

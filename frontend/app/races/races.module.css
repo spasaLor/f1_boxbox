@@ -1,0 +1,83 @@
+.top{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap:3em;
+    padding: 1em 0;
+    margin-top: 1em;
+    border-bottom: 1px solid var(--color-border);
+}
+.top p:first-child{
+    flex: 1;
+}
+.top p{
+    color: var(--color-text-secondary);
+}
+.races{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    justify-items: center;
+    padding:1em 0;
+}
+
+.raceItem{
+    position: relative;    
+    border: 2px solid rgba(0,0,0,0);
+    transition: border 0.3s ease-in;
+    padding: 1px;
+}
+.raceItem img{
+    height: 100%;
+}
+.raceItem:hover{
+    cursor: pointer;
+    border: 2px solid var(--color-text-primary);
+}
+
+.raceItem:hover .icons{
+    opacity: 1;
+}
+
+.icons{
+    position: absolute;
+    bottom: 0%;
+    opacity: 0;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    transition: opacity 0.3s ease;
+}
+
+.options{
+    display: flex;
+    gap: 1em;
+}
+
+.options input{
+    margin-left: 1em;
+    padding: 0.25em 0.5em;
+}
+
+.options input:hover,.options input:focus, .options select:hover, .options select:focus{
+    background-color: var(--color-surface);
+} 
+
+.options input, .options select{
+    background-color: var(--color-bg);
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--color-text-primary);
+    font-size: 0.9rem;
+}
+.options option{
+    background-color: var(--color-bg);
+}
+
+.options select{
+    width: 100px;
+}

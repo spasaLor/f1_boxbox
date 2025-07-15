@@ -4,7 +4,8 @@ const controller = require("../controller/reviewController");
 const ensureAuthenticated = require("../config/authMiddleware");
 
 router.get("/race/:raceId",controller.getAllReviews);
-router.post("/race/:raceId",ensureAuthenticated,controller.newReview);
+router.post("/new",ensureAuthenticated,controller.newReview);
+router.get("/latest",controller.getLatestReviews);
 router.get("/:id",controller.getReview);
 router.put("/:id",ensureAuthenticated,controller.editReview);
 router.delete("/:id",controller.deleteReview);

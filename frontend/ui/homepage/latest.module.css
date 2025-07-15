@@ -1,0 +1,92 @@
+.races-cards{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    justify-items: center;
+    margin: 3em 0;
+    box-sizing: unset;
+}
+.card, .review{
+    max-width: 200px;
+    height: 300px;
+    box-sizing: unset;
+    border-radius: var(--border-radius);
+    border: 2px solid rgba(0, 0, 0, 0);
+    padding: 1px;
+}
+.card:hover, .review:hover{
+    border:2px solid var(--color-accent);
+}
+.letsyou{
+    margin: 3em 0;
+}
+
+.letsyou>p{
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-left: 2.7em;
+}
+
+.grid-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3,300px);
+    grid-template-rows: repeat(2,150px);
+    justify-content: center;
+    gap:1em;
+}
+.grid-item{
+    background-color: var(--color-surface);
+    display: flex;
+    align-items: center;
+    padding: 2em 1em;
+    gap:10px;
+    user-select: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+}
+
+.grid-item:hover{
+    background-color: var(--color-border);
+}
+
+.grid-item svg{
+    margin-top: -35px;
+}
+
+.grid-item:nth-child(5) svg{
+    margin-top: unset;
+}
+
+.grid-item p{
+    flex: 1;
+}
+.reviews-section>p{
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+.latest-reviews{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 90px;
+    padding-top: 10px;
+    padding-bottom: 1em;
+}
+.review{
+    height: 105px;
+}
+.review img{
+    object-fit: cover;
+}
+.reviews-section .text{
+    padding: 1em 0;
+    text-align: center;
+}
+
+.text h3{
+    font-size: 1.3rem;
+}
