@@ -35,10 +35,10 @@ const getRacesByYear = async(req,res)=>{
     }   
 }
 const getRaceByYear = async(req,res)=>{
-    const {year,round}=req.params;
+    const {year,name}=req.params;
     try {
         const race = await prisma.races.findFirst({
-            where:{season:Number(year),round:Number(round)}
+            where:{season:Number(year), url:name}
         });
         if(!race)
             return res.status(404).json({message: "Race not found"});

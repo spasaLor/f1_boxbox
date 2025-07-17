@@ -16,6 +16,6 @@ router.get("/viewed",ensureAuthenticated,controller.getViewedRaces);
 router.delete("/viewed",ensureAuthenticated,controller.removeViewedRace);
 router.post("/track",controller.getRacesByTrack);
 router.get("/:year",controller.getRacesByYear);
-router.get("/:year/:round",controller.getRaceByYear);
+router.get("/:year/:name",controller.getRaceByYear);
 router.delete("/:id",controller.deleteRace);
 module.exports=router;

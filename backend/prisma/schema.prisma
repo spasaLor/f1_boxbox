@@ -36,6 +36,7 @@ model races {
   url          String?      @db.VarChar(20)
   date         DateTime?    @db.Date
   race_liked   race_liked[]
+  ratings      ratings[]
   reviews      reviews[]
   viewed       viewed[]
 
@@ -66,6 +67,7 @@ model users {
   comments   comments[]
   likes      likes[]
   race_liked race_liked[]
+  ratings    ratings[]
   reviews    reviews[]
   viewed     viewed[]
 }
@@ -86,4 +88,14 @@ model viewed {
   users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([user_id, race_id])
+}
+
+model ratings {
+  user_id Int
+  race_id Int
+  rating  Int
+  races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, race_id])
 }

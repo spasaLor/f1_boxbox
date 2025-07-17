@@ -12,7 +12,6 @@ export async function GET(){
         }
     });
     const json=await res.json();
-    console.log(json);
     if(res.ok)
         return NextResponse.json(json,{status:200});
 }

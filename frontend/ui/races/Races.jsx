@@ -1,78 +1,15 @@
 'use client';
-import { useRef, useState } from "react";
+import { useState } from "react";
 import RaceItem from "./RaceItem";
 import styles from "@/app/races/races.module.css";
 import Filters from "./Filters";
+import { useRaces } from "@/lib/RacesContext";
 
-export default function Races({logged,initialRaces,initialYear,initialLiked,initialViewed}){
+export default function Races({initialRaces,initialYear}){
     const [year,setYear]=useState(initialYear);
     const [races,setRaces]=useState(initialRaces);
     const [error,setError]=useState();
-    const [likedRaces,setLikedRaces]=useState(initialLiked);
-    const [viewedRaces,setViewedRaces]=useState(initialViewed);
-
-    const toggleLike = async(id)=>{
-        if(likedRaces.includes(id)){
-            const res = await fetch("/api/races/liked",{method:'DELETE',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify({raceId:id})
-            })
-            const json=await res.json();
-            if(res.ok){
-                const updatedLiked = likedRaces.filter(id=>id !== id);
-                setLikedRaces(updatedLiked);
-            }
-            else
-                console.log(json.error);
-        }
-        else{
-            const res = await fetch("/api/races/liked",{method:'POST',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify({raceId:id})
-            })
-            const json=await res.json();
-            if(res.ok){
-                setLikedRaces(prev=>[...prev,id]);
-            }
-            else
-                console.log(json.error)
-        }
-    }
-    const toggleView = async(id)=>{
-        if(viewedRaces.includes(id)){
-            const res = await fetch("/api/races/viewed",{method:'DELETE',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify({raceId:id})
-            })
-            const json=await res.json();
-            if(res.ok){
-                const updatedViewed = viewedRaces.filter(id=>id !== id);
-                setViewedRaces(updatedViewed);
-            }
-            else
-                console.log(json.error);
-        }
-        else{
-            const res = await fetch("/api/races/viewed",{method:'POST',
-                headers:{
-                    'Content-type':'application/json'
-                },
-                body:JSON.stringify({raceId:id})
-            })
-            const json=await res.json();
-            if(res.ok){
-                setViewedRaces(prev=>[...prev,id]);
-            }
-            else
-                console.log(json.error)
-        }
-    }
+    const { liked, viewed, logged, toggleLike, toggleView } = useRaces();
 
     return(
         <>
@@ -86,7 +23,7 @@ export default function Races({logged,initialRaces,initialYear,initialLiked,init
             <div className={styles.races}>
                 {races.map(item=>(
                     <div className={styles.raceItem} key={item.id}>
-                        <RaceItem logged={logged} item={item} isLiked={likedRaces.includes(item.id)} isViewed={viewedRaces.includes(item.id)} toggleLike={toggleLike} toggleView={toggleView}/>
+                        <RaceItem logged={logged} item={item} isLiked={liked.includes(item.id)} isViewed={viewed.includes(item.id)} toggleLike={toggleLike} toggleView={toggleView}/>
                     </div>
                 ))}
                 {error && <p className={styles.error}>{error}</p>}

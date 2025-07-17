@@ -5,6 +5,7 @@ const controller = require("./controller/mainController");
 const session = require("express-session");
 const racesRouter = require("./routes/racesRouter");
 const reviewRouter = require("./routes/reviewsRouter");
+const ratingRouter = require("./routes/ratingsRouter");
 const commentRouter = require("./routes/commentsRouter");
 const ensureAuthenticated = require("./config/authMiddleware");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/races",racesRouter);
 app.use("/reviews",reviewRouter);
 app.use("/comments",commentRouter);
+app.use("/ratings",ratingRouter);
 
 app.post("/login",(req,res)=>{
     passport.authenticate('local',(err,user,info)=>{

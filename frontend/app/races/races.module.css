@@ -19,6 +19,7 @@
     grid-template-columns: repeat(6,1fr);
     justify-items: center;
     padding:1em 0;
+    min-height: 100vh;
 }
 
 .raceItem{
@@ -26,6 +27,7 @@
     border: 2px solid rgba(0,0,0,0);
     transition: border 0.3s ease-in;
     padding: 1px;
+    height: 350px;
 }
 .raceItem img{
     height: 100%;
@@ -80,4 +82,10 @@
 
 .options select{
     width: 100px;
+}
+
+@media (max-width:1100px) {
+    .races{
+        grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    }
 }

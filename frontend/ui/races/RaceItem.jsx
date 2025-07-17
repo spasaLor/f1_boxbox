@@ -11,7 +11,7 @@ export default function RaceItem({logged,item,isLiked,isViewed,toggleLike,toggle
                 <Image src={item.cover} alt="race_cover" width={200} height={200}/>
             </Link>
             <div className={styles.icons} style={logged ? {} : {visibility:'hidden'}}>
-                <Eye style={isViewed ? {color:'orange'}:null} onClick={()=>toggleView(item.id)}/> <Heart style={isLiked ? {color:'green'}:null} onClick={()=>toggleLike(item.id)}/>
+                <Eye style={isViewed ? {color:'green'}:null} onClick={()=>toggleView(item.id)}/> <Heart style={isLiked ? {color:'orange'}:null} onClick={()=>toggleLike(item.id)}/>
             </div>
         </>
     )
