@@ -10,6 +10,7 @@ export function useRaces() {
 export function RacesProvider({ children, liked, viewed, logged }) {
     const [likedRaces, setLikedRaces] = useState(liked);
     const [viewedRaces, setViewedRaces] = useState(viewed);
+    const [error,setError] = useState('');
 
     const toggleLike = async(raceId) => {
         if(likedRaces.includes(raceId)){
@@ -55,9 +56,10 @@ export function RacesProvider({ children, liked, viewed, logged }) {
             if(res.ok){
                 const updatedViewed = viewedRaces.filter(id=>id !== raceId);
                 setViewedRaces(updatedViewed);
+                setError("");
             }
             else
-                console.log(json.error);
+                setError(json.message);
         }
         else{
             const res = await fetch("/api/races/viewed",{method:'POST',
@@ -78,6 +80,7 @@ export function RacesProvider({ children, liked, viewed, logged }) {
     return (
         <RacesContext.Provider value={{
             logged,
+            error,
             liked: likedRaces,
             viewed: viewedRaces,
             toggleLike,

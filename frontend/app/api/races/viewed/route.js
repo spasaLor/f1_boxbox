@@ -38,8 +38,8 @@ export async function DELETE(req){
         })
         const json=await res.json();
         if(res.ok){
-            return NextResponse.json({json,status:200})
+            return NextResponse.json(json,{status:200})
         }
         else
-            return NextResponse.json({json,status:500})
+            return NextResponse.json(json,{status:500})
 }

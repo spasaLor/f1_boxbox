@@ -8,7 +8,6 @@ import { useRaces } from "@/lib/RacesContext";
 export default function Races({initialRaces,initialYear}){
     const [year,setYear]=useState(initialYear);
     const [races,setRaces]=useState(initialRaces);
-    const [error,setError]=useState();
     const { liked, viewed, logged, toggleLike, toggleView } = useRaces();
 
     return(
@@ -17,7 +16,7 @@ export default function Races({initialRaces,initialYear}){
                 <p>RACES</p>
                 <p>BROWSE BY</p>
                 <div className={styles.options}>
-                    <Filters year={year} setYear={setYear} setError={setError} setRaces={setRaces} />
+                    <Filters year={year} setYear={setYear} setRaces={setRaces} races={races}/>
                 </div>
             </div>
             <div className={styles.races}>
@@ -26,7 +25,6 @@ export default function Races({initialRaces,initialYear}){
                         <RaceItem logged={logged} item={item} isLiked={liked.includes(item.id)} isViewed={viewed.includes(item.id)} toggleLike={toggleLike} toggleView={toggleView}/>
                     </div>
                 ))}
-                {error && <p className={styles.error}>{error}</p>}
                 {races.length === 0 && <h2>No races for the selected year</h2> }
             </div>
         </>

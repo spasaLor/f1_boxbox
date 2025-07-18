@@ -27,7 +27,7 @@ const getRacesByYear = async(req,res)=>{
     try {
         const races = await prisma.races.findMany({
             where:{season:Number(year)},
-            orderBy:{round:'asc'}
+            orderBy:{round:'asc'},
         })
         return res.status(200).json({races:races});
     } catch (error) {
@@ -38,7 +38,8 @@ const getRaceByYear = async(req,res)=>{
     const {year,name}=req.params;
     try {
         const race = await prisma.races.findFirst({
-            where:{season:Number(year), url:name}
+            where:{season:Number(year), url:name},
+            include:{_count:{select:{viewed:true,race_liked:true}}}
         });
         if(!race)
             return res.status(404).json({message: "Race not found"});
@@ -183,6 +184,25 @@ const viewedRace=async(req,res)=>{
 const removeViewedRace=async(req,res)=>{
     const {raceId} = req.body;
     const userId=req.user.id;
+    const rating = await prisma.ratings.findUnique({
+        where:{
+            user_id_race_id:{
+                user_id:Number(userId),
+                race_id:Number(raceId)
+            }
+        }
+    })
+    const review = await prisma.reviews.findUnique({
+        where:{
+            user_id_race_id:{
+                user_id:Number(userId),
+                race_id:Number(raceId)
+            }
+        }
+    })
+    if(rating || review)
+        return res.status(503).json({message:"Cannot unwatch a rated/reviewed race"})
+
     try {
         await prisma.viewed.delete({
             where: {

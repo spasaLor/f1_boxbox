@@ -1,5 +1,5 @@
 .hero{
-  height: 100vh;
+  height: 80vh;
   width: 100%;
   margin-top: -3.6em;
 }
@@ -42,18 +42,24 @@
     max-width: 1000px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
-    gap:3em;
-    margin-top: -20em;
+    flex-direction: column;
+    gap:1em;
+    margin-top: -10em;
+    text-align: center;
 }
-
+.other-data{
+  display: flex;
+  justify-content: space-between;
+}
 .cover{
-    height: 300px;
+    height: 90%;
+    width: 250px;
     border-radius: var(--border-radius);
 }
 
 .cover img{
     height: 100%;
+    width: 100%;
 }
 
 .info{
@@ -63,9 +69,106 @@
 .info>div{
     display: flex;
     gap:10px;
+    justify-content: center;
 }
 
 .notes{
-    margin-top: 2em;
     color: var(--color-text-secondary);
+    max-width: 350px;
+    text-align: left;
+}
+
+.activity-buttons, .not-logged{
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+  max-width: 280px;
+  width: 280px;
+}
+.activity-buttons>*{
+  background-color: var(--color-border);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  padding: 0.5em 1em;
+  width: 100%;
+}
+.icons{
+  display: flex;
+  justify-content: center;
+  gap:20px;
+}
+
+.icons>div{
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+  align-items: center;
+}
+
+.icons>div:hover p{
+  color: var(--color-text-primary);
+}
+
+.icons>div svg{
+  cursor: pointer;
+}
+
+.rating{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inner-rating{
+  display: flex;
+  gap:10px;
+  align-items: center;
+}
+
+.inner-rating p{
+  font-weight: bold;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.inner-rating p:hover{
+  color: var(--color-text-primary);
+}
+.review, .lists, .share{
+  text-align: center;
+}
+
+.review:hover, .lists:hover, .share:hover a{
+  color: var(--color-text-primary);
+}
+
+.errors{
+  background-color: var(--color-warn);
+  color: var(--color-text-primary);
+  text-align: center;
+  padding-bottom:10px;
+}
+
+.not-logged{
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.not-logged>*{
+  background-color: var(--color-border);
+  padding: 0.5em 1em;
+
+}
+
+.numbers{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap:2em;
+  margin: 1em 0;
+}
+
+.numbers>div{
+  display: flex;
+  gap:5px;
 }

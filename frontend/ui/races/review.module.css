@@ -1,0 +1,114 @@
+:root:has(.container) {
+    overflow:hidden;
+  }
+
+.container{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.8);
+}
+.inner{
+    max-width: 900px;
+    position: relative;
+    top:50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+}
+.top{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1em;
+    border-bottom: 1px solid var(--color-border);
+}
+.top h2{
+    color: var(--color-text-primary);
+}
+.mid{
+    display: flex;
+    padding: 2em;
+    gap: 4em;
+    width: 100%;
+    justify-content: center;
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+    gap:2em;
+}
+.right .title{
+    display: flex;
+    gap:8px;
+    color: var(--color-text-primary);
+}
+.title p{
+    font-size: 1.2em;
+    margin-top: 5px;
+    color: var(--color-text-secondary);
+}
+
+.right textarea{
+    width: 100%;
+    padding: 0.5em 1em;
+    resize:vertical;
+    background-color: var(--color-text-secondary);
+    color: var(--color-bg);
+    border-radius: var(--border-radius);
+}
+
+.right textarea:focus{
+    background-color: var(--color-text-primary);
+    color: black;
+}
+
+.right .bottom{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap:2em;
+}
+
+.right .bottom>div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:5px;
+    color: var(--color-text-primary);
+}
+.close, .phrase{
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+.close:hover, .phrase:hover{
+    color: var(--color-text-primary);
+}
+.last{
+    width: 100%;
+    padding: 1em 6.2em;
+    text-align: right;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+}
+
+.last button{
+    text-transform: uppercase;
+    background-color: var(--color-accent);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: 1px solid var(--color-border);
+    padding: 1em;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.last button:hover{
+    background-color: var(--color-accent-light);
+}

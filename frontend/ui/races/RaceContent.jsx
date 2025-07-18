@@ -2,6 +2,9 @@ import Image from 'next/image';
 import styles from '@/app/races/[season]/[name]/race.module.css';
 import RatingComponent from './RatingComponent';
 import WatchedLiked from './WatchedLiked';
+import Link from 'next/link';
+import { Eye, Heart } from 'lucide-react';
+import ReviewRace from './ReviewComponent';
 
 export default function RaceContent({data,logged}){
     const formatted = new Date(data.date).toLocaleDateString();
@@ -20,50 +23,69 @@ export default function RaceContent({data,logged}){
                 </div>
             </div>  
             <div className={styles["info-section"]}>
-                <div className={styles.cover}>
+                <div className={styles.info}>
+                    <h2>{data.denomination}</h2>
+                    <div>
+                        <p>Season: {data.season}</p> <i>Date: {formatted}</i>
+                    </div>                    
+                </div>
+                <div className={styles["other-data"]}>
+                    <div className={styles.cover}>
                     <Image
                     src={data.cover}
                     alt='race_cover'
                     width={200}
                     height={250}
                     />
+                    <div className={styles["numbers"]}>
+                        <div className={styles["views"]}>
+                            <Eye style={{color:'green'}} />
+                            { <p>{data._count.viewed}</p> }
+                            
+                        </div>
+                        <div className={styles["likes"]}>
+                            <Heart style={{fill:'orange'}} strokeWidth={1}/>
+                            {data._count.race_liked}
+                        </div>
+                    </div>
                 </div>
-                <div className={styles.info}>
-                    <h2>{data.denomination}</h2>
-                    <div className="">
-                        <p>Season: {data.season}</p> <i>Date: {formatted}</i> </div>
-                        <p className={styles.notes}>{data.notes}</p>
-                </div>
-                <div className="interaction">
-                    <div className="activity-buttons">
-                        {!logged && <p>Sign in to log, rate or review</p> }
+                <p className={styles.notes}>{data.notes}</p>
+                <div className={styles.interaction}>
+                        {!logged && <div className={styles["not-logged"]}>
+                            <p>Sign in to log, rate or review</p>
+                            <div className={styles["share"]}>
+                                    <Link href={"#"}>Share...</Link>
+                            </div>
+                            </div>}
                         {logged &&
-                        <>
-                            <div className="watch-like">
-                                <WatchedLiked raceId={data.id}/>
+                            <div className={styles["activity-buttons"]}>
+                                <div className={styles["watch-like"]}>
+                                    <WatchedLiked raceId={data.id}/>
+                                </div>
+                                <div className={styles["rating"]}>
+                                    <p>Rate</p>
+                                    <RatingComponent id={data.id}/>
+                                </div>
+                                <div className={styles["review"]}>
+                                    <ReviewRace item={data}/>
+                                </div>
+                                <div className={styles["lists"]}>
+                                    <Link href={"#"}>Add to lists...</Link>
+                                </div>
+                                <div className={styles["share"]}>
+                                    <Link href={"#"}>Share...</Link>
+                                </div>
                             </div>
-                            <div className="rating">
-                                <p>Rate</p>
-                                <RatingComponent id={data.id}/>
-                            </div>
-                            <div className="review">
-                                <button type='button'>Review or log...</button>
-                            </div>
-                            <div className="lists">
-                                <button type='button'>Add to lists...</button>
-                            </div>
-                            <div className="share">
-                                <button type='button'>Share...</button>
-                            </div>
-                        </>
                           }
-                    </div>
-                    <button type="button">Share</button>
-                    <div className="ratings">
-                        <p>Ratings N</p>
+                   
+                        <div className="ratings">
+                            <p>Ratings N</p>
+                        </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+                
+                
         </>
         
     )

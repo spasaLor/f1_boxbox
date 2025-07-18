@@ -1,37 +1,31 @@
 'use client';
-import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 
-export default function Filters({setRaces,year,setYear,setError}){
-    const formref = useRef(null);
+export default function Filters({setRaces,year,setYear,races}){
+    const nav = useRouter();
+    const [track,setTrack]=useState('');
+    const allRacesRef = useRef(races);
 
     const handleChange=async (e)=>{
         if(e.target.value === "")
             return;
         const selectedYear = e.target.value;
         setYear(selectedYear);
-        const res = await fetch("/api/races/"+selectedYear);
-        const json=await res.json();
-
-        if(res.ok){
-            setError(null);
-            setRaces(json.races);
-        }
-        else
-            setError(json);
+        nav.push("/races/"+selectedYear);
     }
 
-    const trackSearch = async(e)=>{
-        e.preventDefault();
-        const formData = new FormData(formref.current);
-        const res = await fetch("/api/races/track_search",{
-            method:'POST',
-            headers:{
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify({track:formData.get('track')})
-        });
-        const json = await res.json();
-        setRaces(json.races);
+    const trackSearch = (e)=>{
+        setTrack(e.target.value.toLowerCase());
+        
+        if(e.target.value){
+            const toShow = allRacesRef.current.filter(item=>item.circuit_name.toLowerCase().includes(e.target.value.toLowerCase()));
+            setRaces(toShow);
+        }
+        else{
+            setRaces(allRacesRef.current);
+        }              
+        console.log(races);
     }
 
     return(
@@ -42,10 +36,8 @@ export default function Filters({setRaces,year,setYear,setError}){
                 <option value="2024">2024</option>
             </select>
             <p>- OR -</p>
-            <form onSubmit={trackSearch} ref={formref}>
-                <label htmlFor="track">Track</label>
-                <input type="input" name="track" id="track"/>
-            </form>
+            <label htmlFor="track">Track</label>
+            <input type="input" name="track" id="track" value={track} onInput={trackSearch}/>
         </>
     )
 }

@@ -93,7 +93,7 @@ model viewed {
 model ratings {
   user_id Int
   race_id Int
-  rating  Int
+  rating  Float @db.Real
   races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 

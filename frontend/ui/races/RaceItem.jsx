@@ -5,6 +5,7 @@ import styles from "@/app/races/races.module.css";
 import Link from "next/link";
 
 export default function RaceItem({logged,item,isLiked,isViewed,toggleLike,toggleView}){
+    
     return(
         <>
             <Link href={"/races/"+item.season+"/"+item.url}>
