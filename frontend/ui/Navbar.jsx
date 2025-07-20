@@ -41,7 +41,7 @@ export default function Navbar(){
                             <button type="button" onClick={()=>setOpen('signin')}> sign in</button>
                             <button type="button" onClick={()=>setOpen('register')}> Create account</button>
                             <Link href="/races">Races</Link>
-                            <Link href="/">Seasons</Link>
+                            <Link href="/races/2024">Seasons</Link>
                             <Link href="/">Members</Link>
                             <Link href="/">Journal</Link>
                         </>
@@ -52,7 +52,7 @@ export default function Navbar(){
                             <button type="button"> {islogged}</button>
                             <CloudLightningIcon/>
                             <Link href="/races">Races</Link>
-                            <Link href="/">Seasons</Link>
+                            <Link href="/races/2024">Seasons</Link>
                             <Link href="/">Members</Link>
                             <Link href="/">Journal</Link>
                             <Logout setIsLogged={setIsLogged}/>

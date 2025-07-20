@@ -47,7 +47,6 @@ model reviews {
   id         Int        @id @default(autoincrement())
   user_id    Int?
   race_id    Int?
-  rating     Int?
   content    String
   created_at DateTime   @db.Date
   updated_at DateTime   @db.Date
@@ -66,6 +65,7 @@ model users {
   password   String
   comments   comments[]
   likes      likes[]
+  lists      lists[]
   race_liked race_liked[]
   ratings    ratings[]
   reviews    reviews[]
@@ -98,4 +98,15 @@ model ratings {
   users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([user_id, race_id])
+}
+
+model lists {
+  id          Int     @id @default(autoincrement())
+  name        String
+  user_id     Int?
+  description String?
+  races       Int[]
+  privacy     String  @db.VarChar(20)
+  ranked      Boolean
+  users       users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

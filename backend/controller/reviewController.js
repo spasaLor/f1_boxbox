@@ -46,14 +46,13 @@ const newReview = [reviewValidator,async(req,res)=>{
     const errors = validationResult(req);
 
     if(!errors.isEmpty())
-        return res.status(500).json({errors:errors.array()})
+        return res.status(500).json({message:"Reviews must be between 2 and 300 characters long"})
     
     try {
         await prisma.reviews.create({
             data:{
                 user_id:Number(userId), 
                 race_id:Number(data.raceId),
-                rating:Number(data.rating),
                 content:data.content,
                 created_at: now,
                 updated_at: now,
@@ -75,13 +74,12 @@ const editReview = [reviewValidator,async(req,res)=>{
     const errors = validationResult(req);
 
      if(!errors.isEmpty())
-        return res.status(500).json({errors:errors.array()})
+        return res.status(500).json({message: "Reviews must be between 2 and 300 characters long"})
 
     try {
         await prisma.reviews.update({
             where:{id:Number(id)},
             data:{
-                rating:Number(data.rating),
                 content:data.content,
                 updated_at: now,
             }
@@ -102,4 +100,38 @@ const deleteReview = async(req,res)=>{
         return res.status(500).json({message: error.message});
     }
 }
-module.exports = {getAllReviews,getReview,getLatestReviews,newReview,editReview,deleteReview}
+
+const getAllReviewsFromUser = async(req,res)=>{
+    const userId = req.user.id;
+    try {
+        const reviews = await prisma.reviews.findMany({
+            where:{user_id:Number(userId)}
+        });
+        return res.status(200).json({reviews});
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message});
+    }
+}
+
+const getReviewFromUser = async(req,res)=>{
+    const userId = req.user.id;
+    const {raceId} = req.params;
+
+     try {
+        const review = await prisma.reviews.findFirst({
+            where:{
+                AND:[
+                    {user_id:Number(userId), race_id:Number(raceId)}
+                ]                
+            }
+        });
+        return res.status(200).json({review});
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message});
+    }
+
+}
+
+module.exports = {getAllReviews,getReview,getLatestReviews,newReview,editReview,deleteReview,getAllReviewsFromUser,getReviewFromUser}

@@ -1,0 +1,182 @@
+.container{
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.title{
+    padding: 1em;
+    font-weight: 300;
+    border-bottom: 1px solid var(--color-border) ;
+}
+.form{
+    width: 100%;
+    display: flex;
+    gap:5em;
+    justify-content: center;
+}
+.form .left{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap:3em;
+}
+.form .right{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap:2em;
+}
+.form-item{
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+}
+.form-item label{
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+.form-item input, .form-item select, .form-item textarea{
+    font-size: 1rem;
+    padding: 0.5em 0.5em;
+    background-color: var(--color-surface);
+    outline: none;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-elevation);
+    color: var(--color-text-secondary);
+    border-radius: var(--border-radius);
+}
+
+.form-item textarea{
+    resize: vertical;
+}
+
+.form-item input:focus, .form-item select:focus, .form-item textarea:focus{
+    background-color: var(--color-text-primary);
+    color: black;
+}
+
+.form-item-check{
+    display: flex;
+    justify-content: space-between;
+}
+.form-item-check>div{
+    display: flex;
+    align-items: center;
+    gap:5px;
+    flex-direction: row-reverse;
+}
+.form-item-check p{
+    color: var(--color-text-secondary);
+}
+
+.buttons{
+    justify-self: flex-end;
+    display: flex;
+    gap:10px;
+}
+
+.buttons button{
+  width: 100px;
+  align-self: center;
+  color: var(--color-text-primary);
+  padding: 0.5em 0.5em;
+  font-size: 0.9rem;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+  font-weight: bold;
+  border-radius: var(--border-radius);
+  text-transform: uppercase;
+}
+
+.buttons>button{
+    background-color: var(--color-accent);
+}
+
+#delete{
+    background-color: gray;
+}
+
+#delete:hover{
+    background-color:darkgray;
+}
+
+.buttons button:hover{
+  background-color: #1444a2;
+}
+
+.race-box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right textarea{
+    font-family: 'Open Sans','sans-serif';
+}
+
+.empty{
+    width: 100%;
+    display: flex;
+    background-color: var(--color-surface);
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    padding: 2em 1em;
+    margin: 2em 0;
+}
+.empty i{
+    color: var(--color-text-secondary);
+}
+
+.race-box{
+    margin: 2em 0;
+}
+
+.race-box .item{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    border: 1px solid var(--color-border);
+}
+
+.race-box .item:hover{
+    background-color: var(--color-surface);
+}
+
+.item>div{
+    display: flex;
+    align-items: center;
+    gap:2em;
+}
+
+.item>div>h2{
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item svg{
+    align-self: center;
+    cursor: pointer;
+}
+.item svg:hover{
+    color: var(--color-error);
+}
+.race-left{
+    display: flex;
+    align-items: flex-start;
+    gap:10px;
+}
+
+.race-left i{
+    margin-top: 4px;
+    color: var(--color-text-secondary);
+}

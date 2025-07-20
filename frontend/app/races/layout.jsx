@@ -7,6 +7,7 @@ export default async function RacesLayout({children}){
     
     let liked=[];
     let viewed=[];
+    let reviewed=[];
     let logged=false;
 
     if(auth){
@@ -18,17 +19,23 @@ export default async function RacesLayout({children}){
             'Cookie':'connect.sid='+auth.value
         },
         cache:'no-cache'});
-        const [likedRes,viewedRes]= await Promise.all([likedPromise,viewedPromise]);
+        const reviewedPromise = fetch(process.env.BACKEND_URL+"/reviews/all_from_user",{headers:{
+            'Cookie':'connect.sid='+auth.value
+        },
+        cache:'no-cache'});
+        const [likedRes,viewedRes,reviewedRes]= await Promise.all([likedPromise,viewedPromise,reviewedPromise]);
         liked = await likedRes.json();
         viewed = await viewedRes.json();
+        reviewed= await reviewedRes.json();
         logged=true;
     } 
 
     return(
         <RacesProvider
         logged={logged}
-        viewed={logged ? viewed.map(i=>i.race_id): []}
-        liked={logged ? liked.map(i=>i.race_id):[]}
+        viewed={viewed.map(i=>i.race_id)}
+        liked={liked.map(i=>i.race_id)}
+        reviewed={reviewed.reviews.map(i=>i.race_id)}
         >
             {children}
         </RacesProvider>

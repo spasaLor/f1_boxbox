@@ -1,0 +1,20 @@
+import { cookies } from "next/headers";
+
+export async function POST(req){
+    const data = await req.json();
+    const cookieStore = await cookies();
+    const auth = cookieStore.get("connect.sid");
+
+    const res = await fetch(process.env.BACKEND_URL+"/lists/add_race",{
+        method:'POST',
+        headers:{
+            'Cookie':'connect.sid='+auth.value,
+            'Content-type':'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    if(res.ok)
+        return NextResponse.json({message:"ok"},{status:200});
+    const json=await res.json();
+    return NextResponse.json({message:json.message},{status:500});
+}

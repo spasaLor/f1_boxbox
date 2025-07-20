@@ -7,6 +7,7 @@ const racesRouter = require("./routes/racesRouter");
 const reviewRouter = require("./routes/reviewsRouter");
 const ratingRouter = require("./routes/ratingsRouter");
 const commentRouter = require("./routes/commentsRouter");
+const listRouter = require("./routes/listsRouter");
 const ensureAuthenticated = require("./config/authMiddleware");
 
 const app = express();
@@ -19,6 +20,7 @@ app.use("/races",racesRouter);
 app.use("/reviews",reviewRouter);
 app.use("/comments",commentRouter);
 app.use("/ratings",ratingRouter);
+app.use("/lists",listRouter);
 
 app.post("/login",(req,res)=>{
     passport.authenticate('local',(err,user,info)=>{

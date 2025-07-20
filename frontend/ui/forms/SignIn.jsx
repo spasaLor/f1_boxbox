@@ -35,7 +35,7 @@ export default function SignInForm({setOpen,onLoginSuccess}){
                     </div>
                     <div className={styles["form-item"]}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" name="username"required/>
+                        <input type="text" name="username" required autoFocus/>
                     </div>
                     <div className={styles["form-item"]}>
                         <label htmlFor="password">Password</label>

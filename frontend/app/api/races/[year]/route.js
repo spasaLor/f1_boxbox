@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req,{params}){
-    const {year} = await params;
+    const {year} = params;
     const res = await fetch(process.env.BACKEND_URL+"/races/"+year);
     const json = await res.json();    
     if(res.ok)

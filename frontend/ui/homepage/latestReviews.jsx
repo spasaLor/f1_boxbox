@@ -13,7 +13,7 @@ export default async function LatestReviews(){
                 {reviews.map(item=>(
                     <div className={styles.review} key={item.id}>
                         <Link href={"/"+item.users.username+"/race/"+item.race_id}>
-                            <Image src={item.races.cover} alt="race_cover" width={90} height={115}></Image>
+                            <Image src={item.races.cover} alt="race_cover" width={80} height={105}></Image>
                         </Link>
                     </div>
                 ))}

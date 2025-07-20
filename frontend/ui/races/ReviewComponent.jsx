@@ -6,13 +6,16 @@ import { useRef, useState } from "react";
 import RatingComponent from "./RatingComponent";
 import styles from "./review.module.css";
 import { useRaces } from "@/lib/RacesContext";
+import { useRouter } from "next/navigation";
 
-export default function ReviewRace({item}){
+export default function ReviewRace({item,review=null}){
     const [open,setOpen] = useState(false);
     const textRef = useRef(null);
-    const { liked, toggleLike } = useRaces();
+    const { liked, toggleLike, reviewed } = useRaces();
     const isLiked = liked.includes(item.id);
+    const isReviewed = reviewed.includes(item.id);
     const [error,setError]=useState('');
+    const nav = useRouter();
 
     const focusedText = ()=>{
         textRef.current.rows="20";
@@ -20,22 +23,44 @@ export default function ReviewRace({item}){
 
     const saveReview = async()=>{
         const rev = textRef.current.value;
-        const res = await fetch("/api/races/reviews/"+item.id,{
-            method:'POST',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify({review:rev})
-        });
-        if(res.ok)
-            setOpen(false);
+        
+        if(isReviewed){
+            const res = await fetch("/api/reviews/"+review.id,{
+                method:'PUT',
+                headers:{'Content-type':'application/json'},
+                body:JSON.stringify({review:rev})
+            });
+            if(res.ok){
+                setError("");
+                setOpen(false);
+                nav.refresh();
+            }
+            else{
+                const json=await res.json();
+                setError(json.message);
+            }
+        }
         else{
-            const json=await res.json();
-            setError(json.message);
+            const res = await fetch("/api/races/reviews/"+item.id,{
+                method:'POST',
+                headers:{'Content-type':'application/json'},
+                body:JSON.stringify({review:rev})
+            });
+            if(res.ok){
+                setError("");
+                setOpen(false);
+                nav.refresh();
+            }
+            else{
+                const json=await res.json();
+                setError(json.message);
+            }
         }
     }
 
     return(
         <>
-            <p onClick={()=>setOpen(true)} className={styles.phrase}>Review or log...</p>
+            <p onClick={()=>setOpen(true)} className={styles.phrase}>{ isReviewed ? "Edit your review..." : "Review or log..."}</p>
             {open && 
                 <div className={styles.container}>
                     <div className={styles.inner}>
@@ -57,7 +82,8 @@ export default function ReviewRace({item}){
                                     <h2>{item.denomination}</h2>
                                     <p>{item.season}</p>
                                 </div>
-                                <textarea name="review" rows="10" placeholder="add a review..." ref={textRef} onFocus={focusedText}></textarea>
+                                <textarea name="review" rows="10" placeholder="add a review..." ref={textRef} onFocus={focusedText} defaultValue={review ? review.content : ""}>        
+                                </textarea>
                                 <div className={styles.bottom}>
                                     <div className={styles.rate}>
                                         <p>Rating</p>
@@ -72,7 +98,7 @@ export default function ReviewRace({item}){
                         </div>
                         <div className={styles.last}>
                             {error && <p className={styles.error}>{error}</p> }
-                            <button type="button" onClick={saveReview}>Save Review</button>
+                            <button type="button" onClick={saveReview}>{ isReviewed ? "Edit Review" : "Save Review"}</button>
                         </div>
                     </div>
                 </div>

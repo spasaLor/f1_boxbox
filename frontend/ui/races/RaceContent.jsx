@@ -5,9 +5,32 @@ import WatchedLiked from './WatchedLiked';
 import Link from 'next/link';
 import { Eye, Heart } from 'lucide-react';
 import ReviewRace from './ReviewComponent';
+import { cookies } from 'next/headers';
+import AddToList from './AddToList';
 
-export default function RaceContent({data,logged}){
+export default async function RaceContent({data,logged}){
     const formatted = new Date(data.date).toLocaleDateString();
+    const cookieStore=await cookies();
+    const auth = cookieStore.get('connect.sid');
+
+    const reviewsPromise = fetch(process.env.BACKEND_URL+"/reviews/race/"+data.id,{
+        method:'GET',
+        headers:{
+            'Cookie':'connect.sid='+auth.value
+        }
+    });
+    const listsPromise = fetch(process.env.BACKEND_URL+"/lists/user",{
+        method:'GET',
+        headers:{
+            'Cookie':'connect.sid='+auth.value
+        }
+    });
+
+    const[reviewsRes, listsRes] = await Promise.all([reviewsPromise, listsPromise]);
+    const json = await reviewsRes.json();
+    const review = json.review;
+    const other = await listsRes.json();
+    const lists = other.lists;
 
     return(
         <>
@@ -67,10 +90,10 @@ export default function RaceContent({data,logged}){
                                     <RatingComponent id={data.id}/>
                                 </div>
                                 <div className={styles["review"]}>
-                                    <ReviewRace item={data}/>
+                                    <ReviewRace item={data} review={review}/>
                                 </div>
                                 <div className={styles["lists"]}>
-                                    <Link href={"#"}>Add to lists...</Link>
+                                    <AddToList lists={lists} item={data}/>
                                 </div>
                                 <div className={styles["share"]}>
                                     <Link href={"#"}>Share...</Link>

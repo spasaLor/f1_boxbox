@@ -72,15 +72,16 @@
 .latest-reviews{
     width: 100%;
     display: grid;
-    grid-template-columns: 90px;
+    grid-template-columns: repeat(auto-fill,minmax(100px,1fr));
     padding-top: 10px;
     padding-bottom: 1em;
 }
 .review{
-    height: 105px;
+    height: 150px;
 }
 .review img{
-    object-fit: cover;
+    height: 100%;
+    width: 100%;
 }
 .reviews-section .text{
     padding: 1em 0;

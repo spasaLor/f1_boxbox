@@ -7,7 +7,7 @@ export function useRaces() {
     return useContext(RacesContext);
 }
 
-export function RacesProvider({ children, liked, viewed, logged }) {
+export function RacesProvider({ children, liked, viewed, logged, reviewed }) {
     const [likedRaces, setLikedRaces] = useState(liked);
     const [viewedRaces, setViewedRaces] = useState(viewed);
     const [error,setError] = useState('');
@@ -83,6 +83,7 @@ export function RacesProvider({ children, liked, viewed, logged }) {
             error,
             liked: likedRaces,
             viewed: viewedRaces,
+            reviewed,
             toggleLike,
             toggleView
         }}>
