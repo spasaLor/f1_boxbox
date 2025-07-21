@@ -3,18 +3,42 @@ import { useEffect, useRef, useState } from "react"
 import SubmitButton from "../buttons/SubmitButton";
 import AddRace from "../lists/addRace";
 import styles from "@/app/[username]/lists/list.module.css";
+import { useRouter } from "next/navigation";
+import useGetme from "@/lib/useGetMe";
 
 export default function ListForm({races,listData = null}){
+    const nav = useRouter();
+    const {username} = useGetme();
     const formRef = useRef(null);
     const [selectedIds, setSelectedIds] = useState(listData ? listData.races : []);
     const [error,setError] = useState("");
     const [checked,setChecked] = useState(false);
+
     useEffect(() => {
         if (listData) {
             setChecked(listData.ranked);
         }
     }, [listData]);
 
+    const deleteList = async()=>{
+        const res = await fetch("/api/lists/delete/"+listData.id,{
+            method:'DELETE',
+            headers:{
+                'Content-type':'application/json'
+            },
+        });
+        if(res.ok){
+            setError("");
+            nav.push("/"+username+"/lists");
+        }else{
+            const json = await res.json();
+            setError(json.message);
+        }
+    }
+
+    const clearList = async()=>{
+        setSelectedIds([]);
+    }
     
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -86,7 +110,7 @@ export default function ListForm({races,listData = null}){
                     </div>
                     <div className={styles.bottom}>
                         <div className={styles.buttons}>
-                            <button type="button" id={styles.delete}>Cancel</button>
+                            {listData ? <button type="button" id={styles.delete} onClick={deleteList}>Delete</button> : <button type="button" id={styles.clear} onClick={clearList}>Clear</button>}
                             <SubmitButton text={ listData ? "Edit" : "Save"}/>
                         </div>
                         <div className ={styles.errors}>

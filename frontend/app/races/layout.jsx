@@ -33,9 +33,9 @@ export default async function RacesLayout({children}){
     return(
         <RacesProvider
         logged={logged}
-        viewed={viewed.map(i=>i.race_id)}
-        liked={liked.map(i=>i.race_id)}
-        reviewed={reviewed.reviews.map(i=>i.race_id)}
+        viewed={logged ? viewed.map(i=>i.race_id):[]}
+        liked={logged ? liked.map(i=>i.race_id): []}
+        reviewed={logged ? reviewed.reviews.map(i=>i.race_id):[]}
         >
             {children}
         </RacesProvider>

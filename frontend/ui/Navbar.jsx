@@ -7,25 +7,9 @@ import styles from "./navbar.module.css";
 import { CloudLightningIcon } from "lucide-react";
 import Logout from "./buttons/Logout";
 
-export default function Navbar(){
+export default function Navbar({username}){
     const [open,setOpen] = useState('');
-    const [islogged,setIsLogged] = useState('');
-
-    useEffect(()=>{
-        const getData = async()=>{
-            const res = await fetch("/api/me",{credentials:'include'});
-            const json= await res.json();
-            if(res.ok)
-                setIsLogged(json.username);
-        }
-        getData();
-    },[])
-
-    const onLoginSuccess = async()=>{
-        const res = await fetch("/api/me",{credentials:'include'});
-        const json = await res.json();
-        setIsLogged(json.username);
-    }
+    const [islogged,setIsLogged] = useState(username);
     
     return(
         <>
@@ -34,9 +18,9 @@ export default function Navbar(){
                     <Link href="/">F1BoxBox</Link>
                 </div>
                 <div className={styles.right}>
-                    {open === 'signin' && <SignInForm setOpen={setOpen} onLoginSuccess={onLoginSuccess}/>}
+                    {open === 'signin' && <SignInForm setOpen={setOpen}/>}
                     {
-                        open !== 'signin' && !islogged &&
+                        open !== 'signin' && islogged==="" &&
                         <>
                             <button type="button" onClick={()=>setOpen('signin')}> sign in</button>
                             <button type="button" onClick={()=>setOpen('register')}> Create account</button>
@@ -47,11 +31,11 @@ export default function Navbar(){
                         </>
                     }
                     {
-                        open !== 'signin' && islogged && 
+                        open !== 'signin' && islogged!=="" && 
                         <>
                             <button type="button"> {islogged}</button>
                             <CloudLightningIcon/>
-                            <Link href="/races">Races</Link>
+                            <Link href={"/"+username+"/lists"}>Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
                             <Link href="/">Members</Link>
                             <Link href="/">Journal</Link>

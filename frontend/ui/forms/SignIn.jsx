@@ -4,7 +4,7 @@ import SubmitButton from "../buttons/SubmitButton";
 import { useRouter } from "next/navigation";
 import styles from "../navbar.module.css";
 
-export default function SignInForm({setOpen,onLoginSuccess}){
+export default function SignInForm({setOpen}){
     const formRef=useRef(null);
     const [error,setError] = useState();
     const nav = useRouter()
@@ -21,7 +21,6 @@ export default function SignInForm({setOpen,onLoginSuccess}){
             setError(json.error);
         else{
             setOpen('');
-            onLoginSuccess();
             nav.push(json.redirect);
         }            
     }

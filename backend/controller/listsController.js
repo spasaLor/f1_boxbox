@@ -43,19 +43,39 @@ const getAllLists = async(req,res)=>{
     }
 }
 
-const getAllListsFromUser = async(req,res)=>{
-    const userId=req.user.id;
+const getAllListsFromUser = async (req, res) => {
+    const userId = req.user.id;
     try {
         const lists = await prisma.lists.findMany({
-            where:{
-                user_id:Number(userId)
+            where: {
+                user_id: Number(userId)
             }
         });
-        return res.status(200).json({lists});
+
+        const newLists = await Promise.all(
+            lists.map(async (item) => {
+                const covers = await Promise.all(
+                    item.races.map(async (id) => {
+                        const race = await prisma.races.findFirst({
+                            where: { id }
+                        });
+                        return race?.cover;
+                    })
+                );
+
+                return {
+                    ...item,
+                    covers: covers.filter(Boolean)
+                };
+            })
+        );
+
+        return res.status(200).json({ lists: newLists });
     } catch (error) {
-        return res.status(400).json({message:error.message})
+        return res.status(400).json({ message: error.message });
     }
-}
+};
+
 
 const getList = async(req,res)=>{
     const {listId} = req.params;
@@ -112,7 +132,7 @@ const deleteList = async(req,res)=>{
     try {
         await prisma.lists.delete({
             where:{
-                listId:Number(listId)
+                id:Number(listId)
             }
         });
         return res.status(200).json({message:"Success"});
@@ -121,8 +141,30 @@ const deleteList = async(req,res)=>{
     }
 }
 const addRace = async(req,res)=>{
-    const userId = req.user.id;
-    const data = req.body;
-    console.log(data);
+    const {listIds,raceId} = req.body;
+    
+    try {
+        await Promise.all(
+            listIds.map( async (list)=>{
+                const prev = await prisma.lists.findFirst({
+                    where:{
+                        id:Number(list)
+                    }
+                });
+                if(prev){
+                    await prisma.lists.update({
+                        where:{id:Number(list)},
+                        data:{
+                            races:[...prev.races,raceId]
+                        }
+                    })
+                }
+            })
+        );
+        
+        return res.status(200).json({message:"OK"})
+    } catch (error) {
+        return res.status(400).json({message:error.message});
+    }
 }
 module.exports={newList,getAllLists,getList,deleteList,getListByName,editList,getAllListsFromUser,addRace}

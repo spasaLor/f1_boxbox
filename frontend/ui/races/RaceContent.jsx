@@ -12,25 +12,29 @@ export default async function RaceContent({data,logged}){
     const formatted = new Date(data.date).toLocaleDateString();
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
+    let review={};
+    let lists=[];
 
-    const reviewsPromise = fetch(process.env.BACKEND_URL+"/reviews/race/"+data.id,{
-        method:'GET',
-        headers:{
-            'Cookie':'connect.sid='+auth.value
-        }
-    });
-    const listsPromise = fetch(process.env.BACKEND_URL+"/lists/user",{
-        method:'GET',
-        headers:{
-            'Cookie':'connect.sid='+auth.value
-        }
-    });
-
-    const[reviewsRes, listsRes] = await Promise.all([reviewsPromise, listsPromise]);
-    const json = await reviewsRes.json();
-    const review = json.review;
-    const other = await listsRes.json();
-    const lists = other.lists;
+    if(auth){
+        const reviewsPromise = fetch(process.env.BACKEND_URL+"/reviews/race/"+data.id,{
+            method:'GET',
+            headers:{
+                'Cookie':'connect.sid='+auth.value
+            }
+        });
+        const listsPromise = fetch(process.env.BACKEND_URL+"/lists/user",{
+            method:'GET',
+            headers:{
+                'Cookie':'connect.sid='+auth.value
+            }
+        });
+        const[reviewsRes, listsRes] = await Promise.all([reviewsPromise, listsPromise]);
+        const json = await reviewsRes.json();
+        review = json.review;
+        const other = await listsRes.json();
+        lists = other.lists;
+    }   
+    
 
     return(
         <>

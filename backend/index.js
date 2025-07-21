@@ -29,7 +29,15 @@ app.post("/login",(req,res)=>{
         else{
             req.logIn(user,(err)=>{
                 if (err) {return res.status(400).json({error:err.message})}
-                else return res.status(200).json({redirect:"/welcome",username:user.username});
+                else{
+                    res.cookie('username',user.username,{
+                        httpOnly:false,
+                        maxAge:1000*60*60*24,
+                        sameSite:'lax',
+                        path:'/'
+                    })
+                    return res.status(200).json({redirect:"/welcome"});
+                } 
             })
         }
     })(req,res);
