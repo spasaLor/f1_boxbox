@@ -44,11 +44,15 @@ const getAllLists = async(req,res)=>{
 }
 
 const getAllListsFromUser = async (req, res) => {
-    const userId = req.user.id;
+    const {username} = req.body;
     try {
+        const user = await prisma.users.findFirst({
+            where:{username}
+        });
+
         const lists = await prisma.lists.findMany({
             where: {
-                user_id: Number(userId)
+                user_id: user.id
             }
         });
 
@@ -85,7 +89,24 @@ const getList = async(req,res)=>{
                 id:Number(listId)
             }
         });
-        return res.status(200).json({list});
+
+        const racesArray = await prisma.races.findMany({
+            where: {
+                id: { in: list.races }
+            },
+            select: {
+                id: true,
+                cover: true,
+                url: true,
+                season: true
+            }
+        });
+
+        const withCovers = {
+            ...list,
+            races:racesArray
+        };
+        return res.status(200).json({list:withCovers});
     } catch (error) {
         return res.status(400).json({message: error.message});
     }
@@ -167,4 +188,67 @@ const addRace = async(req,res)=>{
         return res.status(400).json({message:error.message});
     }
 }
-module.exports={newList,getAllLists,getList,deleteList,getListByName,editList,getAllListsFromUser,addRace}
+const likeList = async(req,res)=>{
+    const {listId} = req.params;
+    const userId = req.user.id;
+    try {
+        await prisma.lists_likes.create({
+            data:{
+                list_id:Number(listId),
+                user_id:Number(userId)
+            }
+        });
+        return res.status(200).json({message:'ok'})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+}
+const getLikes = async(req,res)=>{
+    const {listId} = req.params;
+    try {
+        const likes = await prisma.lists_likes.aggregate({
+            _count:{
+                user_id:true
+            },
+            where:{
+                list_id:Number(listId)
+            },            
+        });
+        return res.status(200).json({likes})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+}
+const deleteLike = async(req,res)=>{
+    const {listId} = req.params;
+    const userId = req.user.id;
+    try {
+        await prisma.lists_likes.delete({
+            where:{
+                AND:[
+                    {listId:Number(listId)},
+                    {userId:Number(userId)}
+                ]
+            },            
+        });
+        return res.status(200).json({message:'ok'})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+}
+
+const getIsLiked = async(req,res)=>{
+    const userId = req.user.id;
+    const {listId}=req.params;
+    const liked= await prisma.lists_likes.findFirst({
+        where:{
+            user_id:Number(userId),
+            list_id:Number(listId)
+        }
+    });
+    if(!liked)
+        return res.status(200).json({liked:false})
+    return res.status(200).json({liked:true})
+}
+
+module.exports={newList,getAllLists,getList,deleteList,getListByName,editList,getAllListsFromUser,addRace,likeList,getLikes,deleteLike,getIsLiked}

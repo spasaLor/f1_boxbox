@@ -10,7 +10,7 @@ export default async function RacesLayout({children}){
     let reviewed=[];
     let logged=false;
 
-    if(auth){
+    if(auth?.value){
         const likedPromise = fetch(process.env.BACKEND_URL+"/races/liked",{headers:{
             'Cookie':'connect.sid='+auth.value
         },

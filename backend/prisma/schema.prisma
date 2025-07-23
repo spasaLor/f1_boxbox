@@ -59,17 +59,18 @@ model reviews {
 }
 
 model users {
-  id         Int          @id @default(autoincrement())
-  username   String       @unique @db.VarChar(50)
-  email      String       @unique @db.VarChar(30)
-  password   String
-  comments   comments[]
-  likes      likes[]
-  lists      lists[]
-  race_liked race_liked[]
-  ratings    ratings[]
-  reviews    reviews[]
-  viewed     viewed[]
+  id          Int           @id @default(autoincrement())
+  username    String        @unique @db.VarChar(50)
+  email       String        @unique @db.VarChar(30)
+  password    String
+  comments    comments[]
+  likes       likes[]
+  lists       lists[]
+  lists_likes lists_likes[]
+  race_liked  race_liked[]
+  ratings     ratings[]
+  reviews     reviews[]
+  viewed      viewed[]
 }
 
 model race_liked {
@@ -101,12 +102,24 @@ model ratings {
 }
 
 model lists {
-  id          Int     @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   user_id     Int?
   description String?
   races       Int[]
-  privacy     String  @db.VarChar(20)
+  privacy     String        @db.VarChar(20)
   ranked      Boolean
-  users       users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  lists_likes lists_likes[]
+
+  @@unique([user_id, name], map: "unique_user_name")
+}
+
+model lists_likes {
+  user_id Int
+  list_id Int
+  lists   lists @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, list_id])
 }

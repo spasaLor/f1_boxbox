@@ -1,20 +1,21 @@
 import { Pencil } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
-import { redirect } from "next/navigation";
 import styles from "./list.module.css";
 import Link from "next/link";
 
-export default async function ListsPage(){
+export default async function ListsPage({params}){
     const cookieStore = await cookies();
-    const auth = cookieStore.get('connect.sid');
     const user = cookieStore.get('username');
-    if(!auth || !user)
-        redirect("/");
+    const {username} = await params;
+    const isOwner = user?.value === username;
+
     const res = await fetch(process.env.BACKEND_URL+"/lists/user",{
+        method:'POST',
         headers:{
-            'Cookie':'connect.sid='+auth.value
+            'Content-type':'application/json'
         },
+        body: JSON.stringify({username})
     });
     const json = await res.json();
     const lists = json.lists;
@@ -30,10 +31,14 @@ export default async function ListsPage(){
             </div> :
             <>
                 <div className={styles.header}>
-                    <h2>Your lists</h2>
-                    <Link href={"/"+user.value+"/lists/new"}>
-                        <button type="button">Start a new list...</button>
-                    </Link>
+                    {isOwner && <>
+                        <h2>Your lists</h2>                        
+                        <Link href={"/"+username+"/lists/new"}>
+                            <button type="button">Start a new list...</button>
+                        </Link>
+                    </>}
+                    {!isOwner && <h2>Lists</h2>}
+                    
                 </div>
                 <div className={styles["list-container"]}>
                     {lists.map(item=>(
@@ -55,14 +60,27 @@ export default async function ListsPage(){
                                     </div>
                                 ))}
                             </div>
-                            <div className={styles["lists-right"]}>
-                                <Link href={"/"+user.value+"/list/"+item.name} className={styles["list-name"]}>{item.name}</Link>
-                                <div >
-                                    <p>{item.races.length} races</p>
-                                    <Link href={"/"+user.value+"/lists/edit/"+item.name}> <Pencil size={14}/> </Link>
+                            {isOwner && 
+                                <div className={styles["lists-right"]}>
+                                    <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
+                                    <div >
+                                        <p>{item.races.length} races</p>
+                                        <Link href={"/"+username+"/lists/edit/"+item.name}> <Pencil size={14}/> </Link>
+                                    </div>
                                 </div>
-                                
-                            </div>
+                            }
+                            {!isOwner && 
+                                <div className={styles["lists-right"]}>
+                                    <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
+                                    <div className={styles.bottom}>
+                                        <p>{item.races.length} races</p>
+                                        <p>Likes //tofetch</p>
+                                        <p>Comments //tofetch</p>
+                                        <p>{item.description}</p>
+                                    </div>
+                                </div>
+                            }
+                            
                         </div>
                         
                     ))}

@@ -12,6 +12,8 @@ export default async function RaceContent({data,logged}){
     const formatted = new Date(data.date).toLocaleDateString();
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
+    const user= cookieStore.get('username');
+
     let review={};
     let lists=[];
 
@@ -23,18 +25,18 @@ export default async function RaceContent({data,logged}){
             }
         });
         const listsPromise = fetch(process.env.BACKEND_URL+"/lists/user",{
-            method:'GET',
+            method:'POST',
             headers:{
-                'Cookie':'connect.sid='+auth.value
-            }
+                'content-type':'application/json'
+            },
+            body: JSON.stringify({username: user.value})
         });
         const[reviewsRes, listsRes] = await Promise.all([reviewsPromise, listsPromise]);
         const json = await reviewsRes.json();
         review = json.review;
         const other = await listsRes.json();
         lists = other.lists;
-    }   
-    
+    }
 
     return(
         <>
@@ -78,11 +80,12 @@ export default async function RaceContent({data,logged}){
                 </div>
                 <p className={styles.notes}>{data.notes}</p>
                 <div className={styles.interaction}>
-                        {!logged && <div className={styles["not-logged"]}>
-                            <p>Sign in to log, rate or review</p>
-                            <div className={styles["share"]}>
-                                    <Link href={"#"}>Share...</Link>
-                            </div>
+                        {!logged && 
+                            <div className={styles["not-logged"]}>
+                                <p>Sign in to log, rate or review</p>
+                                <div className={styles["share"]}>
+                                        <Link href={"#"}>Share...</Link>
+                                </div>
                             </div>}
                         {logged &&
                             <div className={styles["activity-buttons"]}>
@@ -103,17 +106,10 @@ export default async function RaceContent({data,logged}){
                                     <Link href={"#"}>Share...</Link>
                                 </div>
                             </div>
-                          }
-                   
-                        <div className="ratings">
-                            <p>Ratings N</p>
-                        </div>
-                        </div>
+                        }
                     </div>
                 </div>
-                
-                
+            </div>
         </>
-        
     )
 }
