@@ -102,11 +102,28 @@ const deleteReview = async(req,res)=>{
 }
 
 const getAllReviewsFromUser = async(req,res)=>{
-    const userId = req.user.id;
+    const {user} = req.params;
     try {
-        const reviews = await prisma.reviews.findMany({
-            where:{user_id:Number(userId)}
+        const u = await prisma.users.findFirst({
+            where:{
+                username:user
+            }
         });
+
+        const reviews = await prisma.reviews.findMany({
+            where:{user_id:u.id},
+            include:{races:true}
+        });
+        const likes = await Promise.all(
+            reviews.map((item)=>
+             prisma.likes.aggregate(
+                {
+                    _count:{user_id:true},
+                    where:{liked_review:item.id},
+                }
+            ))
+        );
+        reviews.forEach((re,i)=>{re.likes = likes[i]._count.user_id});
         return res.status(200).json({reviews});
     } catch (error) {
         console.log(error);
@@ -131,7 +148,57 @@ const getReviewFromUser = async(req,res)=>{
         console.log(error);
         return res.status(400).json({message:error.message});
     }
-
 }
 
-module.exports = {getAllReviews,getReview,getLatestReviews,newReview,editReview,deleteReview,getAllReviewsFromUser,getReviewFromUser}
+const getLikedReviews = async(req,res)=>{
+    const userId = req.user.id;
+    try {
+        const reviews = await prisma.likes.findMany({
+            where:{
+                user_id:Number(userId)
+            },
+            select:{liked_review:true}
+        });
+        let likes = [];
+        reviews.forEach(r=>likes.push(r.liked_review))
+        return res.status(200).json({likes});
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message});
+    }
+}
+
+const newReviewLike = async(req,res)=>{
+    const {id}= req.params;
+    const userId = req.user.id;
+    try {
+        await prisma.likes.create({
+            data:{
+                user_id:Number(userId),
+                liked_review:Number(id)
+            },
+        });
+        return res.status(200).json({message:"ok"});
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message});
+    }
+}
+
+const removeLike = async(req,res)=>{
+    const {id}= req.params;
+    const userId = req.user.id;
+    try {
+        await prisma.likes.delete({
+            where:{
+                user_id_liked_review:{user_id:Number(userId),liked_review:Number(id)}
+            },
+        });
+        return res.status(200).json({message:"ok"});
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message});
+    }
+}
+
+module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}

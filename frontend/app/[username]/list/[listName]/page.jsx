@@ -1,3 +1,4 @@
+import Comments from "@/ui/comments/Comments";
 import ListView from "@/ui/lists/listView";
 import LoggedSidebar from "@/ui/lists/loggedSidebar";
 import NotLoggedSidebar from "@/ui/lists/notLoggedSidebar";
@@ -12,16 +13,20 @@ export default async function List({params}){
     const likesPromise = fetch(process.env.BACKEND_URL+"/lists/like/"+Number(id),{
         next:{revalidate:120}
     });
+    const commentsPromise = fetch(process.env.BACKEND_URL+"/comments/lists/"+Number(id),{
+        cache:'no-store'
+    });
     const islikedPromise = fetch(process.env.BACKEND_URL+"/lists/like/user/"+Number(id),{
         cache:'no-store'
     });
-    const [listRes, likesRes,isLikedRes] = await Promise.all([listPromise, likesPromise,islikedPromise]);
+    const [listRes, likesRes,isLikedRes,commentsRes] = await Promise.all([listPromise, likesPromise, islikedPromise,commentsPromise]);
     const jsonList = await listRes.json();
     const list = jsonList.list;
     const jsonLikes = await likesRes.json();
     const likes = jsonLikes.likes;
     const jsonLiked = await isLikedRes.json();
     const isLiked = jsonLiked.liked;
+    const jsonComm = await commentsRes.json();
 
     const cookieStore = await cookies();
     const auth= cookieStore.get('connect.sid');
@@ -39,6 +44,9 @@ export default async function List({params}){
             <div className="side-container">
                 {!isLogged && <NotLoggedSidebar username={username} likes={likes._count.user_id}/>}
                 {isLogged && <LoggedSidebar likes={likes._count.user_id} initialLiked={isLiked} list={list}/>}
+            </div>
+            <div className="comments-container">
+                <Comments comments={jsonComm.comments} isLogged={isLogged} targetType={"list"} targetId={list.id}/>
             </div>
         </>
         

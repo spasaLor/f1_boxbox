@@ -13,12 +13,25 @@ const getAllCommentsFromReview = async(req,res)=>{
         return res.status(500).json({message: error.message});
     }
 }
+const getAllCommentsFromList = async(req,res)=>{
+    const {listId} = req.params;
+    try {
+        const comments = await prisma.lists_comments.findMany({
+            where:{list_id:Number(listId)},
+            include:{users:true}
+        });
+        return res.status(200).json({comments});
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}
 
-const newComment = [commentValidator,async(req,res)=>{
+const addRevComment = [commentValidator,async(req,res)=>{
     const {reviewId} = req.params;
     const data = req.body;
     const userId = req.user.id;
     const errors = validationResult(req);
+    const date = new Date();
 
     if(!errors.isEmpty())
         return res.status(500).json({errors: errors.array()})
@@ -28,7 +41,32 @@ const newComment = [commentValidator,async(req,res)=>{
             data:{
                 post_id:Number(reviewId),
                 user_id:Number(userId),
-                content:data.content
+                content:data.content,
+                published_at:date
+            }
+        });
+        return res.status(200).json({message:"Success"});
+    } catch (error) {
+        return res.status(500).json({message: error.message});
+    }
+}]
+const addListComment = [commentValidator,async(req,res)=>{
+    const {listId} = req.params;
+    const data = req.body;
+    const userId = req.user.id;
+    const errors = validationResult(req);
+    const date = new Date();
+
+    if(!errors.isEmpty())
+        return res.status(500).json({errors: errors.array()})
+    
+    try {
+        await prisma.lists_comments.create({
+            data:{
+                list_id:Number(listId),
+                user_id:Number(userId),
+                content:data.content,
+                published_at:date
             }
         });
         return res.status(200).json({message:"Success"});
@@ -48,4 +86,4 @@ const deleteComment = async(req,res)=>{
         return res.status(500).json({message: error.message});     
     }
 }
-module.exports={getAllCommentsFromReview,newComment,deleteComment}
+module.exports={getAllCommentsFromReview,getAllCommentsFromList,addRevComment,addListComment,deleteComment}
