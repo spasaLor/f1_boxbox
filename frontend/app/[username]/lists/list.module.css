@@ -253,8 +253,12 @@
 .lists-right{
     display: flex;
     flex-direction: column;
+    gap:10px;
 }
-
+.lists-right p{
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
 .list-name{
     color: var(--color-text-primary);
     font-weight: bold;
@@ -280,4 +284,113 @@
     border: none;
     cursor: pointer;
     border-radius: var(--border-radius);
+}
+
+.data{
+    display: flex;
+    gap:5px;
+    align-items: center;
+}
+
+.main{
+    display: flex;
+    gap:1em;
+    width: 100%;
+}
+
+.main>.left{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+}
+
+.list-grid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+}
+
+.comments-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comments-container>p{
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-text-secondary);
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.comment-item{
+    display: flex;
+    align-items: flex-start;
+    gap:3em;
+    padding: 1em 0;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+.comment-item>.left{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.comment-item>.left a{
+    font-weight: bold;
+}
+
+.comment-item>.left a:hover{
+    color: var(--color-text-primary);
+}
+
+.comment-item>p{
+    flex:1;
+}
+
+.comment-box{
+   margin: 1em 0;
+}
+
+.comment-box>.active{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    gap:15px;
+}
+.active textarea{
+    width: 70%;
+    padding: 0.5em 1em;
+    resize:vertical;
+    background-color: var(--color-text-secondary);
+    color: var(--color-bg);
+    border-radius: var(--border-radius);
+}
+
+.active textarea:focus{
+    background-color: var(--color-text-primary);
+    color: black;
+}
+.active button{
+    text-transform: uppercase;
+    background-color: var(--color-accent);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: 1px solid var(--color-border);
+    padding: 1em;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    float: right;
+}
+.active button:hover{
+    background-color: var(--color-accent-light);
 }

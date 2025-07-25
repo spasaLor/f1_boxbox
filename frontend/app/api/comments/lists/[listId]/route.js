@@ -20,7 +20,7 @@ export async function POST(req,{params}){
     else{
         const json= await res.json();
         console.log(json);
-        return NextResponse.json({message:json[0].msg},{status:500})
+        return NextResponse.json({message:json.msg},{status:500})
     }
 
 

@@ -2,6 +2,8 @@
 import Cookies from "js-cookie";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
+import styles from './lists.module.css';
+import { LinearProgress } from "@mui/material";
 
 export default function LoggedSidebar({likes,initialLiked,list}){
     const [isLiked,setIsLiked]=useState(initialLiked);
@@ -27,7 +29,7 @@ export default function LoggedSidebar({likes,initialLiked,list}){
             if(list.races.contains(element))
                 count++;
         });
-        return count / list.races.length *100;
+        return Math.round(count / list.races.length *100);
     }
     
     const toggleLike = async()=>{
@@ -56,17 +58,22 @@ export default function LoggedSidebar({likes,initialLiked,list}){
     }
 
     return(
-        <div className="sidebar">
-            <div className="top">
-                <p onClick={toggleLike}><Heart/> Like this list?</p> <i>{likes}</i>
+        <div className={styles.sidebar}>
+            <div className={styles.first}>
+                <Heart fill="var(--color-text-secondary)" size={16}/> <p onClick={toggleLike}>Like this list?</p> <p>{likes}</p>
             </div>
-            <div className="share">
-                <p>share</p>
+            <div className={styles.share}>
+                <p>Share</p>
             </div>
-            <div className="percentage">
-                <p>You've watched</p>
-                <h2>{percentage()} %</h2>
-                <p>{viewed.length} of {list.races.length}</p>
+            <div className={styles.percentage}>
+                <div className={styles.first}>
+                    <div className="">
+                        <p>You've watched</p>
+                        <p>{viewed.length} of {list.races.length}</p>
+                    </div>
+                    <h2>{percentage()} %</h2>
+                </div>
+                <LinearProgress value={percentage()} variant="determinate" sx={{width:'100%'}}/>
             </div>
         </div>
     )

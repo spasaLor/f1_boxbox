@@ -1,5 +1,6 @@
 import Reviews from "@/ui/reviews/Reviews";
 import { cookies } from "next/headers"
+import styles from "./review.module.css";
 
 export default async function Page({params}){
     const {username} = await params;
@@ -30,11 +31,17 @@ export default async function Page({params}){
         });
         const json=await res.json();
         reviews=json.reviews;
+        
     }
     
     return(
-        <div className="review-box">
-            <Reviews reviews={reviews} isLogged={isLogged} isOwner={isOwner} likes={likes}/>
-        </div>
+        <>
+            <div className={styles.title}>
+                <h2>Reviews</h2>
+            </div>
+            <div className={styles["review-box"]}>
+                <Reviews reviews={reviews} isLogged={isLogged} isOwner={isOwner} likes={likes}/>
+            </div>
+        </>
     )
 }

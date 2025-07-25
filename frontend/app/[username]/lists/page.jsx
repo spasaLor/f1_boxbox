@@ -1,8 +1,9 @@
-import { Pencil } from "lucide-react";
+import { Heart, MessageSquare, Pencil } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import styles from "./list.module.css";
 import Link from "next/link";
+import getMetadata from "@/lib/getMetadata";
 
 export default async function ListsPage({params}){
     const cookieStore = await cookies();
@@ -19,6 +20,7 @@ export default async function ListsPage({params}){
     });
     const json = await res.json();
     const lists = json.lists;
+    const metadata = await Promise.all(lists.map(async(item)=>await getMetadata(item.id)));
 
     return(
         lists.length === 0 ?
@@ -41,7 +43,7 @@ export default async function ListsPage({params}){
                     
                 </div>
                 <div className={styles["list-container"]}>
-                    {lists.map(item=>(
+                    {lists.map((item,i)=>(
                         <div className={styles["list-item"]} key={item.id}>
                             <div className={styles["lists-left"]}>
                                 {item.covers.slice(0,5).map((race, index) => (
@@ -74,10 +76,10 @@ export default async function ListsPage({params}){
                                     <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
                                     <div className={styles.bottom}>
                                         <p>{item.races.length} races</p>
-                                        <p>Likes //tofetch</p>
-                                        <p>Comments //tofetch</p>
-                                        <p>{item.description}</p>
+                                        {metadata[i].likes._count.user_id > 0 ? <div className={styles.data}><Heart/> <p>{metadata[i].likes._count.user_id}</p></div> : ''} 
+                                        {metadata[i].comments.length >0 ? <div className={styles.data}><MessageSquare size={16}/> <p>{metadata[i].comments.length}</p> </div> : ''}                                        
                                     </div>
+                                    <p>{item.description}</p>
                                 </div>
                             }
                             

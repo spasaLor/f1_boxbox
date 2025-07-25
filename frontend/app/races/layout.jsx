@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 export default async function RacesLayout({children}){
     const cookieStore = await cookies();
     const auth = cookieStore.get('connect.sid');
+    const user = cookieStore.get('username');
     
     let liked=[];
     let viewed=[];
@@ -19,10 +20,7 @@ export default async function RacesLayout({children}){
             'Cookie':'connect.sid='+auth.value
         },
         cache:'no-cache'});
-        const reviewedPromise = fetch(process.env.BACKEND_URL+"/reviews/all_from_user",{headers:{
-            'Cookie':'connect.sid='+auth.value
-        },
-        cache:'no-cache'});
+        const reviewedPromise = fetch(process.env.BACKEND_URL+"/reviews/all_from_user/"+user.value,{cache:'no-cache'});
         const [likedRes,viewedRes,reviewedRes]= await Promise.all([likedPromise,viewedPromise,reviewedPromise]);
         liked = await likedRes.json();
         viewed = await viewedRes.json();

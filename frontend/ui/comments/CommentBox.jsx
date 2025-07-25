@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
+import styles from "@/app/[username]/lists/list.module.css";
 
 export default function CommentBox({targetType,itemId}){
     const textRef = useRef(null);
@@ -28,9 +29,9 @@ export default function CommentBox({targetType,itemId}){
     }
 
     return(
-        <>
-            <textarea name="comment" rows={5} cols={20} ref={textRef}></textarea>
+        <div className={styles.active}>
+            <textarea name="comment" rows={6} cols={70} ref={textRef} placeholder="Leave a comment..."></textarea>
             <button type="button" onClick={sendComment}>POST</button>
-        </>
+        </div>
     )
 }

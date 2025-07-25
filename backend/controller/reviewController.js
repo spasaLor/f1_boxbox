@@ -112,18 +112,32 @@ const getAllReviewsFromUser = async(req,res)=>{
 
         const reviews = await prisma.reviews.findMany({
             where:{user_id:u.id},
-            include:{races:true}
+            include:{races:true,likes:true,comments:true}
         });
-        const likes = await Promise.all(
+
+        const ratings = await Promise.all(
             reviews.map((item)=>
-             prisma.likes.aggregate(
-                {
-                    _count:{user_id:true},
-                    where:{liked_review:item.id},
+             prisma.ratings.findFirst({
+                where:{
+                    AND:[
+                        {user_id:u.id, race_id:item.race_id}
+                    ]
                 }
+             }  
             ))
         );
-        reviews.forEach((re,i)=>{re.likes = likes[i]._count.user_id});
+        const liked = await Promise.all(
+            reviews.map((item)=>
+             prisma.race_liked.findFirst({
+                where:{
+                    AND:[
+                        {user_id:u.id, race_id:item.race_id}
+                    ]
+                }
+             }  
+            ))
+        );
+        reviews.forEach((re,i)=>{re.rating = ratings[i].rating; re.liked = liked[i] === null ? false:true});
         return res.status(200).json({reviews});
     } catch (error) {
         console.log(error);
