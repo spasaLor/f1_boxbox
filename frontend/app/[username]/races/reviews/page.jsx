@@ -40,7 +40,7 @@ export default async function Page({params}){
                 <h2>Reviews</h2>
             </div>
             <div className={styles["review-box"]}>
-                <Reviews reviews={reviews} isLogged={isLogged} isOwner={isOwner} likes={likes}/>
+                <Reviews reviews={reviews} isLogged={isLogged} isOwner={isOwner} likes={likes} owner={username}/>
             </div>
         </>
     )

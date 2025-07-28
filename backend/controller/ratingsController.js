@@ -8,7 +8,8 @@ const newRating = async(req,res)=>{
             data:{
                 user_id:Number(userId),
                 race_id:Number(raceId),
-                rating:Number(rating)
+                rating:Number(rating),
+                date: new Date()
             }
         });
         return res.status(200).json({message:"Success"});
@@ -28,7 +29,8 @@ const updateRating = async(req,res)=>{
                 }               
             },
             data:{
-                rating:Number(rating)
+                rating:Number(rating),
+                date:new Date()
             }
         });
         return res.status(200).json({message:"Success"});

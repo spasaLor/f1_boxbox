@@ -54,4 +54,5 @@ app.get("/logout",(req,res)=>{
         res.status(200).json({redirect:"/"})
     })
 })
+app.get("/user/:username",controller.getUserData);
 app.listen(8080,()=>console.log("Running on http://localhost:8080"));

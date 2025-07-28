@@ -242,8 +242,49 @@ const getRacesByTrack = async(req,res)=>{
         return res.status(400).json({error:error.message});
     }
 }
+
+const getViewedFromUser = async(req,res)=>{
+    const {username} = req.params;
+    try {
+        const u = await prisma.users.findFirst({
+            where:{username}
+        })
+        let races = await prisma.races.findMany({
+            where:{
+                viewed:{
+                    some:{
+                        user_id:u.id
+                    }
+                }
+            },
+            include:{
+                ratings:{
+                    where:{user_id:u.id},
+                    select:{rating:true}
+                },
+                race_liked:{
+                    where:{user_id:u.id}
+                },
+                reviews:{
+                    where:{user_id:u.id}
+                }
+            }
+        });
+
+        races = races.map(race => ({
+            ...race,
+            race_liked: race.race_liked.length > 0,
+            reviews: race.reviews.length > 0,
+            ratings: race.ratings[0]?.rating ?? null
+        }));
+            
+        return res.status(200).json({races});
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
 module.exports={getAllRaces,getLatestRaces,getRacesByYear,getRaceByYear,addNewRace,editRaceData,
     deleteRace,searchRace,likedRace,removeLikedRace,getLikedRaces,viewedRace,removeViewedRace,getViewedRaces,
-    getRacesByTrack
+    getRacesByTrack,getViewedFromUser
 }
 

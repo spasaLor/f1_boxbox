@@ -7,7 +7,7 @@ export async function POST(req,{params}){
     const cookieStore = await cookies();
     const auth = cookieStore.get("connect.sid");
 
-    const res = await fetch(process.env.BACKEND_URL+"/reviews/lists/"+reviewId,{
+    const res = await fetch(process.env.BACKEND_URL+"/comments/reviews/"+reviewId,{
         method:'POST',
         headers:{
             'Cookie':'connect.sid='+auth.value,
@@ -27,7 +27,7 @@ export async function POST(req,{params}){
 export async function GET(req){
     const {reviewId} = await params;
 
-    const res = await fetch(process.env.BACKEND_URL+"/reviews/lists/"+reviewId);
+    const res = await fetch(process.env.BACKEND_URL+"/comments/reviews/"+reviewId);
     const json = await res.json()
     if(res.ok)
         return NextResponse.json(json,{status:200});

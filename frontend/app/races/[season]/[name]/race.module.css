@@ -92,6 +92,13 @@
   padding: 0.5em 1em;
   width: 100%;
 }
+
+.rating{
+  display: flex;
+  flex-direction: column;
+  gap:7px;
+}
+
 .icons{
   display: flex;
   justify-content: center;
@@ -157,7 +164,11 @@
 .not-logged>*{
   background-color: var(--color-border);
   padding: 0.5em 1em;
+  text-align: center;
+}
 
+.not-logged a{
+  color: var(--color-text-primary);
 }
 
 .numbers{

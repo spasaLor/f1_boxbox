@@ -37,6 +37,7 @@ model races {
   denomination String?      @db.VarChar(50)
   url          String?      @db.VarChar(20)
   date         DateTime?    @db.Date
+  fav_races    fav_races[]
   race_liked   race_liked[]
   ratings      ratings[]
   reviews      reviews[]
@@ -61,19 +62,22 @@ model reviews {
 }
 
 model users {
-  id             Int              @id @default(autoincrement())
-  username       String           @unique @db.VarChar(50)
-  email          String           @unique @db.VarChar(30)
-  password       String
-  comments       comments[]
-  likes          likes[]
-  lists          lists[]
-  lists_comments lists_comments[]
-  lists_likes    lists_likes[]
-  race_liked     race_liked[]
-  ratings        ratings[]
-  reviews        reviews[]
-  viewed         viewed[]
+  id                                      Int              @id @default(autoincrement())
+  username                                String           @unique @db.VarChar(50)
+  email                                   String           @unique @db.VarChar(30)
+  password                                String
+  comments                                comments[]
+  fav_races                               fav_races[]
+  following_following_follower_idTousers  following[]      @relation("following_follower_idTousers")
+  following_following_following_idTousers following[]      @relation("following_following_idTousers")
+  likes                                   likes[]
+  lists                                   lists[]
+  lists_comments                          lists_comments[]
+  lists_likes                             lists_likes[]
+  race_liked                              race_liked[]
+  ratings                                 ratings[]
+  reviews                                 reviews[]
+  viewed                                  viewed[]
 }
 
 model race_liked {
@@ -97,9 +101,10 @@ model viewed {
 model ratings {
   user_id Int
   race_id Int
-  rating  Float @db.Real
-  races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rating  Float     @db.Real
+  date    DateTime? @db.Date
+  races   races     @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([user_id, race_id])
 }
@@ -136,4 +141,22 @@ model lists_comments {
   published_at DateTime? @db.Date
   lists        lists     @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model following {
+  follower_id                         Int
+  following_id                        Int
+  users_following_follower_idTousers  users @relation("following_follower_idTousers", fields: [follower_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_following_following_idTousers users @relation("following_following_idTousers", fields: [following_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([follower_id, following_id])
+}
+
+model fav_races {
+  user_id Int
+  race_id Int
+  races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, race_id])
 }

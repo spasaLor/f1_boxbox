@@ -20,7 +20,7 @@ export default async function ListsPage({params}){
     });
     const json = await res.json();
     const lists = json.lists;
-    const metadata = await Promise.all(lists.map(async(item)=>await getMetadata(item.id)));
+    const metadata = await Promise.all(lists.map(async(item)=>await getMetadata(item.id,'list')));
 
     return(
         lists.length === 0 ?

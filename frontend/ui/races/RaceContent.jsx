@@ -93,7 +93,7 @@ export default async function RaceContent({data,logged}){
                                     <WatchedLiked raceId={data.id}/>
                                 </div>
                                 <div className={styles["rating"]}>
-                                    <p>Rate</p>
+                                    {data.rating >0 ? <p>Rated</p> : <p>Rate</p>}
                                     <RatingComponent id={data.id}/>
                                 </div>
                                 <div className={styles["review"]}>

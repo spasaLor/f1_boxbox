@@ -13,6 +13,7 @@ router.get("/liked",ensureAuthenticated,controller.getLikedRaces);
 router.delete("/liked",ensureAuthenticated,controller.removeLikedRace);
 router.post("/viewed",ensureAuthenticated,controller.viewedRace);
 router.get("/viewed",ensureAuthenticated,controller.getViewedRaces);
+router.get("/viewed/user/:username",controller.getViewedFromUser);
 router.delete("/viewed",ensureAuthenticated,controller.removeViewedRace);
 router.post("/track",controller.getRacesByTrack);
 router.get("/:year",controller.getRacesByYear);

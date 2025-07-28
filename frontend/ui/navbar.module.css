@@ -195,7 +195,7 @@
 }
 
 .error-box{
-    width: 570px;
+    width: 569px;
     height: 40px;
     position: absolute;
     top: 3%;
@@ -206,6 +206,7 @@
     transition: top 0.3s ease-in;
     z-index: 1;
     background-color: var(--color-warning);
+    opacity: 0;
 }
 
 .register-error-box{
@@ -222,6 +223,7 @@
 }
 
 .active{
+    opacity: 1;
     top:13%;
 }
 

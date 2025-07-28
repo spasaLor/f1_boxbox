@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Status from "./Status";
-import { Rating } from "@mui/material";
+import { colors, Rating } from "@mui/material";
 import { Heart, MessageSquare } from "lucide-react";
 import styles from "@/app/[username]/races/reviews/review.module.css";
+import Link from "next/link";
 
-export default function Reviews({likes,reviews,isLogged,isOwner}){
+export default function Reviews({likes,reviews,isLogged,isOwner,owner}){
     return(
         <>
         {reviews.map(item=>(
@@ -19,13 +20,13 @@ export default function Reviews({likes,reviews,isLogged,isOwner}){
                 </div>
                 <div className={styles.right}>
                     <div className={styles.top}>
-                        <h2>{item.races.denomination}</h2>
+                        <Link href={"/"+owner+"/race/"+item.races.url+"-"+item.races.season}><h2>{item.races.denomination}</h2></Link>
                         <i>{item.races.season}</i>
                     </div>
                     
                     <div className={styles.mid}>
                         <Rating name='read-only' readOnly value={item.rating} emptyIcon={<span/>}/>
-                        {item.liked ? <Heart style={{fill:'orange'}}/> : null}
+                        {item.liked ? <Heart style={{fill:'orange', border:'orange'}} strokeWidth={1}/> : null}
                         <p>Reviewed {new Date(item.updated_at).toLocaleDateString()}</p>
                         {item.comments.length>0 ? <p><MessageSquare/> {item.comments.length}</p> : null}
                     </div>

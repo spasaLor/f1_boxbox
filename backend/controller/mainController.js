@@ -44,4 +44,68 @@ const registerUser = [registerValidation,async(req,res)=>{
     res.status(200).json({redirect: "/"});
 }]
 
-module.exports={registerUser}
+const getUserData = async(req,res)=>{
+    const {username} = req.params;
+    try {
+        const user = await prisma.users.findFirst({
+            where:{username}
+        });
+        const [viewedCount,followingCount,followerCount,latestRatings,reviews,favRaces] = await Promise.all([
+            prisma.viewed.count({where:{user_id:user.id}}),
+            prisma.following.count({ where: { follower_id: user.id } }),
+            prisma.following.count({ where: { following_id: user.id } }),
+            prisma.ratings.findMany({where:{user_id:user.id},take:5,orderBy:{date:'asc'},include:{races:true}}),
+            prisma.reviews.findMany({where:{user_id:user.id},take:5,orderBy:{updated_at:'asc'},include:{races:true}}),
+            prisma.fav_races.findMany({where:{user_id:user.id},include:{races:true}})
+        ]);
+        const favoriteRaces = favRaces.map(item=>item.races);
+        
+        const latestActivity=await Promise.all(latestRatings.map(async (item)=>{
+            const like = await prisma.race_liked.findFirst({
+                where:{                    
+                    AND:[
+                        {race_id:item.race_id},{user_id:user.id}
+                    ]
+                }
+            });
+            return {...item,
+                isLiked:!!like}
+        }))
+        const latestReviews=await Promise.all(reviews.map(async (item)=>{
+            const like = await prisma.race_liked.findFirst({
+                where:{                    
+                    AND:[
+                        {race_id:item.race_id},{user_id:user.id}
+                    ]
+                }
+            });
+            const rating = await prisma.ratings.findFirst({
+                where:{
+                    user_id:user.id,
+                    race_id:item.race_id,
+                },
+                select:{rating:true}
+            });
+            return {...item,
+                isLiked:!!like,
+                rating: rating.rating
+            }
+        }))
+        const data = {
+            viewed:viewedCount,
+            following:followingCount,
+            followers:followerCount,
+            latestActivity,
+            latestReviews,
+            favoriteRaces
+        }        
+        return res.status(200).json(data);
+    
+    } catch (error) {
+        return res.status(400).json({message:error.message});
+    }
+    
+
+}
+
+module.exports={registerUser,getUserData}

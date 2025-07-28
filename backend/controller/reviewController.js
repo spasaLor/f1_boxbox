@@ -15,12 +15,36 @@ const getAllReviews = async(req,res)=>{
     }
 }
 const getReview = async(req,res)=>{
-    const {id} = req.params;
+    const {username} = req.params;
+    const {race_name,season} = req.query;
+
     try {    
-        const review = await prisma.reviews.findUnique({
-            where:{id:Number(id)}
+        const u = await prisma.users.findFirst({
+            where:{
+                username:username
+            }
         });
-        return res.status(200).json({review})
+        const r = await prisma.races.findFirst({
+            where:{
+                url:race_name,
+                season:Number(season)
+            },
+            include:{ratings:true,race_liked:true}
+        })
+        const review = await prisma.reviews.findUnique({
+            where:{user_id_race_id: {user_id:u.id,race_id:r.id}},
+            include:{races:true}
+        });
+
+        const ratingByUser = r.ratings.find(rt => rt.user_id === u.id);
+        const isLikedByUser = r.race_liked.some(like => like.user_id === u.id);
+
+        const newReview = {
+            ...review,
+            rating:ratingByUser.rating,
+            is_liked:isLikedByUser
+        }
+        return res.status(200).json({review:newReview})
     } catch (error) {
         return res.status(500).json({message:error.message})
     }
@@ -215,4 +239,20 @@ const removeLike = async(req,res)=>{
     }
 }
 
-module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}
+const getLikes = async(req,res)=>{
+    const {id} = req.params;
+    try {
+        const likes = await prisma.likes.aggregate({
+            _count:{user_id:true},
+            where:{
+                id:Number(id)
+            }
+        });
+        return res.status(200).json({likes:likes._count.user_id})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+
+}
+
+module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,getLikes,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}

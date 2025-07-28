@@ -10,7 +10,7 @@ export default async function LatestRaces(){
         <div className={styles["races-cards"]}>
             {races.map(item=>(
                 <div className={styles.card} key={item.id}>
-                    <Link href={"/races/"+item.season+"/"+item.round}>
+                    <Link href={"/races/"+item.season+"/"+item.url}>
                         <Image src={item.cover} alt="race_cover" width={200} height={300}></Image>
                     </Link>
                 </div>

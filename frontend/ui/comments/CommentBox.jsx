@@ -6,6 +6,7 @@ import styles from "@/app/[username]/lists/list.module.css";
 export default function CommentBox({targetType,itemId}){
     const textRef = useRef(null);
     const nav = useRouter();
+
     const sendComment = async()=>{
         const content = textRef.current.value;
         let res;
@@ -15,7 +16,8 @@ export default function CommentBox({targetType,itemId}){
                 headers:{'content-type':'application/json'},
                 body: JSON.stringify({content})
             })
-        }else{
+        }
+        else{
             res = await fetch("/api/comments/reviews/"+itemId,{
                 method:'POST',
                 headers:{'content-type':'application/json'},

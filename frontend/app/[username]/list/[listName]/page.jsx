@@ -27,7 +27,7 @@ export default async function List({params}){
     const isLogged = !!auth;
     const isOwner = user?.value===username;
 
-    const{likes,comments}= await getMetadata(id);
+    const{likes,comments}= await getMetadata(id,'list');
 
     return(
         <main className={styles.main}>
