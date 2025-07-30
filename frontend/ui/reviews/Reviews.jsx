@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Status from "./Status";
-import { colors, Rating } from "@mui/material";
-import { Heart, MessageSquare } from "lucide-react";
+import { Rating } from "@mui/material";
+import { Heart, MessageSquare, Star} from "lucide-react";
 import styles from "@/app/[username]/races/reviews/review.module.css";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export default function Reviews({likes,reviews,isLogged,isOwner,owner}){
                     </div>
                     
                     <div className={styles.mid}>
-                        <Rating name='read-only' readOnly value={item.rating} emptyIcon={<span/>}/>
+                        <Rating name='read-only' readOnly value={item.rating} precision={0.5} emptyIcon={<Star strokeWidth={1} color="var(--color-border)" fontSize='inherit'/>}/>
                         {item.liked ? <Heart style={{fill:'orange', border:'orange'}} strokeWidth={1}/> : null}
                         <p>Reviewed {new Date(item.updated_at).toLocaleDateString()}</p>
                         {item.comments.length>0 ? <p><MessageSquare/> {item.comments.length}</p> : null}

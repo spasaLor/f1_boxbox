@@ -1,12 +1,26 @@
-.title{
+.main{
+    max-width:1100px;
+    margin: 1em auto;
+    display: flex;
+    flex-direction: column;
+    gap:2em;
+    min-height: 90vh;
+}
+
+.name{
     width: 100%;
-    border-bottom: 1px solid var(--color-border);
-    padding: 1em 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .review-box{
     display: flex;
     flex-direction: column;
     gap:1em;
+    margin-top: -2em;
 }
 .review-item{
     display: flex;
@@ -43,9 +57,11 @@
 }
 
 .content{
-    max-width: 100%;
-    max-height: 300px;
+    max-width: 900px;
     text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
     color: var(--color-text-secondary);
 }
 

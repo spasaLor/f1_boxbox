@@ -4,8 +4,9 @@ import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import styles from './lists.module.css';
 import { LinearProgress } from "@mui/material";
+import Link from "next/link";
 
-export default function LoggedSidebar({likes,initialLiked,list}){
+export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,listName}){
     const [isLiked,setIsLiked]=useState(initialLiked);
     const [viewed,setViewed] = useState([]);
     const cookieStore = Cookies;
@@ -60,11 +61,15 @@ export default function LoggedSidebar({likes,initialLiked,list}){
     return(
         <div className={styles.sidebar}>
             <div className={styles.first}>
-                <Heart fill="var(--color-text-secondary)" size={16}/> <p onClick={toggleLike}>Like this list?</p> <p>{likes}</p>
+                <Heart fill="var(--color-text-secondary)" size={16}/> {!isOwner && <p onClick={toggleLike}>Like this list?</p>}
+                <p>{isOwner ? (likes>0 ? likes : "No likes yet" ): null}</p>
             </div>
+            {isOwner && <div className="edit">
+                <Link href={"/"+username+"/lists/edit/"+listName}>Edit or delete this list...</Link>
+            </div>}
             <div className={styles.share}>
                 <p>Share</p>
-            </div>
+            </div>            
             <div className={styles.percentage}>
                 <div className={styles.first}>
                     <div className="">

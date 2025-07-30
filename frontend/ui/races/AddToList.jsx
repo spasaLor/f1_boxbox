@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import styles from "./review.module.css";
 import { useRouter } from "next/navigation";
 import listStyles from "../lists/lists.module.css";
+import Cookies from "js-cookie";
 
 
 export default function AddToList({lists,item}){
     const [open,setOpen] = useState(false);
     const [viewList,setViewList] = useState('public');
-    const [username,setUsername] = useState("");
+    const username = Cookies.get('username');
     const publicLists = lists.filter(item=>item.privacy === 'public');
     const privateLists = lists.filter(item=>item.privacy === 'private');
     const [selected, setSelected] = useState([]);

@@ -66,6 +66,11 @@ model users {
   username                                String           @unique @db.VarChar(50)
   email                                   String           @unique @db.VarChar(30)
   password                                String
+  name                                    String?
+  surname                                 String?
+  location                                String?
+  website                                 String?
+  bio                                     String?
   comments                                comments[]
   fav_races                               fav_races[]
   following_following_follower_idTousers  following[]      @relation("following_follower_idTousers")

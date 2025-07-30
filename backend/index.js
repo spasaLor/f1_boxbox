@@ -55,4 +55,6 @@ app.get("/logout",(req,res)=>{
     })
 })
 app.get("/user/:username",controller.getUserData);
+app.get("/user",ensureAuthenticated,controller.getUserInfo);
+app.put("/user/edit",ensureAuthenticated,controller.editUser)
 app.listen(8080,()=>console.log("Running on http://localhost:8080"));

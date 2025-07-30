@@ -18,9 +18,9 @@ export default function NotLoggedSidebar({username,likes}){
                 <div className={styles.second}>
                     <p>Sign in to create lists</p>
                 </div>
-                <div className={styles.likes}>
+                {likes >0 && <div className={styles.likes}>
                     <p>{likes} {likes === 1 ? 'like' : 'likes'}</p>
-                </div>
+                </div>}
                 <div className={styles.share}>
                     <p>Share</p>
                 </div>

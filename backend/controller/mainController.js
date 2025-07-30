@@ -44,6 +44,29 @@ const registerUser = [registerValidation,async(req,res)=>{
     res.status(200).json({redirect: "/"});
 }]
 
+
+const editUser = async(req,res)=>{
+    const data = req.body;
+    const userId = req.user.id;
+
+    try {
+        await prisma.users.update({
+            where:{id:Number(userId)},
+            data:{
+                name:data.name,
+                surname:data.surname,
+                location:data.location,
+                website:data.website,
+                bio:data.bio
+            }
+        });
+        return res.status(200).json({message:"ok"})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+
+    }
+}
+
 const getUserData = async(req,res)=>{
     const {username} = req.params;
     try {
@@ -92,6 +115,7 @@ const getUserData = async(req,res)=>{
             }
         }))
         const data = {
+            user:[user.bio,user.location,user.website],
             viewed:viewedCount,
             following:followingCount,
             followers:followerCount,
@@ -104,8 +128,13 @@ const getUserData = async(req,res)=>{
     } catch (error) {
         return res.status(400).json({message:error.message});
     }
-    
-
 }
 
-module.exports={registerUser,getUserData}
+const getUserInfo = async(req,res)=>{
+    const userId = req.user.id;
+    const user = await prisma.users.findFirst({
+        where:{id:Number(userId)}
+    });
+    return res.status(200).json({user});
+}
+module.exports={registerUser,getUserData,editUser,getUserInfo}

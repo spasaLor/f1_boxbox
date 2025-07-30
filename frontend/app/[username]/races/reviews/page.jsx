@@ -1,6 +1,7 @@
 import Reviews from "@/ui/reviews/Reviews";
 import { cookies } from "next/headers"
 import styles from "./review.module.css";
+import NavigationBar from "@/ui/profile/NavigationBar";
 
 export default async function Page({params}){
     const {username} = await params;
@@ -35,13 +36,12 @@ export default async function Page({params}){
     }
     
     return(
-        <>
-            <div className={styles.title}>
-                <h2>Reviews</h2>
-            </div>
+        <main className={styles.main}>
+            <NavigationBar main={false} username={username}/>
+            <p className={styles.name}>Reviews</p>
             <div className={styles["review-box"]}>
                 <Reviews reviews={reviews} isLogged={isLogged} isOwner={isOwner} likes={likes} owner={username}/>
             </div>
-        </>
+        </main>
     )
 }

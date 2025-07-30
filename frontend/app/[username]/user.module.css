@@ -1,6 +1,6 @@
-.main{
+.main, .profile-container{
     max-width:1100px;
-    margin: 0 auto;
+    margin: 1em auto;
     display: flex;
     flex-direction: column;
     gap:2em;
@@ -21,6 +21,23 @@
     align-items: center;
 }
 
+.left{
+    flex-direction: column;
+    gap:1em;
+    padding-left: 2em;
+}
+
+.top-left{
+    display: flex;
+    align-items: center;
+    gap:1em;
+    width: 100%;
+}
+
+.right{
+    gap:unset;
+}
+
 .right>.info-item{
     text-align: center;
     text-transform: uppercase;
@@ -39,7 +56,7 @@
     color: var(--color-text-secondary);
 }
 
-.nav{
+.nav, .not-main{
     width: 100%;
     padding: 1em 0;
     border: 1px solid var(--color-border);
@@ -58,7 +75,7 @@
     width: 100%;
     height: 2px;
     position: absolute;
-    bottom: -1em;
+    bottom: -.8em;
     left: 0;
     background-color: var(--color-error);
 }
@@ -90,7 +107,7 @@
 
 .fav-container, .recent-container{
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(5,1fr);
     width: 100%;
     gap:10px;
     padding: 2em 0;
@@ -204,4 +221,113 @@
 }
 .review-item img:hover{
     border: 1px solid var(--color-text-primary);
+}
+.recent-reviews>.title{
+    display: flex;
+    justify-content: space-between;
+}
+.recent-reviews>.title a:hover{
+    color: var(--color-text-primary);
+}
+.not-main{
+    justify-content: space-between;
+    padding: 0.7em 2em;
+    background-color: var(--color-surface);
+    margin: 2em 0;
+}
+
+.not-main>a{
+    font-weight:bold;
+    color: var(--color-text-primary);
+}
+
+.not-main>div{
+    display: flex;
+    gap:10px;
+}
+
+.name{
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.races-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(90px,120px));
+    row-gap: 35px;
+}
+
+.race-item{
+    height: 150px;
+}
+
+.race-item>.img{
+    height: 90%;
+    display: flex;
+    justify-content: center;
+}
+.img img{
+    height: 100%;
+    width: auto;
+    border: 1px solid transparent;
+}
+
+.race-item>.icons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:3px;
+    margin-top: 3px;
+}
+.race-item>.icons>div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.img img:hover{
+    border: 1px solid var(--color-text-primary);
+}
+
+.nav a:hover, .not-main a:hover{
+    color: var(--color-accent-light);
+}
+
+.fav-races a{
+    color:var(--color-accent);
+}
+
+.fav-races a:hover{
+    color:var(--color-accent-light);
+}
+.user-info{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+}
+.user-info>.inner{
+    display: flex;
+    gap:2em;
+    align-items: center;
+}
+.inner>*{
+    display: flex;
+    align-items: center;
+    gap:10px;
+    color: var(--color-text-secondary);
+    font-weight: 300;
+}
+.inner:hover a{
+    color: var(--color-accent-light);
+}
+.inner:hover p{
+    color: var(--color-text-primary);
 }

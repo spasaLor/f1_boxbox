@@ -142,10 +142,6 @@ button:hover{
     justify-content: center;
 }
 
-.first, .share{
-    gap:10px;
-}
-
 .percentage{
     display: flex;
     flex-direction: column;
@@ -157,15 +153,19 @@ button:hover{
 }
 
 .percentage>.first{
+    display: flex;
     justify-content: space-between;
     padding: 0.5em 1em;
+    width:100%;
 }
 
 .percentage>.first h2{
     font-size: 1.9rem;
     font-weight: 300;
 }
-
+.first, .share{
+    gap:10px;
+}
 .first a{
     color:var(--color-text-primary)
 }
@@ -201,10 +201,10 @@ button:hover{
 .item img{
     height: 90%;
     border-radius: var(--border-radius);
-    border: 1px solid var(--color-border);
+    border: 3px solid transparent;
 }
 
 .item:hover img{
-    border: 1px solid var(--color-accent);
+    border: 3px solid var(--color-accent);
 }
 

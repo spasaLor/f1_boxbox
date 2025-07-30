@@ -25,7 +25,6 @@ export default function Filters({setRaces,year,setYear,races}){
         else{
             setRaces(allRacesRef.current);
         }              
-        console.log(races);
     }
 
     return(

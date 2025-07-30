@@ -194,6 +194,10 @@
     transition: background-color 0.3s ease-in;
 }
 
+.list-item:last-child{
+    border-bottom: none;
+}
+
 .list-item:hover{
     background-color: var(--color-surface);
 }
@@ -294,12 +298,13 @@
 
 .main{
     display: flex;
-    gap:1em;
-    width: 100%;
+    max-width:1100px;
+    margin: 3em auto;
+    gap:2em;
+    min-height: 90vh;
 }
 
 .main>.left{
-    width: 60%;
     display: flex;
     flex-direction: column;
     gap:1em;
@@ -315,6 +320,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    margin: 3em 0;
 }
 
 .comments-container>p{
@@ -393,4 +399,29 @@
 }
 .active button:hover{
     background-color: var(--color-accent-light);
+}
+
+.side-container{
+    width: 30%;
+}
+
+.name{
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-text-secondary);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.name a{
+    color: var(--color-text-primary);
+}
+
+.description p{
+    width: 700px;
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

@@ -111,7 +111,7 @@ const searchRace = async(req,res)=>{
             where:{
                 OR:[
                     {circuit_name:{contains:q, mode:'insensitive'}},
-                    {location: {contains:q, mode:'insensitive'}},
+                    {url: {contains:q, mode:'insensitive'}},
                 ]
             }
         });
@@ -230,16 +230,37 @@ const getViewedRaces=async(req,res)=>{
         return res.status(500).json({error:error.message});
     }
 }
-const getRacesByTrack = async(req,res)=>{
-    const {track}=req.body;
+
+const addFavRace = async(req,res)=>{
+    const {raceId} = req.body;
+    const userId = req.user.id;
     try {
-        const races = await prisma.races.findMany({
-            where:{circuit_name:{contains:track, mode:'insensitive'}}
+        await prisma.fav_races.create({
+            data:{
+                user_id:Number(userId),
+                race_id:Number(raceId)
+            }
         });
-        return res.status(200).json({races});
+        return res.status(200).json({message:"Ok"})
     } catch (error) {
-        console.log(error);
-        return res.status(400).json({error:error.message});
+        
+        return res.status(400).json({message:error.message})
+    }
+}
+const deleteFavRace = async(req,res)=>{
+    const {raceId} = req.body;
+    const userId = req.user.id;
+    try {
+        await prisma.fav_races.delete({
+            where:{
+                AND:[{user_id:Number(userId)},
+                    {race_id:Number(raceId)}
+                ]                
+            }
+        });
+        return res.status(200).json({message:"Ok"})
+    } catch (error) {
+        return res.status(400).json({message:error.message})
     }
 }
 
@@ -285,6 +306,6 @@ const getViewedFromUser = async(req,res)=>{
 }
 module.exports={getAllRaces,getLatestRaces,getRacesByYear,getRaceByYear,addNewRace,editRaceData,
     deleteRace,searchRace,likedRace,removeLikedRace,getLikedRaces,viewedRace,removeViewedRace,getViewedRaces,
-    getRacesByTrack,getViewedFromUser
+    addFavRace,getViewedFromUser,deleteFavRace,
 }
 

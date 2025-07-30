@@ -24,7 +24,7 @@ export default async function Page({params}){
     const {likes,comments} = await getMetadata(jsonRev.review.id,'review');
 
     return(
-        <>
+        <main className={styles.main}>
             <div className={styles["top-part"]}>
                 <RaceReview isLogged={isLogged} data={jsonRev.review} likes={likes} username={username} lists={jsonList.lists}/>
             </div>
@@ -32,6 +32,6 @@ export default async function Page({params}){
                 <p>{comments.length} Comments</p>
                 <Comments comments={comments} isLogged={isLogged} targetId={jsonRev.review.id} targetType={'review'} />
             </div>
-        </>
+        </main>
     )
 }

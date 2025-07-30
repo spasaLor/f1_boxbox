@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SignInForm from "./forms/SignIn";
 import SignUpForm from "./forms/SignUp";
 import styles from "./navbar.module.css";
@@ -33,7 +33,7 @@ export default function Navbar({username}){
                     {
                         open !== 'signin' && islogged!=="" && 
                         <>
-                            <button type="button"> {islogged}</button>
+                            <Link href={"/"+username}>{username}</Link>
                             <CloudLightningIcon/>
                             <Link href={"/"+username+"/lists"}>Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
