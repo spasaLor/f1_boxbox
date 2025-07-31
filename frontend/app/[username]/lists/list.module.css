@@ -303,7 +303,14 @@
     gap:2em;
     min-height: 90vh;
 }
-
+.mainLists{
+    display: flex;
+    flex-direction: column;
+    max-width:1100px;
+    margin: 3em auto;
+    gap:2em;
+    min-height: 90vh;
+}
 .main>.left{
     display: flex;
     flex-direction: column;
@@ -424,4 +431,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.pop-container{
+    width: 100%;
+    display: flex;
+    gap:2em;
+    justify-content: space-between;
+}
+
+.pop-item>.bottom{
+    display: flex;
+    gap:10px;
 }

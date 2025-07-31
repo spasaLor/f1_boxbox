@@ -27,8 +27,11 @@ export default function SignUpForm({setOpen}){
         const json = await res.json();
         if(!res.ok)
             setError(json.errors);
-        else
-            nav.push(json.redirect);
+        else{
+            setOpen("");
+            nav.push("/");
+        }
+            
     }
     return(
         <>

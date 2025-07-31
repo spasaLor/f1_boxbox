@@ -11,6 +11,7 @@ export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,
     const [viewed,setViewed] = useState([]);
     const cookieStore = Cookies;
     const auth = cookieStore.get('connect.sid');
+    console.log(isLiked);
 
     useEffect(()=>{
         const getViewed = async()=>{
@@ -61,7 +62,7 @@ export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,
     return(
         <div className={styles.sidebar}>
             <div className={styles.first}>
-                <Heart fill="var(--color-text-secondary)" size={16}/> {!isOwner && <p onClick={toggleLike}>Like this list?</p>}
+                <Heart fill={ isLiked ? "orange" : "var(--color-text-secondary)"} size={16} color={ isLiked ? "orange" : "var(--color-text-secondary)"}/> {!isOwner && <p style={{cursor:'pointer'}} onClick={toggleLike}>{ isLiked ? 'Liked' : 'Like this list?'}</p>}
                 <p>{isOwner ? (likes>0 ? likes : "No likes yet" ): null}</p>
             </div>
             {isOwner && <div className="edit">

@@ -23,7 +23,7 @@ export default async function Settings(){
                 </div>
                 <div className={styles.right}>
                     <p>Favorite Races</p>
-                    <FavoriteRacesSelector/>
+                    <FavoriteRacesSelector initialFavorites={json.races}/>
                 </div>
             </div>
         </main>

@@ -130,10 +130,11 @@ model lists {
 }
 
 model lists_likes {
-  user_id Int
-  list_id Int
-  lists   lists @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id   Int
+  list_id   Int
+  timestamp DateTime? @db.Date
+  lists     lists     @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([user_id, list_id])
 }

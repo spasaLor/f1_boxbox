@@ -9,25 +9,29 @@ import Link from "next/link";
 
 export default async function List({params}){
     const {username,listName} = await params;
-    const id = listName.split("-")[0];    
-    const listPromise = fetch(process.env.BACKEND_URL+"/lists/"+Number(id),{
-        cache:'no-store'
-    });
-    const islikedPromise = fetch(process.env.BACKEND_URL+"/lists/like/user/"+Number(id),{
-        cache:'no-store'
-    });
-    const [listRes, isLikedRes] = await Promise.all([listPromise, islikedPromise]);
-    const jsonList = await listRes.json();
-    const list = jsonList.list;
-    const jsonLiked = await isLikedRes.json();
-    const isLiked = jsonLiked.liked;
-
     const cookieStore = await cookies();
     const auth= cookieStore.get('connect.sid');
     const user= cookieStore.get('username');
     const isLogged = !!auth;
     const isOwner = user?.value===username;
-
+    const id = listName.split("-")[0];    
+    const res = await fetch(process.env.BACKEND_URL+"/lists/"+Number(id),{
+        cache:'no-store'
+    });
+    const jsonList = await res.json();
+    const list = jsonList.list;
+    let isLiked=false;
+    
+    if(isLogged){
+        const res = await fetch(process.env.BACKEND_URL+"/lists/like/user/"+Number(id),{
+            headers:{'Cookie':'connect.sid='+auth.value},
+            cache:'no-store'
+        });
+        
+        const jsonLiked = await res.json();
+        isLiked = jsonLiked.liked;
+    }  
+    
     const{likes,comments}= await getMetadata(id,'list');
 
     return(

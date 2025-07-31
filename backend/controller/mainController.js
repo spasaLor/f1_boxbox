@@ -133,8 +133,14 @@ const getUserData = async(req,res)=>{
 const getUserInfo = async(req,res)=>{
     const userId = req.user.id;
     const user = await prisma.users.findFirst({
-        where:{id:Number(userId)}
+        where:{id:Number(userId)},
+        select:{name:true,surname:true,bio:true,location:true,website:true,email:true}
     });
-    return res.status(200).json({user});
+    const favRaces = await prisma.fav_races.findMany({
+        where:{user_id:Number(userId)},
+        include:{races:true},
+    })
+    const races = favRaces.map(item=>({id:item.races.id, cover:item.races.cover}));
+    return res.status(200).json({user,races});
 }
 module.exports={registerUser,getUserData,editUser,getUserInfo}

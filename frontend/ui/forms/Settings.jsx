@@ -21,8 +21,9 @@ export default function SettingsForm({data=null}){
                 location:formData.get("location"), website:formData.get("web"), bio:formData.get("bio")
             })
         });
-        if(res.ok)
+        if(res.ok){
             nav.push("/"+username);
+        }            
     }
 
     return(

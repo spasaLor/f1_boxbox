@@ -5,7 +5,7 @@ import FavRaces from "@/ui/profile/FavoriteRaces";
 import RecentRatings from "@/ui/profile/RecentRatings";
 import RecentReviews from "@/ui/profile/RecentReviews";
 import Link from "next/link";
-import { Earth, EarthIcon, Pin } from "lucide-react";
+import { EarthIcon, Pin } from "lucide-react";
 
 export default async function Page({params}){
     const cookieStore = await cookies();

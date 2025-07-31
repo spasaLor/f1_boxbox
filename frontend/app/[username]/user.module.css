@@ -174,19 +174,20 @@
 .review-item>.right{
    align-items: unset;
    flex-direction: column;
+   gap:10px;
 }
 
 .review-item:last-child{
     border-bottom: none;
 }
 
-.name{
+.raceName{
     display: flex;
     gap:10px;
     align-items: flex-end;
 }
 
-.name p{
+.raceName p{
     margin-bottom: 3px;
     font-weight: 300;
     color: var(--color-text-secondary);

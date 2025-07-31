@@ -253,9 +253,7 @@ const deleteFavRace = async(req,res)=>{
     try {
         await prisma.fav_races.delete({
             where:{
-                AND:[{user_id:Number(userId)},
-                    {race_id:Number(raceId)}
-                ]                
+                user_id_race_id:{user_id:Number(userId),race_id:Number(raceId)}             
             }
         });
         return res.status(200).json({message:"Ok"})

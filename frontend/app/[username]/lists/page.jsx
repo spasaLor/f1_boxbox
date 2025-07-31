@@ -23,7 +23,7 @@ export default async function ListsPage({params}){
     const metadata = await Promise.all(lists.map(async(item)=>await getMetadata(item.id,'list')));
 
     return(
-        <main className={styles.main}>
+        <main className={styles.mainLists}>
             <NavigationBar main={false} username={username}/>
             {lists.length === 0 ?
             <div className={styles.top}>

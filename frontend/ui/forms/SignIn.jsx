@@ -14,21 +14,20 @@ export default function SignInForm({setOpen}){
         const formData = new FormData(formRef.current);
         const res = await fetch("/api/login",{method:'POST',headers:{'Content-type':'application/json'},
             body: JSON.stringify({username:formData.get("username"),password:formData.get("password")}),
-            credentials:'include'
         });
         const json = await res.json();
         if(!res.ok)
             setError(json.error);
         else{
             setOpen('');
-            nav.push(json.redirect);
+            nav.push("/");
         }            
     }
     
     return(
         <>
             <div className={styles["login-form-container"]}>
-                <form action="" ref={formRef} onSubmit={handleSubmit}>
+                <form ref={formRef} onSubmit={handleSubmit}>
                     <div className={styles["form-item"]} onClick={()=>setOpen('')}>
                         <p>X</p>
                     </div>

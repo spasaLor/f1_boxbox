@@ -13,7 +13,7 @@ export default function RecentReviews({reviews,username}){
                        <Link href={"/races/"+item.races.season+"/"+item.races.url}><Image src={item.races.cover} alt="race_cover" width={80} height={130}/></Link>
                     </div>
                     <div className={styles.right}>
-                        <div className={styles.name}>
+                        <div className={styles.raceName}>
                             <Link href={"/"+username+"/race/"+item.races.url+"-"+item.races.season}><h2>{item.races.denomination}</h2></Link>
                             <p>{item.races.season}</p>
                         </div>

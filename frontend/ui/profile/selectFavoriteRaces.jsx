@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useDebouncedCallback } from 'use-debounce';
 import styles from "@/app/settings/settings.module.css";
 
-export default function FavoriteRacesSelector(){
+export default function FavoriteRacesSelector({initialFavorites}){
     const [open,setOpen]=useState(false);
     const [results,setResults]=useState([]);
-    const [favRaces,setFavRaces]=useState([]);
+    const [favRaces,setFavRaces]=useState(initialFavorites);
     const [error,setError]=useState("");
 
     const search = useDebouncedCallback(async (e)=>{
