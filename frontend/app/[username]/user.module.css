@@ -89,6 +89,7 @@
     font-weight: bold;
     font-size: 0.8rem;
     margin-left: 10px;
+    cursor: pointer;
 }
 .fav-races{
     display: flex;
@@ -326,9 +327,24 @@
     color: var(--color-text-secondary);
     font-weight: 300;
 }
-.inner:hover a{
+
+.inner:hover p, .inner:hover a{
+    color: var(--color-text-primary);
+}
+
+.inner a:hover{
     color: var(--color-accent-light);
 }
-.inner:hover p{
-    color: var(--color-text-primary);
+
+.liked-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,110px);
+}
+
+.liked-container>.race-item{
+    height: 170px;
+}
+.liked-container>.race-item>.img{
+    width: 100%;
 }

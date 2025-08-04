@@ -213,7 +213,8 @@ const newReviewLike = async(req,res)=>{
         await prisma.likes.create({
             data:{
                 user_id:Number(userId),
-                liked_review:Number(id)
+                liked_review:Number(id),
+                timestamp: new Date()
             },
         });
         return res.status(200).json({message:"ok"});
@@ -245,7 +246,7 @@ const getLikes = async(req,res)=>{
         const likes = await prisma.likes.aggregate({
             _count:{user_id:true},
             where:{
-                id:Number(id)
+                liked_review:Number(id)
             }
         });
         return res.status(200).json({likes:likes._count.user_id})

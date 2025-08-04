@@ -252,9 +252,9 @@ const getPopularLists = async (req, res) => {
 
         const comm = await prisma.lists_comments.groupBy({
             by: ['list_id'],
-            where: { published_at: { gte: oneWeekAgo } },
-            _count: { id: true },
-            orderBy: { _count: { id: 'desc' } },
+            where: { published_at: {gte:oneWeekAgo}},
+            _count: {id:true},
+            orderBy: {_count:{ id: 'desc' }},
         });
 
         const popularIds = comm.map(item => item.list_id);
@@ -306,9 +306,35 @@ const getRecentlyLiked = async(req,res)=>{
     const lists = await prisma.lists_likes.findMany({
         orderBy:{timestamp:'desc'},
         take:5,
-        include:{lists:true}
-    })
+        include:{lists:true,users:true},
+    });
 
-    return res.json({lists});
+    const recentlyLiked = await Promise.all(
+        lists.map(async(item)=>{
+            const racesData = await prisma.races.findMany({
+                where: {
+                    id: { in: item.lists.races }
+                },
+                select: {
+                    id: true,
+                    cover: true,
+                }
+            });
+            const user=await prisma.users.findFirst({
+                where:{id:item.lists.user_id},
+                select:{username:true}
+            });
+
+            return{
+                id:item.list_id,
+                name:item.lists.name,
+                desc:item.lists.description,
+                races:racesData,
+                user:user.username
+            }
+        })
+    )
+
+    return res.json(recentlyLiked);
 }
 module.exports={newList,getAllLists,getRecentlyLiked,getList,deleteList,getListByName,editList,getAllListsFromUser,addRace,likeList,getLikes,deleteLike,getIsLiked,getPopularLists}

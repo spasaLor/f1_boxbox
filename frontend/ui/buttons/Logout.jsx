@@ -9,7 +9,7 @@ export default function Logout({setIsLogged}){
         const res = await fetch("/api/logout");
         const json=await res.json();
         cookieStore.remove('username');
-        setIsLogged('');
+        setIsLogged(false);
         nav.push(json.redirect);
     }
     return(

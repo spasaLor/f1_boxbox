@@ -13,6 +13,10 @@ const nextConfig = {
             {
                 protocol:"https",
                 hostname:"www.progcovers.com"
+            },
+            {
+                protocol:"https",
+                hostname:"res.cloudinary.com"
             }
         ]
     }

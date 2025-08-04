@@ -6,7 +6,8 @@ const getAllCommentsFromReview = async(req,res)=>{
     const {reviewId} = req.params;
     try {
         const comments = await prisma.comments.findMany({
-            where:{post_id:Number(reviewId)}
+            where:{post_id:Number(reviewId)},
+            include:{users:true}
         });
         return res.status(200).json({comments});
     } catch (error) {

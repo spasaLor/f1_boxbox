@@ -1,13 +1,13 @@
 'use client';
 import { useRef, useState } from "react";
 import SubmitButton from "../buttons/SubmitButton";
-import { useRouter } from "next/navigation";
 import styles from "../navbar.module.css";
+import { useRouter } from "next/navigation";
 
-export default function SignInForm({setOpen}){
+export default function SignInForm({setOpen,onLoginSuccess}){
     const formRef=useRef(null);
     const [error,setError] = useState();
-    const nav = useRouter()
+    const nav=useRouter();
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -20,7 +20,9 @@ export default function SignInForm({setOpen}){
             setError(json.error);
         else{
             setOpen('');
-            nav.push("/");
+            nav.refresh();
+            if(onLoginSuccess)
+                onLoginSuccess()
         }            
     }
     

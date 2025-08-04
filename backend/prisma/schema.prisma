@@ -9,18 +9,20 @@ datasource db {
 }
 
 model comments {
-  id      Int      @id @default(autoincrement())
-  user_id Int?
-  post_id Int?
-  content String
-  reviews reviews? @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int      @id @default(autoincrement())
+  user_id      Int?
+  post_id      Int?
+  content      String
+  published_at DateTime @db.Timestamp(6)
+  reviews      reviews? @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users        users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model likes {
   id           Int      @id @default(autoincrement())
   user_id      Int?
   liked_review Int?
+  timestamp    DateTime @db.Timestamp(6)
   reviews      reviews? @relation(fields: [liked_review], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users        users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
@@ -51,8 +53,8 @@ model reviews {
   user_id    Int?
   race_id    Int?
   content    String
-  created_at DateTime   @db.Date
-  updated_at DateTime   @db.Date
+  created_at DateTime   @db.Timestamp(6)
+  updated_at DateTime   @db.Timestamp(6)
   comments   comments[]
   likes      likes[]
   races      races?     @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -71,6 +73,7 @@ model users {
   location                                String?
   website                                 String?
   bio                                     String?
+  propic_url                              String?
   comments                                comments[]
   fav_races                               fav_races[]
   following_following_follower_idTousers  following[]      @relation("following_follower_idTousers")
@@ -86,19 +89,21 @@ model users {
 }
 
 model race_liked {
-  user_id Int
-  race_id Int
-  races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id   Int
+  race_id   Int
+  timestamp DateTime? @db.Timestamp(6)
+  races     races     @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([user_id, race_id])
 }
 
 model viewed {
-  user_id Int
-  race_id Int
-  races   races @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_id   Int
+  race_id   Int
+  timestamp DateTime @db.Timestamp(6)
+  races     races    @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([user_id, race_id])
 }
@@ -106,10 +111,10 @@ model viewed {
 model ratings {
   user_id Int
   race_id Int
-  rating  Float     @db.Real
-  date    DateTime? @db.Date
-  races   races     @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users   users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rating  Float    @db.Real
+  date    DateTime @db.Timestamp(6)
+  races   races    @relation(fields: [race_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users   users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([user_id, race_id])
 }
@@ -132,28 +137,29 @@ model lists {
 model lists_likes {
   user_id   Int
   list_id   Int
-  timestamp DateTime? @db.Date
-  lists     lists     @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users     users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  timestamp DateTime @db.Timestamp(6)
+  lists     lists    @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users     users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([user_id, list_id])
 }
 
 model lists_comments {
-  id           Int       @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   user_id      Int
   list_id      Int
   content      String
-  published_at DateTime? @db.Date
-  lists        lists     @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users        users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  published_at DateTime @db.Timestamp(6)
+  lists        lists    @relation(fields: [list_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users        users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model following {
   follower_id                         Int
   following_id                        Int
-  users_following_follower_idTousers  users @relation("following_follower_idTousers", fields: [follower_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users_following_following_idTousers users @relation("following_following_idTousers", fields: [following_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  timestamp                           DateTime @db.Timestamp(6)
+  users_following_follower_idTousers  users    @relation("following_follower_idTousers", fields: [follower_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_following_following_idTousers users    @relation("following_following_idTousers", fields: [following_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([follower_id, following_id])
 }

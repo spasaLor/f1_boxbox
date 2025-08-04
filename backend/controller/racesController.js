@@ -1,5 +1,6 @@
 const prisma = require("../config/prisma");
 
+
 const getAllRaces = async(req,res)=>{
     try {
         const races = await prisma.races.findMany();
@@ -128,7 +129,8 @@ const likedRace=async(req,res)=>{
         await prisma.race_liked.create({
             data:{
                 user_id:Number(userId),
-                race_id:Number(raceId)
+                race_id:Number(raceId),
+                timestamp: new Date()
             }
         });
         return res.status(200).json({message:"Success"});
@@ -173,7 +175,8 @@ const viewedRace=async(req,res)=>{
         await prisma.viewed.create({
             data:{
                 user_id:Number(userId),
-                race_id:Number(raceId)
+                race_id:Number(raceId),
+                timestamp: new Date()
             }
         });
         return res.status(200).json({message:"Success"});

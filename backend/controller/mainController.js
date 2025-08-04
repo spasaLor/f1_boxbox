@@ -1,6 +1,8 @@
 const prisma = require("../config/prisma");
 const bcrypt = require("bcrypt");
+const {v2} = require("cloudinary");
 const {body,validationResult} = require("express-validator");
+const streamifier= require("streamifier");
 
 const registerValidation = [
     body("username").trim().isLength({min:2,max:20}).withMessage("Username may contain between 2 and 20 characters")
@@ -34,7 +36,8 @@ const registerUser = [registerValidation,async(req,res)=>{
             data:{
                 username:data.username,
                 email:data.mail,
-                password:encrypted
+                password:encrypted,
+                propic_url:'https://res.cloudinary.com/dyivwvtyu/image/upload/v1754313059/default_tubmok.avif'
             }
         });
     } catch (error) {
@@ -73,10 +76,11 @@ const getUserData = async(req,res)=>{
         const user = await prisma.users.findFirst({
             where:{username}
         });
-        const [viewedCount,followingCount,followerCount,latestRatings,reviews,favRaces] = await Promise.all([
+        const [viewedCount,followingCount,followerCount,listsCount,latestRatings,reviews,favRaces] = await Promise.all([
             prisma.viewed.count({where:{user_id:user.id}}),
             prisma.following.count({ where: { follower_id: user.id } }),
             prisma.following.count({ where: { following_id: user.id } }),
+            prisma.lists.count({ where: { user_id: user.id } }),
             prisma.ratings.findMany({where:{user_id:user.id},take:5,orderBy:{date:'asc'},include:{races:true}}),
             prisma.reviews.findMany({where:{user_id:user.id},take:5,orderBy:{updated_at:'asc'},include:{races:true}}),
             prisma.fav_races.findMany({where:{user_id:user.id},include:{races:true}})
@@ -115,10 +119,11 @@ const getUserData = async(req,res)=>{
             }
         }))
         const data = {
-            user:[user.bio,user.location,user.website],
+            user:[user.bio,user.location,user.website,user.propic_url],
             viewed:viewedCount,
             following:followingCount,
             followers:followerCount,
+            lists:listsCount,
             latestActivity,
             latestReviews,
             favoriteRaces
@@ -126,6 +131,7 @@ const getUserData = async(req,res)=>{
         return res.status(200).json(data);
     
     } catch (error) {
+        console.log(error)
         return res.status(400).json({message:error.message});
     }
 }
@@ -134,7 +140,7 @@ const getUserInfo = async(req,res)=>{
     const userId = req.user.id;
     const user = await prisma.users.findFirst({
         where:{id:Number(userId)},
-        select:{name:true,surname:true,bio:true,location:true,website:true,email:true}
+        select:{name:true,surname:true,bio:true,location:true,website:true,email:true,propic_url:true,username:true}
     });
     const favRaces = await prisma.fav_races.findMany({
         where:{user_id:Number(userId)},
@@ -143,4 +149,215 @@ const getUserInfo = async(req,res)=>{
     const races = favRaces.map(item=>({id:item.races.id, cover:item.races.cover}));
     return res.status(200).json({user,races});
 }
-module.exports={registerUser,getUserData,editUser,getUserInfo}
+
+const followUser = async(req,res)=>{
+    const {toFollow} = req.body;
+    const userId = req.user.id;
+
+    try {
+        const user=await prisma.users.findFirst({
+            where:{username:toFollow}
+        })
+    
+        await prisma.following.create({
+            data:{
+                follower_id:Number(userId),
+                following_id:user.id,
+                timestamp: new Date()
+            }
+        });
+        return res.status(200).json({message:"ok"})
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message})
+    }
+}
+const unfollowUser = async(req,res)=>{
+    const {toFollow} = req.body;
+    const userId = req.user.id;
+
+    try {
+        const user=await prisma.users.findFirst({
+            where:{username:toFollow}
+        })
+    
+        await prisma.following.delete({
+            where:{
+                follower_id_following_id:{follower_id:Number(userId),following_id:user.id}
+            }
+        });
+        return res.status(200).json({message:"ok"})
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message})
+    }
+}
+
+const getFollowing = async(req,res)=>{
+    const userId = req.user.id;
+    const {username} = req.params;
+    try {
+        const user=await prisma.users.findFirst({
+            where:{username}
+        })
+        const followage = await prisma.following.findFirst({
+            where:{
+                follower_id:Number(userId),
+                following_id:user.id
+            }
+        });
+        return res.status(200).json({isFollowing: !!followage})
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({message:error.message})
+    }
+
+}
+
+const getUserLikes=async(req,res)=>{
+    const {username}=req.query;
+
+    try {
+        const user = await prisma.users.findFirst({
+            where:{username}
+        })
+        const races = await prisma.race_liked.findMany({
+            where:{
+                user_id:user.id
+            },
+            include:{races:{select:{cover:true,season:true,url:true,id:true}}},
+            
+        });
+        return res.status(200).json(races);
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
+
+const getActivity = async(req,res)=>{
+    const {username}=req.params;
+
+    const u= await prisma.users.findFirst({
+        where:{username}
+    });
+
+    const activity = await prisma.$queryRaw`
+    SELECT 
+    username,
+    race_id,
+    'viewed' AS action,
+    timestamp AS activity_date,
+    denomination,
+    season
+    FROM viewed
+    JOIN races
+    ON viewed.race_id = races.id
+    JOIN users on viewed.user_id = users.id
+    WHERE viewed.user_id = ${u.id}
+
+    UNION ALL
+
+    SELECT 
+    username,
+    race_id,
+    'liked' AS action,
+    timestamp AS activity_date,
+    denomination,
+    season
+    FROM race_liked
+    JOIN races
+    ON race_liked.race_id = races.id
+    JOIN users on race_liked.user_id = users.id
+    WHERE race_liked.user_id = ${u.id}
+
+    UNION ALL
+
+    SELECT 
+    username,
+    race_id,
+    'reviewed' AS action,
+    updated_at AS activity_date,
+    denomination,
+    season
+    FROM reviews
+    JOIN races
+    ON reviews.race_id = races.id
+    JOIN users on reviews.user_id = users.id
+    WHERE reviews.user_id = ${u.id}
+
+    UNION ALL
+
+    SELECT 
+    username,
+    rating,
+    'rated' AS action,
+    ratings.date AS activity_date,
+    denomination,
+    season
+    FROM ratings
+    JOIN races
+    ON ratings.race_id = races.id
+    JOIN users on ratings.user_id = users.id
+    WHERE ratings.user_id = ${u.id}
+
+    UNION ALL
+
+    SELECT 
+    username,
+    null as rating,
+    'liked_review' AS action,
+    timestamp AS activity_date,
+    denomination,
+    season
+    FROM likes
+    JOIN reviews
+    ON likes.liked_review = reviews.id 
+    join races on races.id=reviews.race_id
+    join users on likes.user_id=users.id
+    WHERE likes.user_id = ${u.id}
+
+    UNION ALL
+
+    SELECT 
+    username,
+    null as rating,
+    'followed' AS action,
+    timestamp AS activity_date,
+    null as denomination,
+    null as season
+    FROM following
+    JOIN users
+    ON following.following_id = users.id 
+    WHERE following.follower_id = ${u.id}
+
+    ORDER BY activity_date DESC;
+    `
+    return res.json({activity});
+}
+const handlePropicUpload = async(req,res)=>{
+    const imageUrl = req.file;
+    const userId = req.user.id;
+    console.log(req);
+
+    v2.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.CLOUD_API_KEY,
+        api_secret: process.env.CLOUD_SECRET
+    });
+
+    const uploadRes = await v2.uploader.upload_stream({
+        folder: 'profile_pictures', public_id:userId,
+    },
+    async (error, result) => {
+        if (error) return res.status(500).json({ error });
+        await prisma.users.update({
+            where: { id: userId },
+            data: { propic_url: result.secure_url },
+        });
+        res.status(200).json({ url: result.secure_url });
+    }
+    
+    )
+    streamifier.createReadStream(imageUrl.buffer).pipe(uploadRes);
+}
+module.exports={registerUser,getUserData,editUser,getUserInfo,followUser,unfollowUser,getFollowing,getUserLikes,getActivity,handlePropicUpload}

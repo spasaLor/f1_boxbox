@@ -37,9 +37,9 @@ export default function Lists({lists, username, isOwner, metadata}){
                     <div className={styles["lists-right"]}>
                         <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
                         <div className={styles.bottom}>
-                            <p>{item.races.length} races</p>
-                            {metadata[i].likes._count.user_id > 0 ? <div className={styles.data}><Heart/> <p>{metadata[i].likes._count.user_id}</p></div> : ''} 
-                            {metadata[i].comments.length >0 ? <div className={styles.data}><MessageSquare size={16}/> <p>{metadata[i].comments.length}</p> </div> : ''}                                        
+                            <p>{item.races.length} {item.races.length ===1 ? 'race':'races'}</p>
+                            {metadata[i].likes._count.user_id > 0 ? <div className={styles.data}><Heart size={16} fill='var(--color-text-secondary)' color='var(--color-text-secondary)'/> <p>{metadata[i].likes._count.user_id}</p></div> : ''} 
+                            {metadata[i].comments.length >0 ? <div className={styles.data}><MessageSquare size={16} fill='var(--color-text-secondary)' color='var(--color-text-secondary)'/> <p>{metadata[i].comments.length}</p> </div> : ''}                                        
                         </div>
                         <div className={styles.description}>
                             <p>{item.description}</p>

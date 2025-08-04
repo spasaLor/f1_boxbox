@@ -9,16 +9,11 @@ const tiktok = Open_Sans({
 });
 
 export default async function RootLayout({ children }) {
-  const cookieStore = await cookies();
-  const userCookie= cookieStore.get('username');
-  let username="";
-  if(userCookie)
-    username=userCookie.value;
 
   return (
     <html lang="en">
       <body className={tiktok.className}>
-        <Navbar username={username}/>
+        <Navbar/>
         {children}
         <Footer/>
       </body>

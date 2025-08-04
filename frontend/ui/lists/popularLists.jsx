@@ -9,7 +9,10 @@ export default async function PopularLists({data}){
 
     return(
         <>
-            <h2 className={styles.title}>Popular this week</h2>
+            <div className={styles.sectionTitle}>
+                <h2 className={styles.title}>Popular this week</h2>
+                <h2 className={styles.title}> <Link href={"/lists/popular"}>More</Link> </h2> 
+            </div>
             <div className={styles["pop-container"]}>
                 {data.map((item,i)=>(
                     <div className={styles["pop-item"]} key={i}>
@@ -19,8 +22,8 @@ export default async function PopularLists({data}){
                                     <Image
                                         src={race.cover}
                                         alt="race_cover"
-                                        width={80}
-                                        height={120}
+                                        width={120}
+                                        height={150}
                                     />
                                 </div>
                             ))}
@@ -32,10 +35,10 @@ export default async function PopularLists({data}){
                         </div>
                         <Link href={"/"+item.user+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
                         <div className={styles.bottom}>
-                            <Link href={"/"+item.user}>{item.user}</Link>
-                            <p>{item.races.length} races</p>                            
-                            {metadata[i].likes._count.user_id > 0 ? <div className={styles.data}><Heart/> <p>{metadata[i].likes._count.user_id}</p></div> : ''} 
-                            {metadata[i].comments.length >0 ? <div className={styles.data}><MessageSquare size={16}/> <p>{metadata[i].comments.length}</p> </div> : ''}                                        
+                            <b><Link href={"/"+item.user}>{item.user}</Link></b>
+                            <p>{item.races.length} {item.races.length ===1 ? 'race':'races'}</p>                            
+                            {metadata[i].likes._count.user_id > 0 ? <div className={styles.data}><Heart size={16} fill='var(--color-text-secondary)'/> <p>{metadata[i].likes._count.user_id}</p></div> : ''} 
+                            {metadata[i].comments.length >0 ? <div className={styles.data}><MessageSquare size={16} fill='var(--color-text-secondary)' color='var(--color-text-secondary)'/> <p>{metadata[i].comments.length}</p> </div> : ''}                                        
                         </div>
                     </div>
                 ))}

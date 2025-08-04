@@ -9,7 +9,7 @@ export default function RaceItem({logged,item,isLiked,isViewed,toggleLike,toggle
     return(
         <>
             <Link href={"/races/"+item.season+"/"+item.url}>
-                <Image src={item.cover} alt="race_cover" width={200} height={200}/>
+                <Image src={item.cover} alt="race_cover" width={190} height={200}/>
             </Link>
             <div className={styles.icons} style={logged ? {} : {visibility:'hidden'}}>
                 <Eye style={isViewed ? {color:'green'}:null} onClick={()=>toggleView(item.id)}/> <Heart style={isLiked ? {color:'orange'}:null} onClick={()=>toggleLike(item.id)}/>

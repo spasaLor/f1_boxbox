@@ -5,6 +5,8 @@ import SubmitButton from "../buttons/SubmitButton";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import styles from "@/app/settings/settings.module.css";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function SettingsForm({data=null}){
     const formRef = useRef(null);
@@ -27,37 +29,46 @@ export default function SettingsForm({data=null}){
     }
 
     return(
-        <form onSubmit={handleSubmit} ref={formRef}>
-            <div className={styles["form-item-split"]}>
+        <>
+            <div className="info">
                 <div className="">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" name="name" id="name" defaultValue={data?.name}/>
+                    <Image src={data.propic_url} alt="profile_picture" width={50} height={50}/>
+                    <p>{data.username}</p>
                 </div>
-                <div className="">
-                    <label htmlFor="surname">Surname</label>
-                    <input type="text" name="surname" id="name" defaultValue={data?.surname}/>
+                <Link href={"/settings/avatar"}>Change Avatar</Link>
+            </div>
+            <form onSubmit={handleSubmit} ref={formRef}>
+                <div className={styles["form-item-split"]}>
+                    <div className="">
+                        <label htmlFor="name">Name</label>
+                        <input type="text" name="name" id="name" defaultValue={data?.name}/>
+                    </div>
+                    <div className="">
+                        <label htmlFor="surname">Surname</label>
+                        <input type="text" name="surname" id="name" defaultValue={data?.surname}/>
+                    </div>
                 </div>
-            </div>
-            <div className={styles["form-item"]}>
-                <label htmlFor="mail">E-mail address</label>
-                <input type="text" name="mail" id="mail" defaultValue={data?.email}/>
-            </div>
-            <div className={styles["form-item-split"]}>
-                <div className="">
-                    <label htmlFor="location">Location</label>
-                    <input type="text" name="location" id="location" defaultValue={data?.location}/>
+                <div className={styles["form-item"]}>
+                    <label htmlFor="mail">E-mail address</label>
+                    <input type="text" name="mail" id="mail" defaultValue={data?.email}/>
                 </div>
-                <div className="">
-                    <label htmlFor="web">Website</label>
-                    <input type="text" name="web" id="web" defaultValue={data?.website}/>
+                <div className={styles["form-item-split"]}>
+                    <div className="">
+                        <label htmlFor="location">Location</label>
+                        <input type="text" name="location" id="location" defaultValue={data?.location}/>
+                    </div>
+                    <div className="">
+                        <label htmlFor="web">Website</label>
+                        <input type="text" name="web" id="web" defaultValue={data?.website}/>
+                    </div>            
                 </div>
-            
-            </div>
-            <div className={styles["form-item"]}>
-                <label htmlFor="bio">Bio</label>
-                <textarea name="bio" id="bio" defaultValue={data?.bio}></textarea>
-            </div>
-            <SubmitButton text={"Save changes"}/>
-        </form>
+                <div className={styles["form-item"]}>
+                    <label htmlFor="bio">Bio</label>
+                    <textarea name="bio" id="bio" defaultValue={data?.bio}></textarea>
+                </div>
+                <SubmitButton text={"Save changes"}/>
+            </form>
+        </>
+        
     )
 }

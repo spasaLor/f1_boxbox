@@ -1,5 +1,7 @@
 const express = require("express");
 require("dotenv").config;
+const multer = require('multer');
+const {storage} = require("./config/cloudinary")
 const passport = require("./config/passportSetup");
 const controller = require("./controller/mainController");
 const session = require("express-session");
@@ -11,6 +13,7 @@ const listRouter = require("./routes/listsRouter");
 const ensureAuthenticated = require("./config/authMiddleware");
 
 const app = express();
+const upload = multer({storage,limits:{fileSize:2*1024*1024}});
 app.use(session({secret:process.env.SESSION_SECRET,resave:false,saveUninitialized:false,cookie:{secure:false,httpOnly:true,maxAge:1000*60*60*24,sameSite:'lax'}}));
 app.use(express.urlencoded({extended:false}));
 app.use(passport.session())
@@ -54,7 +57,13 @@ app.get("/logout",(req,res)=>{
         res.status(200).json({redirect:"/"})
     })
 })
+app.get("/user/likes",controller.getUserLikes);
+app.get("/user/activity/:username",controller.getActivity);
 app.get("/user/:username",controller.getUserData);
 app.get("/user",ensureAuthenticated,controller.getUserInfo);
-app.put("/user/edit",ensureAuthenticated,controller.editUser)
+app.put("/user/edit",ensureAuthenticated,controller.editUser);
+app.post("/user/follow",ensureAuthenticated,controller.followUser);
+app.get("/user/follow/:username",ensureAuthenticated,controller.getFollowing);
+app.delete("/user/follow",ensureAuthenticated,controller.unfollowUser);
+app.post("/user/upload_pic",ensureAuthenticated,upload.single('propic'),controller.handlePropicUpload)
 app.listen(8080,()=>console.log("Running on http://localhost:8080"));

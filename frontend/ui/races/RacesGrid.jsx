@@ -22,6 +22,5 @@ export default function RacesGrid({races,username}){
                 </div>
             </div>
         ))
-        
     )
 }

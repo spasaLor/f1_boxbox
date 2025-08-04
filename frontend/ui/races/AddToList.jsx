@@ -56,7 +56,6 @@ export default function AddToList({lists,item}){
         }
     }
 
-    console.log(selected);
     return(
         <>
             <p onClick={()=>setOpen(true)} className={styles.phrase}>Add to lists...</p>

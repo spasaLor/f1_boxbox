@@ -6,31 +6,43 @@ import RecentRatings from "@/ui/profile/RecentRatings";
 import RecentReviews from "@/ui/profile/RecentReviews";
 import Link from "next/link";
 import { EarthIcon, Pin } from "lucide-react";
+import FollowButton from "@/ui/buttons/Follow";
+import Image from "next/image";
 
 export default async function Page({params}){
-    const cookieStore = await cookies();
     const {username} = await params;
+    const cookieStore = await cookies();
     const user = cookieStore.get('username');
-    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
-    const userData = await res.json();
-    
+    const auth = cookieStore.get('connect.sid');
     const isLogged = !!user;
     const isOwner = user?.value === username;
+    let following = null;
 
+    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData = await res.json();
+    if(isLogged){
+        const resFollow = await fetch(process.env.BACKEND_URL+"/user/follow/"+username,{
+            headers:{'Cookie':'connect.sid='+auth.value}
+        });
+        const json = await resFollow.json();
+        following=json.isFollowing;
+    }   
+    
     return(
         <main className={styles.main}>
             <div className={styles["top-row"]}>
                 <div className={styles.left}>
                     <div className={styles["top-left"]}>
+                        <Image src={userData.user[3]} alt="profile_picture" width={50} height={50} />
                         <h2>{username}</h2>
-                        {isLogged ? isOwner ? null : <button type="button">Follow</button> : null }
+                        {isLogged ? isOwner ? null : <FollowButton initial={following} toFollow={username}/> : null }
                         {isOwner && <Link href={"/settings"}>Edit profile</Link>}
                     </div>
                     <div className={styles["user-info"]}>
-                        <p>{userData.user[0] ? userData.user[0]:null}</p>
+                        <p>{userData ? userData.user[0]:null}</p>
                         <div className={styles.inner}>
                             <p>{userData.user[1] ? <><Pin/> {userData.user[1]}</> : null}</p>
-                            <Link href={userData.user[2]}>{userData.user[2] ? <><EarthIcon/> {userData.user[2]}</> : null}</Link>
+                            <Link href={userData.user[2] ? userData.user[2] :'' }>{userData.user[2] ? <><EarthIcon/> {userData.user[2]}</> : null}</Link>
                         </div>
                     </div>
                 </div>
@@ -38,6 +50,10 @@ export default async function Page({params}){
                     <div className={styles["info-item"]}>
                         <p>{userData.viewed}</p>
                         <p className={styles.label}>Races</p>
+                    </div>
+                    <div className={styles["info-item"]}>
+                        <p>{userData.lists}</p>
+                        <p className={styles.label}>Lists</p>
                     </div>
                     <div className={styles["info-item"]}>
                         <p>{userData.followers}</p>

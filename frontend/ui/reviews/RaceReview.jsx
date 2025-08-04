@@ -8,8 +8,9 @@ import ReviewRace from "../races/ReviewComponent";
 import AddToList from "../races/AddToList";
 import styles from "@/app/[username]/race/[raceName]/race.module.css";
 import { Rating } from "@mui/material";
+import LikeCounter from "./LikeCounter";
 
-export default async function RaceReview({isLogged,data,likes,username,lists}){
+export default async function RaceReview({isLogged,data,likes,username,lists,initialLikes}){
     return(
         <>
             <div className={styles.image}>
@@ -29,7 +30,7 @@ export default async function RaceReview({isLogged,data,likes,username,lists}){
                 </div>
                 <p style={{fontWeight:'200'}}>Reviewed {new Date(data.updated_at).toLocaleDateString()}</p>
                 <p style={{fontWeight:'600'}}>{data.content}</p>
-                <p className={styles.likes}><Heart fill="var(--color-text-secondary)" strokeWidth={1} size={16}/> {likes} likes</p>
+                <LikeCounter init={initialLikes.includes(data.id)} itemId={data.id} initialLikes={likes}/>
             </div>
             <div className={styles["side-bar"]}>                
                 <div className={sideStyles.interaction}>

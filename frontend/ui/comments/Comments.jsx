@@ -4,7 +4,6 @@ import { formatDistanceToNow } from 'date-fns';
 import styles from "@/app/[username]/lists/list.module.css";
 
 export default function Comments({comments,isLogged,targetType,targetId}){
-
     return(
         <>
             {comments.map(item=>(

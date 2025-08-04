@@ -1,5 +1,7 @@
 import PopularLists from "@/ui/lists/popularLists";
+import RecentlyLiked from "@/ui/lists/recentLikedLists";
 import { cookies } from "next/headers";
+import styles from "./listsPage.module.css";
 import Link from "next/link";
 
 export default async function Page(){
@@ -12,16 +14,16 @@ export default async function Page(){
     const jsonRec = await recRes.json();
 
     return(
-        <div className="main">
-            <div className="header">
+        <div className={styles.main}>
+            <div className={styles.header}>
                 <p>Collect, curate, and share. Lists are the perfect way to group films.</p>
-                <Link href={ user ? "/"+user.value+"/lists/new" : '#'}>Start your own list</Link>
+                <Link style={user ? {}: {pointerEvents:'none'}} href={"/"+user?.value+"/lists/new"} >Start your own list</Link>
             </div>
-            <section className="popular">
+            <section className={styles.popular}>
                 <PopularLists data={jsonPop} />
             </section>
-            <section className="recently">
-                
+            <section className={styles.recently}>
+                <RecentlyLiked data={jsonRec}/>
             </section>
         </div>
     )

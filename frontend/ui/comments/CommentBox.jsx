@@ -6,7 +6,6 @@ import styles from "@/app/[username]/lists/list.module.css";
 export default function CommentBox({targetType,itemId}){
     const textRef = useRef(null);
     const nav = useRouter();
-
     const sendComment = async()=>{
         const content = textRef.current.value;
         let res;
