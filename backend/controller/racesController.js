@@ -305,8 +305,50 @@ const getViewedFromUser = async(req,res)=>{
         return res.status(500).json({error:error.message});
     }
 }
+
+const getPopularReviews = async(req,res)=>{
+    try {
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+        const {raceId,limit}=req.params;
+                
+        const popularReviews =  await prisma.reviews.findMany({
+            where:{race_id:Number(raceId)},
+            select: {
+                id: true,
+                content: true,
+                users:{select:{username:true}},
+                likes:true,
+                _count:{select:{likes:true}}
+            },
+            orderBy:{likes:{_count:'desc'}}
+        });
+
+        res.status(200).json({popularReviews});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error.message});
+    }
+}
+const getRecentReviews = async(req,res)=>{
+    try {
+        const {raceId,limit} = req.params;
+
+        const reviews = await prisma.reviews.findMany({
+            where:{race_id:Number(raceId)},
+            orderBy:{created_at:'desc'},
+            take:limit == 0 ? undefined : Number(limit),
+            include:{users:{select:{username:true}},likes:true},
+        });
+        res.status(200).json({reviews});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error});
+    }
+
+}
 module.exports={getAllRaces,getLatestRaces,getRacesByYear,getRaceByYear,addNewRace,editRaceData,
     deleteRace,searchRace,likedRace,removeLikedRace,getLikedRaces,viewedRace,removeViewedRace,getViewedRaces,
-    addFavRace,getViewedFromUser,deleteFavRace,
+    addFavRace,getViewedFromUser,deleteFavRace,getPopularReviews,getRecentReviews
 }
 

@@ -36,7 +36,7 @@ export default async function Page({params}){
                         <Image src={userData.user[3]} alt="profile_picture" width={50} height={50} />
                         <h2>{username}</h2>
                         {isLogged ? isOwner ? null : <FollowButton initial={following} toFollow={username}/> : null }
-                        {isOwner && <Link href={"/settings"}>Edit profile</Link>}
+                        {isOwner && <button><Link href={"/settings"}>Edit profile</Link></button>}
                     </div>
                     <div className={styles["user-info"]}>
                         <p>{userData ? userData.user[0]:null}</p>

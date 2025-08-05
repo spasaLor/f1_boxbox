@@ -7,8 +7,10 @@ import { Eye, Heart } from 'lucide-react';
 import ReviewRace from './ReviewComponent';
 import { cookies } from 'next/headers';
 import AddToList from './AddToList';
+import PopularReviews from './PopularReviews';
+import RaceRecentReviews from './RecentReviews';
 
-export default async function RaceContent({data,logged}){
+export default async function RaceContent({data,logged,season,name}){
     const formatted = new Date(data.date).toLocaleDateString();
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
@@ -51,7 +53,7 @@ export default async function RaceContent({data,logged}){
                     <p>2025 Chinese GP Press Conference</p>
                 </div>
             </div>  
-            <div className={styles["info-section"]}>
+            <section className={styles["info-section"]}>
                 <div className={styles.info}>
                     <h2>{data.denomination}</h2>
                     <div>
@@ -60,26 +62,25 @@ export default async function RaceContent({data,logged}){
                 </div>
                 <div className={styles["other-data"]}>
                     <div className={styles.cover}>
-                    <Image
-                    src={data.cover}
-                    alt='race_cover'
-                    width={200}
-                    height={250}
-                    />
-                    <div className={styles["numbers"]}>
-                        <div className={styles["views"]}>
-                            <Eye style={{color:'green'}} />
-                            { <p>{data._count.viewed}</p> }
-                            
-                        </div>
-                        <div className={styles["likes"]}>
-                            <Heart style={{fill:'orange'}} strokeWidth={1}/>
-                            {data._count.race_liked}
+                        <Image
+                        src={data.cover}
+                        alt='race_cover'
+                        width={200}
+                        height={250}
+                        />
+                        <div className={styles["numbers"]}>
+                            <div className={styles["views"]}>
+                                <Eye style={{color:'green'}} />
+                                { <p>{data._count.viewed}</p> }                                
+                            </div>
+                            <div className={styles["likes"]}>
+                                <Heart style={{fill:'orange'}} strokeWidth={1}/>
+                                {data._count.race_liked}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <p className={styles.notes}>{data.notes}</p>
-                <div className={styles.interaction}>
+                    <p className={styles.notes}>{data.notes}</p>
+                    <div className={styles.interaction}>
                         {!logged && 
                             <div className={styles["not-logged"]}>
                                 <p>Sign in to log, rate or review</p>
@@ -109,7 +110,21 @@ export default async function RaceContent({data,logged}){
                         }
                     </div>
                 </div>
-            </div>
+            </section>
+            <section className={styles.reviews}>
+                <div className={styles["popular-reviews-container"]}>
+                    <div className={styles.header}>
+                        <p>Popular Reviews</p>
+                    </div>
+                    <PopularReviews raceId={data.id} season={season} name={name}/>
+                </div>
+                <div className={styles["recent-reviews-container"]}>
+                    <div className={styles.header}>
+                        <p>Recent Reviews</p>
+                    </div>
+                    <RaceRecentReviews raceId={data.id} season={season} name={name}/>
+                </div>
+            </section>
         </>
     )
 }

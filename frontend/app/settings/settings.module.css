@@ -230,3 +230,28 @@
     margin-top: -5px;
     color: var(--color-text-secondary);
 }
+
+.buttons{
+    max-width: 500px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.buttons button{
+    background-color: var(--color-accent);
+    color: var(--color-text-primary);
+    padding: 0.6em 1em;
+    font-size: 0.8rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.buttons button:hover{
+    background-color: #1444a2;
+}

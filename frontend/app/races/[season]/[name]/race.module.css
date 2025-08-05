@@ -39,7 +39,7 @@
 }
 
 .info-section{
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -182,4 +182,42 @@
 .numbers>div{
   display: flex;
   gap:5px;
+}
+
+.reviews{
+  max-width: 1100px;
+  margin: 2em auto;
+  display: flex;
+  gap:2em;
+  flex-direction: column;
+}
+
+.header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border);
+  text-transform: uppercase;
+}
+
+.popular-reviews-container, .recent-reviews-container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.review-item{
+  padding: 10px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  max-height: fit-content;
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+}
+
+.review-item b{
+  color: var(--color-text-primary);
 }

@@ -1,8 +1,6 @@
 const prisma = require("../config/prisma");
 const bcrypt = require("bcrypt");
-const {v2} = require("cloudinary");
 const {body,validationResult} = require("express-validator");
-const streamifier= require("streamifier");
 
 const registerValidation = [
     body("username").trim().isLength({min:2,max:20}).withMessage("Username may contain between 2 and 20 characters")
@@ -335,29 +333,19 @@ const getActivity = async(req,res)=>{
     return res.json({activity});
 }
 const handlePropicUpload = async(req,res)=>{
-    const imageUrl = req.file;
-    const userId = req.user.id;
-    console.log(req);
-
-    v2.config({
-        cloud_name: process.env.CLOUD_NAME,
-        api_key: process.env.CLOUD_API_KEY,
-        api_secret: process.env.CLOUD_SECRET
-    });
-
-    const uploadRes = await v2.uploader.upload_stream({
-        folder: 'profile_pictures', public_id:userId,
-    },
-    async (error, result) => {
-        if (error) return res.status(500).json({ error });
+    try {
+        const imageUrl = req.file.path;
+        const userId = req.user.id;
         await prisma.users.update({
-            where: { id: userId },
-            data: { propic_url: result.secure_url },
+            where: { id: Number(userId) },
+            data: { propic_url: imageUrl },
         });
-        res.status(200).json({ url: result.secure_url });
+
+        res.status(200).json({message:"Ok"});
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Upload failed' });
     }
-    
-    )
-    streamifier.createReadStream(imageUrl.buffer).pipe(uploadRes);
 }
 module.exports={registerUser,getUserData,editUser,getUserInfo,followUser,unfollowUser,getFollowing,getUserLikes,getActivity,handlePropicUpload}

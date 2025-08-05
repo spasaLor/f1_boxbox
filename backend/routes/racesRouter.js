@@ -20,4 +20,6 @@ router.get("/:year/:name",controller.getRaceByYear);
 router.delete("/favorites",ensureAuthenticated,controller.deleteFavRace);
 router.post("/favorites",ensureAuthenticated,controller.addFavRace);
 router.delete("/:id",controller.deleteRace);
+router.get("/popular/:raceId/:limit", controller.getPopularReviews);
+router.get("/recent/:raceId/:limit", controller.getRecentReviews);
 module.exports=router;

@@ -90,6 +90,10 @@
     font-size: 0.8rem;
     margin-left: 10px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.left button:hover{
+    background-color:#1444a2;
 }
 .fav-races{
     display: flex;

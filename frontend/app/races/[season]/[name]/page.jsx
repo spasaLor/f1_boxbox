@@ -9,6 +9,6 @@ export default async function RacePage({params}){
     const res = await fetch(process.env.BACKEND_URL+"/races/"+season+"/"+name);
     const race = await res.json();
     return(
-        <RaceContent data={race} logged={!!auth}/>
-    )
+        <RaceContent data={race} logged={!!auth} season={season} name={name}/>    
+    )   
 }
