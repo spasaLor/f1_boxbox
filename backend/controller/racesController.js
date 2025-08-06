@@ -317,14 +317,28 @@ const getPopularReviews = async(req,res)=>{
             select: {
                 id: true,
                 content: true,
-                users:{select:{username:true}},
+                users:{select:{username:true,id:true}},
                 likes:true,
                 _count:{select:{likes:true}}
             },
             orderBy:{likes:{_count:'desc'}}
         });
 
-        res.status(200).json({popularReviews});
+        const withRatings = await Promise.all(
+            popularReviews.map(async(item)=>{
+                const rat=await prisma.ratings.findFirst({
+                    where:{
+                        AND:[{user_id:item.users.id,race_id:Number(raceId)}]
+                    }
+                });
+                return {
+                    ...item,
+                    rating:rat.rating
+                }
+            })
+        );
+
+        res.status(200).json({popularReviews:withRatings});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: error.message});
@@ -338,9 +352,23 @@ const getRecentReviews = async(req,res)=>{
             where:{race_id:Number(raceId)},
             orderBy:{created_at:'desc'},
             take:limit == 0 ? undefined : Number(limit),
-            include:{users:{select:{username:true}},likes:true},
+            include:{users:{select:{username:true,id:true}},likes:true},
         });
-        res.status(200).json({reviews});
+
+        const withRatings = await Promise.all(
+            reviews.map(async(item)=>{
+                const rat=await prisma.ratings.findFirst({
+                    where:{
+                        AND:[{user_id:item.users.id,race_id:Number(raceId)}]
+                    }
+                });
+                return {
+                    ...item,
+                    rating:rat.rating
+                }
+            })
+        );
+        res.status(200).json({reviews:withRatings});
     } catch (error) {
         console.log(error);
         res.status(500).json({message:error});

@@ -15,5 +15,6 @@ router.get("/latest",controller.getLatestReviews);
 router.get("/user/:username",controller.getReview);
 router.put("/:id",ensureAuthenticated,controller.editReview);
 router.delete("/:id",controller.deleteReview);
+router.get("/popular",controller.getAllPopularReviews);
 
 module.exports=router;

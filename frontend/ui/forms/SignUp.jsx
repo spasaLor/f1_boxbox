@@ -29,7 +29,7 @@ export default function SignUpForm({setOpen}){
             setError(json.errors);
         else{
             setOpen("");
-            nav.push("/");
+            nav.push("/welcome");
         }
             
     }

@@ -256,4 +256,50 @@ const getLikes = async(req,res)=>{
 
 }
 
-module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,getLikes,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}
+const getAllPopularReviews = async(req,res)=>{
+    try {
+        const {name,season,offset} = req.query;
+        const toSkip = 10 * Number(offset);
+    
+        const race = await prisma.races.findFirst({
+            where:{
+                AND:[
+                    {url:name,season:Number(season)}
+                ]
+            }
+        });
+        const reviews = await prisma.reviews.findMany({
+            where:{race_id:race.id},
+            take:10,
+            skip:toSkip,
+            orderBy:{likes:{_count:'desc'}},
+            select:{
+                id:true,
+                users:{select:{username:true,id:true}},
+                created_at:true,
+                content:true,            
+                likes:true
+            }
+        });
+
+        const withRatings = await Promise.all(
+            reviews.map(async(item)=>{
+                const rat=await prisma.ratings.findFirst({
+                    where:{
+                        AND:[{user_id:item.users.id,race_id:race.id}]
+                    }
+                });
+                return {
+                    ...item,
+                    rating:rat.rating
+                }
+            })
+        );
+        
+        return res.status(200).json({reviews:withRatings});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message:error.message});
+    }
+}
+module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,getLikes,getAllPopularReviews,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}

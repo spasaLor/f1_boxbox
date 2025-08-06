@@ -201,7 +201,7 @@
   text-transform: uppercase;
 }
 
-.popular-reviews-container, .recent-reviews-container{
+.popular-reviews-container, .recent-reviews-container, .reviews-container{
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -220,4 +220,40 @@
 
 .review-item b{
   color: var(--color-text-primary);
+}
+
+.review-item>div{
+  display: flex;
+  align-items: center;
+  gap:5px;
+}
+
+.MuiRating-icon .MuiRating-iconEmpty{
+  margin-top: 5px;
+}
+
+.main{
+  max-width: 1100px;
+  margin: 2em auto;
+  display: flex;
+  gap: 1em;
+  min-height: 70vh;
+}
+.left{
+  width: 70%;
+}
+.right{
+  width: 30%;  
+  display: flex;
+  justify-content: center;
+}
+.right img{
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+}
+.left>.header{
+  margin-bottom: 2em;
+}
+.left>.header h2{
+  text-transform: none;
 }

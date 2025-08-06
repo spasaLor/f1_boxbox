@@ -10,7 +10,7 @@ import AddToList from './AddToList';
 import PopularReviews from './PopularReviews';
 import RaceRecentReviews from './RecentReviews';
 
-export default async function RaceContent({data,logged,season,name}){
+export default async function RaceContent({data,logged,season,name,likedReviews}){
     const formatted = new Date(data.date).toLocaleDateString();
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
@@ -116,13 +116,13 @@ export default async function RaceContent({data,logged,season,name}){
                     <div className={styles.header}>
                         <p>Popular Reviews</p>
                     </div>
-                    <PopularReviews raceId={data.id} season={season} name={name}/>
+                    <PopularReviews raceId={data.id} season={season} name={name} likedReviews={likedReviews} isLogged={logged}/>
                 </div>
                 <div className={styles["recent-reviews-container"]}>
                     <div className={styles.header}>
                         <p>Recent Reviews</p>
                     </div>
-                    <RaceRecentReviews raceId={data.id} season={season} name={name}/>
+                    <RaceRecentReviews raceId={data.id} season={season} name={name} likedReviews={likedReviews} isLogged={logged}/>
                 </div>
             </section>
         </>
