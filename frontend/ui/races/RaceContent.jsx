@@ -71,11 +71,11 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
                         <div className={styles["numbers"]}>
                             <div className={styles["views"]}>
                                 <Eye style={{color:'green'}} />
-                                { <p>{data._count.viewed}</p> }                                
+                                <p>{data._count.viewed}</p>                              
                             </div>
                             <div className={styles["likes"]}>
-                                <Heart style={{fill:'orange'}} strokeWidth={1}/>
-                                {data._count.race_liked}
+                                <Heart style={{fill:'orange'}} color='var(--color-bg)' strokeWidth={1}/>
+                                <p>{data._count.race_liked}</p>
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
                                     <WatchedLiked raceId={data.id}/>
                                 </div>
                                 <div className={styles["rating"]}>
-                                    {data.rating >0 ? <p>Rated</p> : <p>Rate</p>}
+                                    <p>{data.rating !==0 ? 'Rated' : 'Rate'}</p>
                                     <RatingComponent id={data.id}/>
                                 </div>
                                 <div className={styles["review"]}>

@@ -257,3 +257,6 @@
 .left>.header h2{
   text-transform: none;
 }
+.views p, .likes p{
+  color: var(--color-text-secondary);
+}

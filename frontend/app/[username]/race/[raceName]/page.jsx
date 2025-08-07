@@ -24,7 +24,7 @@ export default async function Page({params}){
         const res = await fetch(process.env.BACKEND_URL+"/reviews/liked",
             {headers:{'Cookie':'connect.sid='+auth.value}}
         );
-        jsonLikes = await res.json();
+        const jsonLikes = await res.json();
         initLikes = jsonLikes.likes;
     }
         

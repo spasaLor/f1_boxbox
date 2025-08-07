@@ -70,3 +70,41 @@
 .text button:hover{
   background-color: #1444a2;
 }
+
+.main{
+  max-width: 1100px;
+  margin: 2em auto;
+  display: flex;
+  flex-direction: column;
+  gap:2em;
+  min-height: 70vh;
+}
+.header{
+  text-align: center;
+  padding: 2em 0;
+  color: var(--color-text-secondary);
+}
+.header a{
+  color: var(--color-error);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.header a:hover{
+  color: var(--color-text-primary);
+}
+
+.activity{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+}
+
+.top{
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}

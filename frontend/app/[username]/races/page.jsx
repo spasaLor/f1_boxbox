@@ -6,7 +6,6 @@ export default async function Page({params}){
     const {username} = await params;
     const res = await fetch(process.env.BACKEND_URL+"/races/viewed/user/"+username);
     const json = await res.json();
-
     return(
         <main className={styles.main}>
             <NavigationBar main={false} username={username}/>

@@ -36,3 +36,12 @@
     align-items: center;
     gap:5px;
 }
+
+.activity-item a{
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.activity-item a:hover{
+    color:var(--color-text-primary);
+}

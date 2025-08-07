@@ -32,11 +32,10 @@ export default function Navbar(){
                         (islogged ? 
                         <>
                             <Link href={"/"+username}>{username}</Link>
-                            <CloudLightningIcon/>
                             <Link href={"/lists"}>Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
                             <Link href="/">Members</Link>
-                            <Link href="/">Journal</Link>
+                            <Link href={"/"+username+"/activity/friends"}>Activity</Link>
                             <Logout setIsLogged={setIsLogged}/>
                         </>
                         :
@@ -46,7 +45,6 @@ export default function Navbar(){
                             <Link href="/lists">Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
                             <Link href="/">Members</Link>
-                            <Link href="/">Journal</Link>
                         </>)
                     }              
                 </div>

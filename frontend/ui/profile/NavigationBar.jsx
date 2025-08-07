@@ -26,7 +26,7 @@ export default function NavigationBar({main,username}){
                         <Link href={"/"+username+"/races/reviews"} className={selected === "reviews" ? styles.active : null}>Reviews</Link>
                         <Link href={"/"+username+"/lists"} className={selected === "lists" ? styles.active : null}>Lists</Link>
                         <Link href={"/"+username+"/likes"} className={selected === "likes" ? styles.active : null}>Likes</Link>
-                        <Link href={"/"+username+"/activity"} className={selected === "activity" ? styles.active : null}>Activity</Link>
+                        <Link href={"/"+username+"/activity"} className={path.includes("activity") ? styles.active : null}>Activity</Link>
                     </div>                    
                     <Search/>
                 </div>             

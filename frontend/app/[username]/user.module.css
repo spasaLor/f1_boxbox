@@ -34,6 +34,10 @@
     width: 100%;
 }
 
+.top-left img{
+    border-radius: 50%;
+}
+
 .right{
     gap:unset;
 }
@@ -75,7 +79,7 @@
     width: 100%;
     height: 2px;
     position: absolute;
-    bottom: -.8em;
+    bottom: -17px;
     left: 0;
     background-color: var(--color-error);
 }
@@ -237,7 +241,7 @@
 }
 .not-main{
     justify-content: space-between;
-    padding: 0.7em 2em;
+    padding: 1em 2em;
     background-color: var(--color-surface);
     margin: 2em 0;
 }

@@ -38,6 +38,12 @@ app.post("/login",(req,res)=>{
                         maxAge:1000*60*60*24,
                         sameSite:'lax',
                         path:'/'
+                    });
+                    res.cookie('name',user.name,{
+                        httpOnly:false,
+                        maxAge:1000*60*60*24,
+                        sameSite:'lax',
+                        path:'/'
                     })
                     return res.status(200).json({redirect:"/welcome"});
                 } 
@@ -59,6 +65,7 @@ app.get("/logout",(req,res)=>{
 })
 app.get("/user/likes",controller.getUserLikes);
 app.get("/user/activity/:username",controller.getActivity);
+app.get("/user/activity/:username/following",controller.getFollowingActivity);
 app.get("/user/:username",controller.getUserData);
 app.get("/user",ensureAuthenticated,controller.getUserInfo);
 app.put("/user/edit",ensureAuthenticated,controller.editUser);
