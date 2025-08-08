@@ -45,16 +45,29 @@ const getAllLists = async(req,res)=>{
 
 const getAllListsFromUser = async (req, res) => {
     const {username} = req.body;
+    const {owner} = req.query;
+    const isOwner = owner === 'true';
+
+    let lists=[];
     try {
         const user = await prisma.users.findFirst({
             where:{username}
         });
-
-        const lists = await prisma.lists.findMany({
-            where: {
-                user_id: user.id
-            }
-        });
+        if(isOwner){
+            lists = await prisma.lists.findMany({
+                where: {
+                    user_id: user.id
+                }
+            });
+        }else{
+            lists= await prisma.lists.findMany({
+                where:{
+                    AND:[
+                        {user_id:user.id},{privacy:"public"}
+                    ]
+                }
+            })
+        }       
 
         const newLists = await Promise.all(
             lists.map(async (item) => {

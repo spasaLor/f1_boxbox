@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "@/app/[username]/user.module.css";
-import { Search } from "lucide-react";
+import { ArrowDownLeft } from "lucide-react";
 
 export default function NavigationBar({main,username}){
     const path = usePathname();
@@ -28,7 +28,7 @@ export default function NavigationBar({main,username}){
                         <Link href={"/"+username+"/likes"} className={selected === "likes" ? styles.active : null}>Likes</Link>
                         <Link href={"/"+username+"/activity"} className={path.includes("activity") ? styles.active : null}>Activity</Link>
                     </div>                    
-                    <Search/>
+                    <ArrowDownLeft/>
                 </div>             
     )
 }

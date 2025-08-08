@@ -10,16 +10,29 @@ export default async function ListsPage({params}){
     const user = cookieStore.get('username');
     const {username} = await params;
     const isOwner = user?.value === username;
-
-    const res = await fetch(process.env.BACKEND_URL+"/lists/user",{
-        method:'POST',
-        headers:{
-            'Content-type':'application/json'
-        },
-        body: JSON.stringify({username})
-    });
-    const json = await res.json();
-    const lists = json.lists;
+    let lists=[];
+    if(isOwner){
+        const res = await fetch(process.env.BACKEND_URL+"/lists/user?owner=true",{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify({username})
+        });
+        const json = await res.json();
+        lists = json.lists;
+    }else{
+        const res = await fetch(process.env.BACKEND_URL+"/lists/user?owner=false",{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify({username})
+        });
+        const json = await res.json();
+        lists = json.lists;
+    }
+    
     const metadata = await Promise.all(lists.map(async(item)=>await getMetadata(item.id,'list')));
 
     return(

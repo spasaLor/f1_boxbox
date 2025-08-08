@@ -10,14 +10,14 @@ export default function RacesGrid({races,username}){
             <div className={styles["race-item"]} key={item.id}>
                 <div className={styles.img}>
                     <Link href={"/races/"+item.season+"/"+item.url}>
-                        <Image src={item.cover} alt="race_cover" width={150} height={100}/>
+                        <Image src={item.cover} alt="race_cover" width={150} height={95}/>
                     </Link>
                 </div>
                 <div className={styles.icons}>
-                    {item.ratings ? <Rating name="read-only" value={item.ratings} readOnly precision={0.5} sx={{color:'var(--color-text-secondary)'}} size={"small"} emptyIcon={<Star color="gray" strokeWidth={0.5} size={18}/>}/> :null}
+                    {item.ratings ? <Rating name="read-only" value={item.ratings} readOnly precision={0.5} sx={{color:'var(--color-text-secondary)'}} size={"small"} emptyIcon={<Star color="var(--color-text-secondary)" strokeWidth={0.5} size={17}/>}/> :null}
                     <div>
-                        {item.race_liked ? <Heart fill="var(--color-text-secondary)" size={14}/> :null}
-                        {item.reviews ? <Link href={"/"+username+"/race/"+item.url+"-"+item.season}><AlignLeft fill="var(--color-text-secondary)" size={14}/></Link> :null}
+                        {item.race_liked ? <Heart fill="var(--color-text-secondary)" size={14} strokeWidth={1} color="var(--color-text-secondary)"/> :null}
+                        {item.reviews ? <Link href={"/"+username+"/race/"+item.url+"-"+item.season}><AlignLeft color="var(--color-text-secondary)" size={14}/></Link> :null}
                     </div>
                 </div>
             </div>

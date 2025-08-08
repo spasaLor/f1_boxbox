@@ -269,18 +269,20 @@
 .races-container{
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(90px,120px));
-    row-gap: 35px;
+    grid-template-columns: repeat(auto-fit,minmax(90px,110px));
 }
 
 .race-item{
-    height: 150px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap:4px;
 }
-
-.race-item>.img{
-    height: 90%;
+.race-item .img{
+    height: 70%;
     display: flex;
     justify-content: center;
+
 }
 .img img{
     height: 100%;

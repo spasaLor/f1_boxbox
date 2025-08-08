@@ -6,7 +6,7 @@ import styles from "@/app/page.module.css";
 export default async function LoggedHomepage({name}){
     const cookieStore = await cookies();
     const username = cookieStore.get('username');
-    const res = await fetch(process.env.BACKEND_URL+"/user/activity/"+username.value+"/following",{next:{revalidate:60}});
+    const res = await fetch(process.env.BACKEND_URL+"/user/activity/"+username.value+"/following?limit=10&offset=0",{next:{revalidate:60}});
     const json=await res.json();
 
     return(
@@ -17,6 +17,7 @@ export default async function LoggedHomepage({name}){
             <div className={styles.activity}>
                 <div className={styles.top}>
                     <p>New from friends</p>
+                    <Link href={"/"+username.value+"/activity/friends"}>All Activity</Link>
                 </div>
                 <DisplayActivity data={json.activities}/>
             </div>

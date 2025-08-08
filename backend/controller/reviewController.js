@@ -302,4 +302,40 @@ const getAllPopularReviews = async(req,res)=>{
         return res.status(500).json({message:error.message});
     }
 }
-module.exports = {getAllReviews,getReview,getLatestReviews,newReviewLike,getLikes,getAllPopularReviews,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}
+
+const getPopularReviewsOfTheWeek = async(req,res)=>{
+    try {
+        const reviews = await prisma.$queryRaw`
+            SELECT 
+                r.id, 
+                r.content, 
+                u.username, 
+                COUNT(DISTINCT l.id)::int AS like_count, 
+                rt.rating,
+                ra.cover,
+                ra.denomination,
+                ra.season,
+                ra.url
+                FROM reviews r
+                JOIN races ra on ra.id = r.race_id 
+                JOIN users u ON r.user_id = u.id
+                JOIN likes l ON l.liked_review = r.id AND l.timestamp >= NOW() - INTERVAL '7 days'
+                LEFT JOIN ratings rt ON rt.race_id = r.race_id AND rt.user_id = r.user_id
+                GROUP BY r.id, 
+                        r.content, 
+                        u.username, 
+                        rt.rating,
+                        ra.cover,
+                        ra.denomination,
+                        ra.season,
+                        ra.url
+                ORDER BY like_count DESC
+                LIMIT 5;
+        `;
+        res.status(200).json({reviews});
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+
+}
+module.exports = {getAllReviews,getReview,getPopularReviewsOfTheWeek,getLatestReviews,newReviewLike,getLikes,getAllPopularReviews,newReview,editReview,removeLike,deleteReview,getLikedReviews,getAllReviewsFromUser,getReviewFromUser}

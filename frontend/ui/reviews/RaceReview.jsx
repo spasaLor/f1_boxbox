@@ -26,11 +26,11 @@ export default async function RaceReview({isLogged,data,likes,username,lists,ini
                 </div>
                 <div className={styles.rating}>
                     <Rating name="read-only" value={Number(data.rating)} precision={0.5} readOnly emptyIcon={<Star color="var(--color-border)" strokeWidth={1.5}/>} />
-                    {data.is_liked ? <Heart fill="orange" strokeWidth={1} size={24}/> : null}
+                    {data.is_liked ? <Heart fill="orange" strokeWidth={1} size={24} color="orange"/> : null}
                 </div>
                 <p style={{fontWeight:'200'}}>Reviewed {new Date(data.updated_at).toLocaleDateString()}</p>
-                <p style={{fontWeight:'600'}}>{data.content}</p>
-                <LikeCounter init={initialLikes.includes(data.id)} itemId={data.id} initialLikes={likes}/>
+                <p style={{fontWeight:'500',color:'var(--color-text-primary'}}>{data.content}</p>
+                {isLogged ? <LikeCounter init={initialLikes.includes(data.id)} itemId={data.id} initialLikes={likes}/> : <p><Heart fill="var(--color-text-secondary)" strokeWidth={1} size={13} color="var(--color-text-secondary)"/> {likes} likes</p> }
             </div>
             <div className={styles["side-bar"]}>                
                 <div className={sideStyles.interaction}>

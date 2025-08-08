@@ -1,7 +1,8 @@
 import Image from "next/image";
 import styles from "@/app/[username]/lists/list.module.css";
 import Link from "next/link";
-import { Heart, MessageSquare, Pencil } from "lucide-react";
+import { EyeOff, Heart, MessageSquare, Pencil } from "lucide-react";
+import { Tooltip } from "@mui/material";
 
 export default function Lists({lists, username, isOwner, metadata}){
     return(
@@ -26,8 +27,11 @@ export default function Lists({lists, username, isOwner, metadata}){
                 </div>
                 {isOwner && 
                     <div className={styles["lists-right"]}>
-                        <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
-                        <div >
+                        <div className={styles["top"]}>
+                            <Link href={"/"+username+"/list/"+item.id+"-"+item.name} className={styles["list-name"]}>{item.name}</Link>
+                            {item.privacy === 'private' ? <p title="Private list"> <Tooltip title="Private list" placement="bottom" arrow><EyeOff style={{cursor:'unset'}}/></Tooltip></p>:null}
+                        </div>
+                        <div>
                             <p>{item.races.length} races</p>
                             <Link href={"/"+username+"/lists/edit/"+item.name}> <Pencil size={14}/> </Link>
                         </div>
@@ -46,7 +50,6 @@ export default function Lists({lists, username, isOwner, metadata}){
                         </div>
                     </div>
                 }
-                
             </div>
         ))
     )

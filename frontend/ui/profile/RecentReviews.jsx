@@ -19,7 +19,7 @@ export default function RecentReviews({reviews,username}){
                         </div>
                         <div className={styles.rating}>
                             <Rating name="read-only" value={Number(item.rating)} precision={0.5} readOnly emptyIcon={<Star color="var(--color-border)" strokeWidth={1}/>} />
-                            {item.isLiked ? <Heart fill="orange" strokeWidth={1} size={20}/> : null}
+                            {item.isLiked ? <Heart fill="orange" strokeWidth={1} size={20} color="orange"/> : null}
                             <p style={{fontWeight:'200'}}>Watched {new Date(item.updated_at).toLocaleDateString()}</p>
                         </div>
                         <div className={styles.content}>

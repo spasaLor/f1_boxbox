@@ -7,6 +7,7 @@ export default function AllPopularReviews({name,season,logged ,likedReviews}){
     const [offset,setOffset]=useState(0);
     const [reviews,setReviews] = useState([]);
     const [show,setShow] = useState(true);
+    const [loading,setLoading]=useState(false);
 
     useEffect(()=>{
         const initialReviews = async()=>{
@@ -21,6 +22,7 @@ export default function AllPopularReviews({name,season,logged ,likedReviews}){
     },[]);
 
     const getReviews = async()=>{
+        setLoading(true);
         const res = await fetch("/api/reviews/popular?name="+name+"&season="+season+"&offset="+offset);
         const json = await res.json();
         const newReviews = json.reviews;
@@ -28,6 +30,7 @@ export default function AllPopularReviews({name,season,logged ,likedReviews}){
             setShow(false);
         setReviews(prev=>[...prev,...newReviews]);
         setOffset(prev=>prev+1);
+        setLoading(false);
     }
     return(
         <>
@@ -37,7 +40,7 @@ export default function AllPopularReviews({name,season,logged ,likedReviews}){
                 </div>
             ))}
             <div className={styles.bottom}>
-                {show && <button type="button" onClick={getReviews}>Load More</button>}
+                {show && <button type="button" onClick={getReviews} disabled={loading}>Load More</button>}
             </div>
         </>
     )

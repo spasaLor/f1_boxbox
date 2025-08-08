@@ -321,6 +321,7 @@ const getPopularReviews = async(req,res)=>{
                 likes:true,
                 _count:{select:{likes:true}}
             },
+            take: Number(limit) !==0 ? Number(limit) : undefined,
             orderBy:{likes:{_count:'desc'}}
         });
 

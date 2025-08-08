@@ -115,6 +115,7 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
                 <div className={styles["popular-reviews-container"]}>
                     <div className={styles.header}>
                         <p>Popular Reviews</p>
+                        <Link href={"./"+name+"/popular_reviews"}>All</Link>
                     </div>
                     <PopularReviews raceId={data.id} season={season} name={name} likedReviews={likedReviews} isLogged={logged}/>
                 </div>
