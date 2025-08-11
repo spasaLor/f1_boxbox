@@ -259,6 +259,7 @@ const getIsLiked = async(req,res)=>{
     return res.status(200).json({liked:true})
 }
 const getPopularLists = async (req, res) => {
+    const {limit}=req.query;
     try {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -268,6 +269,7 @@ const getPopularLists = async (req, res) => {
             where: { published_at: {gte:oneWeekAgo}},
             _count: {id:true},
             orderBy: {_count:{ id: 'desc' }},
+            take: limit ? limit : undefined
         });
 
         const popularIds = comm.map(item => item.list_id);
@@ -283,7 +285,6 @@ const getPopularLists = async (req, res) => {
                         user_id:true, 
                     }
                 });
-
                 const raceData = await prisma.races.findMany({
                     where: {
                         id: { in: list.races }
@@ -293,7 +294,6 @@ const getPopularLists = async (req, res) => {
                         cover: true,
                     }
                 });
-
                 const user=await prisma.users.findFirst({
                     where:{id:list.user_id},
                     select:{username:true}

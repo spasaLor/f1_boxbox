@@ -72,14 +72,14 @@ export default async function Page({params}){
                     <FavRaces races = {userData.favoriteRaces}/>
                 </> : <p>Don't forget to select your <Link href={"/settings"}>favorite races</Link>! </p>}                
             </div>         
-            <div className={styles["recent-races"]}>
+            <div className={styles["recent-races"]}>            
                 <p className={styles.title}>Recent Activity</p>
-                <RecentRatings races = {userData.latestActivity} username={username}/>
+                <RecentRatings races = {userData.latestActivity} username={username}/>                            
             </div>         
             <div className={styles["recent-reviews"]}>
                 <div className={styles.title}>
                     <p>Recent Reviews</p>
-                    <Link href={"/"+username+"/races/reviews"} >More</Link> 
+                    <Link href={"/"+username+"/races/reviews"}>More</Link> 
                 </div>
                 <RecentReviews reviews = {userData.latestReviews} username={username}/>
             </div>         

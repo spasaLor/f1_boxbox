@@ -11,7 +11,7 @@ export default function ReviewSmall({item,name,season,likedReviews,isLogged}){
                 <Link href={"/"+item.users.username+"/race/"+name+"-"+season}>Review by <b>{item.users.username}</b></Link>
             </div>
             <p>{item.content}</p>
-            {isLogged ? <LikeCounter init={likedReviews.includes(item.id)} itemId={item.id} initialLikes={item.likes.length}/> : <p style={{display:'flex',alignItems:'center',gap:'4px'}}><Heart size={16} fill="var(--color-text-secondary)" strokeWidth={1}/> {item.likes.length} likes</p> }
+            {isLogged ? <LikeCounter init={likedReviews.includes(item.id)} itemId={item.id} initialLikes={item.likes.length}/> : <p style={{display:'flex',alignItems:'center',gap:'4px'}}><Heart size={16} fill="var(--color-text-secondary)" color="var(--color-text-secondary)" strokeWidth={1}/> {item.likes.length} likes</p> }
         </>
     )    
 }

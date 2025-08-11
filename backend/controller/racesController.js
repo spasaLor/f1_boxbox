@@ -37,13 +37,18 @@ const getRacesByYear = async(req,res)=>{
 }
 const getRaceByYear = async(req,res)=>{
     const {year,name}=req.params;
-    try {
+    const fixWords= (str)=>{
+        const re = /P(?:(?:[,‚\uFFFD\u2018\u2019])|Ã©)rez(?=(?:['’]s|[.,]|$))/giu;
+        return str.replace(re, 'Pérez');
+    }
+    try {   
         const race = await prisma.races.findFirst({
             where:{season:Number(year), url:name},
             include:{_count:{select:{viewed:true,race_liked:true}}}
         });
         if(!race)
             return res.status(404).json({message: "Race not found"});
+        race.notes=fixWords(race.notes);
         return res.status(200).json(race);
     } catch (error) {
         return res.status(400).json({message: error.message});
@@ -116,6 +121,8 @@ const searchRace = async(req,res)=>{
                 ]
             }
         });
+
+        res.setHeader('Content-Type', 'application/json; charset=utf-8');
         return res.status(200).json({races});
     } catch (error) {
         return res.status(500).json({message: error.message})

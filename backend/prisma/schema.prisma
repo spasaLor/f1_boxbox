@@ -39,6 +39,7 @@ model races {
   denomination String?      @db.VarChar(50)
   url          String?      @db.VarChar(20)
   date         DateTime?    @db.Date
+  hero         String?
   fav_races    fav_races[]
   race_liked   race_liked[]
   ratings      ratings[]
@@ -127,6 +128,7 @@ model lists {
   races          Int[]
   privacy        String           @db.VarChar(20)
   ranked         Boolean
+  created_at     DateTime?        @db.Timestamp(6)
   users          users?           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   lists_comments lists_comments[]
   lists_likes    lists_likes[]

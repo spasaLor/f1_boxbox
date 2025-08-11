@@ -122,6 +122,11 @@
     padding: 2em 0;
 }
 
+.fav-container{
+    grid-template-columns: repeat(4,1fr);
+    justify-items: center;
+}
+
 .fav-item, .recent-item{
     height: 250px;
     display: flex;

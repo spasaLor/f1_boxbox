@@ -9,9 +9,10 @@ import { cookies } from 'next/headers';
 import AddToList from './AddToList';
 import PopularReviews from './PopularReviews';
 import RaceRecentReviews from './RecentReviews';
+import { format } from 'date-fns';
 
 export default async function RaceContent({data,logged,season,name,likedReviews}){
-    const formatted = new Date(data.date).toLocaleDateString();
+    const formatted = format(new Date(data.date),"dd MMM yyyy");
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
     const user= cookieStore.get('username');
@@ -45,20 +46,21 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
             <div className={styles.hero}>
                 <div className={styles.image}>
                     <Image
-                    src={"https://media.formula1.com/image/upload/t_16by9North/c_lfill,w_3392/q_auto/v1740000000/trackside-images/2025/F1_Grand_Prix_Of_China___Previews/2205973441.webp"}
-                    alt="Alonso and Bortoleto"
+                    src={data.hero}
+                    alt="hero image"
                     width={1300}
                     height={500}
                     />
-                    <p>2025 Chinese GP Press Conference</p>
+                    <p>&copy; Formula One</p>
                 </div>
             </div>  
             <section className={styles["info-section"]}>
-                <div className={styles.info}>
-                    <h2>{data.denomination}</h2>
+                <div className={styles.info}>                    
                     <div>
-                        <p>Season: {data.season}</p> <i>Date: {formatted}</i>
+                        <h1>{data.denomination}</h1>
+                        <Link href={"/races/"+data.season}>{data.season}</Link>
                     </div>                    
+                    <i style={{color:"var(--color-text-secondary)"}}>{formatted}, {data.circuit_name}</i>
                 </div>
                 <div className={styles["other-data"]}>
                     <div className={styles.cover}>

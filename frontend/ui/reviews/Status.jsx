@@ -36,7 +36,7 @@ export default function Status({initialLiked,id,isLogged,isOwner}){
         }        
     }
     return(<>
-        {!isLogged && <Heart style={{fill:'var(--color-text-secondary)',color:"var(--color-text-secondary)"}} size={14} strokeWidth={1}/>}
+        {!isLogged && <Heart fill='var(--color-text-secondary)'color="var(--color-text-secondary)" size={14} strokeWidth={1}/>}
         {isLogged ? <Heart style={isLiked ? {fill:'orange',color:"orange"}:{fill:'var(--color-text-secondary)',color:"var(--color-text-secondary)"}} strokeWidth={1} size={14}/> :null} 
         {isLogged && !isOwner ? isLiked ? <b style={{cursor:'pointer'}} onClick={toggleLike}>Liked</b> :  <b style={{cursor:'pointer'}} onClick={toggleLike}>Like review</b>:null}
     </>)

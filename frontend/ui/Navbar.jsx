@@ -34,7 +34,6 @@ export default function Navbar(){
                             <Link href={"/"+username}>{username}</Link>
                             <Link href={"/lists"}>Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
-                            <Link href="/">Members</Link>
                             <Link href={"/"+username+"/activity/friends"}>Activity</Link>
                             <Logout setIsLogged={setIsLogged}/>
                         </>
@@ -44,7 +43,6 @@ export default function Navbar(){
                             <button type="button" onClick={()=>setOpen('register')}> Create account</button>
                             <Link href="/lists">Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
-                            <Link href="/">Members</Link>
                         </>)
                     }              
                 </div>

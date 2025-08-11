@@ -26,9 +26,9 @@ export default function Reviews({likes,reviews,isLogged,isOwner,owner}){
                     
                     <div className={styles.mid}>
                         <Rating name='read-only' readOnly value={item.rating} precision={0.5} emptyIcon={<Star strokeWidth={1} color="var(--color-border)" fontSize='inherit'/>}/>
-                        {item.liked ? <Heart style={{fill:'orange', border:'orange'}} strokeWidth={1}/> : null}
+                        {item.liked ? <Heart fill='orange' color='orange' strokeWidth={1}/> : null}
                         <p>Reviewed {new Date(item.updated_at).toLocaleDateString()}</p>
-                        {item.comments.length>0 ? <p><MessageSquare/> {item.comments.length}</p> : null}
+                        {item.comments.length>0 ? <p style={{display:'flex', gap:"4px", alignItems:'center'}}><MessageSquare size={15}/> {item.comments.length}</p> : null}
                     </div>
                     <div className={styles.content}>
                         {item.content}

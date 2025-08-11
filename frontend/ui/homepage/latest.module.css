@@ -76,7 +76,7 @@
     width: 100%;
 }
 .reviews-section .text{
-    padding: 1em 0;
+    margin: 2em 0;
     text-align: center;
 }
 
@@ -130,6 +130,10 @@
     align-items: center;
     font-weight: bold;
     color: var(--color-text-secondary);
+}
+
+.second a:hover{
+    color: var(--color-text-primary);
 }
 .content{
     width: 700px;

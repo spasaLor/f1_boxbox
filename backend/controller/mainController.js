@@ -79,9 +79,9 @@ const getUserData = async(req,res)=>{
             prisma.following.count({ where: { follower_id: user.id } }),
             prisma.following.count({ where: { following_id: user.id } }),
             prisma.lists.count({ where: { user_id: user.id } }),
-            prisma.ratings.findMany({where:{user_id:user.id},take:5,orderBy:{date:'asc'},include:{races:true}}),
-            prisma.reviews.findMany({where:{user_id:user.id},take:5,orderBy:{updated_at:'asc'},include:{races:true}}),
-            prisma.fav_races.findMany({where:{user_id:user.id},include:{races:true}})
+            prisma.ratings.findMany({where:{user_id:user.id},take:5,orderBy:{date:'desc'},include:{races:true}}),
+            prisma.reviews.findMany({where:{user_id:user.id},take:5,orderBy:{updated_at:'desc'},include:{races:true}}),
+            prisma.fav_races.findMany({where:{user_id:user.id},include:{races:true}}),
         ]);
         const favoriteRaces = favRaces.map(item=>item.races);
         
@@ -124,7 +124,7 @@ const getUserData = async(req,res)=>{
             lists:listsCount,
             latestActivity,
             latestReviews,
-            favoriteRaces
+            favoriteRaces,
         }        
         return res.status(200).json(data);
     

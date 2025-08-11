@@ -13,6 +13,7 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  object-position: top;
 }
 
 .image::before{
@@ -65,16 +66,31 @@
 .info{
     display: flex;
     flex-direction: column;
+    gap:10px;
 }
 .info>div{
     display: flex;
     gap:10px;
     justify-content: center;
+    align-items: flex-end;
+}
+
+.info>div a{
+  margin-bottom: 2px;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.info>div a:hover{
+  color: var(--color-accent-light);
 }
 
 .notes{
     color: var(--color-text-secondary);
-    max-width: 350px;
+    max-width: 400px;
+    line-height: 1.5;
     text-align: left;
 }
 
@@ -259,4 +275,19 @@
 }
 .views p, .likes p{
   color: var(--color-text-secondary);
+}
+
+.bottom button{
+    background-color: var(--color-accent);
+    color: var(--color-text-primary);
+    padding: 0.6em 1em;
+    font-size: 0.8rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in;
+    font-weight: bold;
+}
+.bottom button:hover{
+    background-color: #1444a2;
 }
