@@ -15,7 +15,7 @@ const getLatestRaces = async(req,res)=>{
     try {
         const races = await prisma.races.findMany({
             take:5,
-            orderBy:{date:'asc'}
+            orderBy:{date:'desc'}
         });
         return res.status(200).json(races);
     } catch (error) {

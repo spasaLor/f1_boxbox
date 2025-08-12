@@ -8,6 +8,7 @@ import Link from "next/link";
 import { EarthIcon, Pin } from "lucide-react";
 import FollowButton from "@/ui/buttons/Follow";
 import Image from "next/image";
+import Following from "@/ui/profile/network/Following";
 
 export default async function Page({params}){
     const {username} = await params;
@@ -20,12 +21,16 @@ export default async function Page({params}){
 
     const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
     const userData = await res.json();
+
+    const resFollowing = await fetch(process.env.BACKEND_URL+"/user/following/"+username+"?limit=20",{next:{revalidate:300}});
+    const followingData = await resFollowing.json();
+
     if(isLogged){
         const resFollow = await fetch(process.env.BACKEND_URL+"/user/follow/"+username,{
             headers:{'Cookie':'connect.sid='+auth.value}
         });
         const json = await resFollow.json();
-        following=json.isFollowing;
+        following=json.isFollowing;        
     }   
     
     return(
@@ -82,7 +87,11 @@ export default async function Page({params}){
                     <Link href={"/"+username+"/races/reviews"}>More</Link> 
                 </div>
                 <RecentReviews reviews = {userData.latestReviews} username={username}/>
-            </div>         
+            </div> 
+            <div className={styles.following}>
+                <p className={styles.title}>Following</p>
+                <Following data={followingData} isOwner={isOwner}/>
+            </div>        
         </main>
     )
 }

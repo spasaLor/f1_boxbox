@@ -1,0 +1,56 @@
+.user-item, .header{
+    width: 100%;
+    padding: 10px 1em;
+    display: grid;
+    grid-template-columns: 6fr 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+.header{
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.user-item a, .header p:first-child{
+    margin-right: auto;
+}
+
+.user-item{
+    border-bottom: 1px solid var(--color-border);
+}
+.user-item p{
+    color: var(--color-text-secondary);
+}
+.user-item a{
+    font-weight: bold;
+}
+.user-item a:hover{
+    color: var(--color-accent);
+}
+
+.bottom{
+    margin-top: 15px;
+    align-self: flex-end;
+}
+.bottom button{
+    background-color: var(--color-accent);
+    color: var(--color-text-primary);
+    padding: 0.6em 1em;
+    font-size: 0.8rem;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+.bottom button:hover{
+    background-color: #1444a2;
+}
+
+.inner{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}

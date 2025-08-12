@@ -71,6 +71,8 @@ app.get("/user",ensureAuthenticated,controller.getUserInfo);
 app.put("/user/edit",ensureAuthenticated,controller.editUser);
 app.post("/user/follow",ensureAuthenticated,controller.followUser);
 app.get("/user/follow/:username",ensureAuthenticated,controller.getFollowing);
+app.get("/user/following/:username",controller.followingUsers);
+app.get("/user/followers/:username",controller.followerUsers);
 app.delete("/user/follow",ensureAuthenticated,controller.unfollowUser);
 app.post("/user/upload_pic",ensureAuthenticated,upload.single('propic'),controller.handlePropicUpload)
 app.listen(8080,()=>console.log("Running on http://localhost:8080"));

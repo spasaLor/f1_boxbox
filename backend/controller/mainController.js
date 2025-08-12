@@ -495,4 +495,48 @@ const getFollowingActivity = async(req,res)=>{
     
 
 }
-module.exports={registerUser,getUserData,editUser,getFollowingActivity,getUserInfo,followUser,unfollowUser,getFollowing,getUserLikes,getActivity,handlePropicUpload}
+const followingUsers = async(req,res)=>{
+    const {limit,offset}=req.query;
+    const toSkip = Number(offset)*10;
+    try {
+        const {username} = req.params;
+        const u = await prisma.users.findFirst({
+            where:{username}
+        });
+        const following = await prisma.following.findMany({
+            where:{follower_id:u.id},
+            select:{users_following_following_idTousers:{select:{username:true, id:true,_count:{select:{viewed:true,race_liked:true,lists:true}}}}},
+            take: limit !==0 ? Number(limit) : undefined,
+            skip: toSkip
+        });
+        const users=following.map(item=>(item.users_following_following_idTousers));
+        return res.status(200).json(users);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message:error.message})
+    }
+
+}
+const followerUsers = async(req,res)=>{
+    const {limit,offset}=req.query;
+    const toSkip = Number(offset)*10;
+    try {
+        const {username} = req.params;
+        const u = await prisma.users.findFirst({
+            where:{username}
+        });
+        const followers = await prisma.following.findMany({
+            where:{following_id:u.id},
+            select:{users_following_follower_idTousers:{select:{username:true, id:true,_count:{select:{viewed:true,race_liked:true,lists:true}}}}},
+            take: limit !==0 ? Number(limit) : undefined,
+            skip: toSkip
+        });
+        const users=followers.map(item=>(item.users_following_follower_idTousers));
+        return res.status(200).json(users);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message:error.message})
+    }
+
+}
+module.exports={registerUser,getUserData,editUser,followerUsers,followingUsers,getFollowingActivity,getUserInfo,followUser,unfollowUser,getFollowing,getUserLikes,getActivity,handlePropicUpload}
