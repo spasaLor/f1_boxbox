@@ -10,6 +10,17 @@ import FollowButton from "@/ui/buttons/Follow";
 import Image from "next/image";
 import Following from "@/ui/profile/network/Following";
 
+export async function generateMetadata({params}){
+    const {username} = await params;
+    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData = await res.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s profile" : userData.user[6]+"'s profile",
+        description:"User profile page" 
+    }
+}
+
 export default async function Page({params}){
     const {username} = await params;
     const cookieStore = await cookies();
@@ -89,7 +100,10 @@ export default async function Page({params}){
                 <RecentReviews reviews = {userData.latestReviews} username={username}/>
             </div> 
             <div className={styles.following}>
-                <p className={styles.title}>Following</p>
+                <div className={styles.title}>
+                    <p>Following</p>
+                    <Link href={"/"+username+"/network/following"}>{followingData.length}</Link> 
+                </div>
                 <Following data={followingData} isOwner={isOwner}/>
             </div>        
         </main>

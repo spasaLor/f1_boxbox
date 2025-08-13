@@ -2,6 +2,11 @@ import AvatarSelector from "@/ui/profile/AvatarSelector";
 import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
 
+export const metadata={
+    title:"Edit Avatar | F1BoxBox",
+    description:"User avatar edit page"
+}
+
 export default async function Page(){
     const cookieStore = await cookies();
     const auth = cookieStore.get('connect.sid');

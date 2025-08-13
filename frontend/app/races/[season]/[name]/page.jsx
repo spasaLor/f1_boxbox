@@ -1,6 +1,16 @@
 import RaceContent from "@/ui/races/RaceContent";
 import { cookies } from "next/headers";
 
+export async function generateMetadata({params}){
+    const {season,name}= await params;
+    const res = await fetch(process.env.BACKEND_URL+"/races/"+season+"/"+name);
+    const race = await res.json();
+    return{
+        title:race.denomination+" "+season,
+        description: "Page of with all the infos for the "+season+" "+race.denomination
+    }
+}
+
 export default async function RacePage({params}){
     const {season,name}= await params;
     const cookieStore = await cookies();

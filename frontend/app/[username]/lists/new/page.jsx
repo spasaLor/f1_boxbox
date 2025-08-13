@@ -1,6 +1,11 @@
 import ListForm from "@/ui/forms/List";
 import styles from "@/app/[username]/lists/list.module.css";
 
+export const metadata={
+    title: "Create a new list",
+    description:"List creation page" 
+}
+
 export default async function NewList(){
     const res = await fetch(process.env.BACKEND_URL+"/races/all",{cache:'no-cache'});
     const json = await res.json();

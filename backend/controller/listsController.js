@@ -269,7 +269,7 @@ const getPopularLists = async (req, res) => {
             where: { published_at: {gte:oneWeekAgo}},
             _count: {id:true},
             orderBy: {_count:{ id: 'desc' }},
-            take: limit ? limit : undefined
+            take: limit ? Number(limit) : undefined
         });
 
         const popularIds = comm.map(item => item.list_id);

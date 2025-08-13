@@ -37,6 +37,7 @@ const getRacesByYear = async(req,res)=>{
 }
 const getRaceByYear = async(req,res)=>{
     const {year,name}=req.params;
+
     const fixWords= (str)=>{
         const re = /P(?:(?:[,‚\uFFFD\u2018\u2019])|Ã©)rez(?=(?:['’]s|[.,]|$))/giu;
         return str.replace(re, 'Pérez');
@@ -49,6 +50,14 @@ const getRaceByYear = async(req,res)=>{
         if(!race)
             return res.status(404).json({message: "Race not found"});
         race.notes=fixWords(race.notes);
+
+        if(race.url==='spain_gp'){
+            race.circuit_name=race.circuit_name.replace("Montmel•", "Montmelò");
+            race.denomination=race.denomination.replace("Espa¤a","España");
+        }
+        if(race.url === 'mexican_gp')
+            race.circuit_name=race.circuit_name.replace("Aut¢dromo","Autòdromo");
+            
         return res.status(200).json(race);
     } catch (error) {
         return res.status(400).json({message: error.message});

@@ -1,6 +1,14 @@
 import { RacesProvider } from "@/lib/RacesContext";
 import { cookies } from "next/headers";
 
+export const metadata={
+    title:{
+        template:"%s | Races | F1BoxBox",
+        default:"Races"
+    },
+    description:"Main races page",
+}
+
 export default async function RacesLayout({children}){
     const cookieStore = await cookies();
     const auth = cookieStore.get('connect.sid');

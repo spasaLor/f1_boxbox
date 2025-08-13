@@ -3,6 +3,17 @@ import { cookies } from "next/headers"
 import styles from "./review.module.css";
 import NavigationBar from "@/ui/profile/NavigationBar";
 
+export async function generateMetadata({params}){
+    const {username} = await params;
+    const us=await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData=await us.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s reviews": userData.user[6]+"'s reviews",
+        description:"User reviews page"
+    }
+}
+
 export default async function Page({params}){
     const {username} = await params;
     const cookieStore = await cookies();

@@ -2,7 +2,7 @@
 import { useRaces } from '@/lib/RacesContext';
 import useGetRating from '@/lib/useGetRating';
 import { Rating } from '@mui/material';
-import { Star, StarIcon } from 'lucide-react';
+import { Star } from 'lucide-react';
 import styles from '@/app/races/[season]/[name]/race.module.css';
 
 export default function RatingComponent({id}){
@@ -45,8 +45,12 @@ export default function RatingComponent({id}){
 
     return(
         <div className={styles["inner-rating"]}>
-            <Rating precision={0.5} emptyIcon={<Star style={{opacity:1, color:'var(--color-text-secondary)',marginTop:'1px'}}  size={28} strokeWidth={1}/>} name='rating' value={rating} onChange={(e,newValue)=>newRating(newValue)} size='large'/>
-            {rating>0 ? <p onClick={()=>removeRating(id)}>X</p> :null }
+            {rating ? 'Rated' : 'Rate'}
+            <div>
+                <Rating precision={0.5} emptyIcon={<Star style={{opacity:1, color:'var(--color-text-secondary)', marginTop:'2px',marginLeft:'1px'}}  size={27} strokeWidth={1}/>} name='rating' value={rating} onChange={(e,newValue)=>newRating(newValue)} size='large'/>
+                {rating>0 ? <p onClick={()=>removeRating(id)}>X</p> :null }
+            </div>
+            
         </div>
     )
 }

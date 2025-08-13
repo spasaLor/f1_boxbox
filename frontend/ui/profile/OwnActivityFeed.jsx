@@ -32,7 +32,7 @@ export default function OwnActivityFeed({initialAct,username,isOwner}){
                         case "liked_review":
                             return <div className={styles["activity-item"]} key={item.activity_date}><p>{ isOwner ? 'You' : username} liked {item.username}'s review of the <Link href={"/"+item.username+"/race/"+item.url+"-"+item.season}>{item.season} {item.denomination}</Link> </p> <p>{formatDistanceToNow(new Date(item.activity_date), {addSuffix:true})}</p></div>
                         case "reviewed":
-                            return <div className={styles["activity-item"]} key={item.activity_date}><p>{ isOwner ? 'You' : username} reviewed the <Link href={"/races/"+item.season+"/"+item.url}>{item.season} {item.denomination} </Link></p><p>{formatDistanceToNow(new Date(item.activity_date), {addSuffix:true})}</p></div>
+                            return <div className={styles["activity-item"]} key={item.activity_date}><p>{ isOwner ? 'You' : username} reviewed the <Link href={"/"+item.username+"/race/"+item.url+"-"+item.season}>{item.season} {item.denomination} </Link></p><p>{formatDistanceToNow(new Date(item.activity_date), {addSuffix:true})}</p></div>
                         case "rated":
                             return <div className={styles["activity-item"]} key={item.activity_date}><div className={styles.rating}><p>{ isOwner ? 'You' : username} rated the {item.season} {item.denomination} with</p><Rating precision={0.5} size="small" value={item.race_id} name="read-only" readOnly emptyIcon={<Star size={16} color="var(--color-surface)"/>}/></div>  <p>{formatDistanceToNow(new Date(item.activity_date), {addSuffix:true})}</p></div>
                         case "viewed":

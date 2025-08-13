@@ -5,6 +5,17 @@ import getMetadata from "@/lib/getMetadata";
 import Lists from "@/ui/lists/Lists";
 import NavigationBar from "@/ui/profile/NavigationBar";
 
+export async function generateMetadata({params}){
+    const {username} = await params;
+    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData = await res.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s lists" : userData.user[6]+"'s lists",
+        description:"User lists page" 
+    }
+}
+
 export default async function ListsPage({params}){
     const cookieStore = await cookies();
     const user = cookieStore.get('username');

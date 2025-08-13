@@ -237,11 +237,11 @@
 .review-item img:hover{
     border: 1px solid var(--color-text-primary);
 }
-.recent-reviews>.title{
+.recent-reviews>.title, .following>.title{
     display: flex;
     justify-content: space-between;
 }
-.recent-reviews>.title a:hover{
+.recent-reviews>.title a:hover, .following>.title a:hover{
     color: var(--color-text-primary);
 }
 .not-main{
@@ -258,7 +258,7 @@
 
 .not-main>div{
     display: flex;
-    gap:10px;
+    gap:15px;
 }
 
 .name{

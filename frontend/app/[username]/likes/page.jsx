@@ -3,6 +3,17 @@ import NavigationBar from "@/ui/profile/NavigationBar";
 import Image from "next/image";
 import Link from "next/link";
 
+export async function generateMetadata({params}){
+    const {username} = await params;
+    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData = await res.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s liked races" : userData.user[6]+"'s liked races",
+        description:"User liked races page" 
+    }
+}
+
 export default async function Likes({params}){
     const {username} = await params;
     const res = await fetch(process.env.BACKEND_URL+"/user/likes?username="+username);

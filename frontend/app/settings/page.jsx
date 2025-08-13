@@ -4,6 +4,11 @@ import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
 import styles from "./settings.module.css";
 
+export const metadata={
+    title:"Account Settings | F1BoxBox",
+    description: "Account settings page"
+}
+
 export default async function Settings(){
     const cookieStore = await cookies();
     const auth = cookieStore.get("connect.sid");

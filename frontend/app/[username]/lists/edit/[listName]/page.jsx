@@ -2,6 +2,16 @@ import ListForm from "@/ui/forms/List";
 import { cookies } from "next/headers";
 import styles from "@/app/[username]/lists/list.module.css";
 
+export async function generateMetadata({params}){
+    const {username,listName} = await params;
+    const l=listName.split("-");
+
+    return{
+        title: "Editing "+"'"+l.pop()+"'"+" list",
+        description:"User activity page" 
+    }
+}
+
 export default async function EditList({params}){
     const {username,listName} = await params;
     const cookieStore = await cookies();

@@ -4,6 +4,20 @@ import RaceReview from "@/ui/reviews/RaceReview";
 import { cookies} from "next/headers";
 import styles from "./race.module.css";
 
+export async function generateMetadata({params}){
+    const {username, raceName} = await params;
+    const [name,season] = raceName.split("-");
+    const us=await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData=await us.json();
+    const res = await fetch(process.env.BACKEND_URL+"/races/"+season+"/"+name);
+    const race = await res.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s review of the "+race.season+" "+race.denomination : userData.user[6]+"'s review of the "+race.season+" "+race.denomination,
+        description:"User's review of a race"
+    }
+}
+
 export default async function Page({params}){
     const {username, raceName} = await params;
     const cookieStore = await cookies();

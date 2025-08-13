@@ -7,6 +7,18 @@ import { cookies } from "next/headers";
 import styles from "@/app/[username]/lists/list.module.css";
 import Link from "next/link";
 
+export async function generateMetadata({params}){
+    const {username,listName} = await params;
+    const l= listName.split("-");
+    const res = await fetch(process.env.BACKEND_URL+"/user/"+username);
+    const userData = await res.json();
+
+    return{
+        title: (userData.user[4] && userData.user[5]) ? userData.user[4]+" "+userData.user[5]+"'s "+ l.pop() + " list" : userData.user[6]+"'s "+ l.pop() + " list",
+        description:"User list page" 
+    }
+}
+
 export default async function List({params}){
     const {username,listName} = await params;
     const cookieStore = await cookies();

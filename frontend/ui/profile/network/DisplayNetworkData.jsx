@@ -60,7 +60,11 @@ export default function Displayitem({username}){
                 <p>lists</p>
                 <p>likes</p>
             </div>
-            {toShow.map(item=>(
+            {
+            toShow.length == 0 ? 
+            (action === 'following' ? <p>This user is not following anyone</p> : <p>This user has no followers</p> )
+            :
+            toShow.map(item=>(
                 <div className={styles["user-item"]} key={item.id}>
                     <Link href={"/"+item.username}>{item.username}</Link>
                     <p>{item._count.viewed}</p>
@@ -69,7 +73,7 @@ export default function Displayitem({username}){
                 </div>
             ))}
             <div className={styles.bottom}>
-                {!show && <button type="button" onClick={action === 'following' ? getFollowing : getFollowers} disabled={loading}>Load More</button>}
+                {show && <button type="button" onClick={action === 'following' ? getFollowing : getFollowers} disabled={loading}>Load More</button>}
             </div>
         </>
     )

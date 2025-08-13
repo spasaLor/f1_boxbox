@@ -144,6 +144,13 @@
 
 .inner-rating{
   display: flex;
+  flex-direction: column;
+  gap:5px;
+  align-items: center;
+}
+
+.inner-rating>div{
+  display: flex;
   gap:10px;
   align-items: center;
 }
@@ -290,4 +297,10 @@
 }
 .bottom button:hover{
     background-color: #1444a2;
+}
+
+@keyframes pulse{
+  0% {opacity:1;}
+  50% {opacity: 0.4;}
+  100% {opacity: 1;}
 }

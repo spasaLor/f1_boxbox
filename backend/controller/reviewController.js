@@ -54,7 +54,7 @@ const getLatestReviews = async(req,res)=>{
     try {
         const reviews = await prisma.reviews.findMany({
             take:10,
-            orderBy:{updated_at:"asc"},
+            orderBy:{updated_at:"desc"},
             include:{users:true,races:true},
         });
         return res.status(200).json(reviews);

@@ -117,7 +117,7 @@ const getUserData = async(req,res)=>{
             }
         }))
         const data = {
-            user:[user.bio,user.location,user.website,user.propic_url],
+            user:[user.bio,user.location,user.website,user.propic_url,user.name,user.surname,user.username],
             viewed:viewedCount,
             following:followingCount,
             followers:followerCount,
@@ -507,7 +507,7 @@ const followingUsers = async(req,res)=>{
             where:{follower_id:u.id},
             select:{users_following_following_idTousers:{select:{username:true, id:true,_count:{select:{viewed:true,race_liked:true,lists:true}}}}},
             take: limit !==0 ? Number(limit) : undefined,
-            skip: toSkip
+            skip: offset ? toSkip : undefined
         });
         const users=following.map(item=>(item.users_following_following_idTousers));
         return res.status(200).json(users);

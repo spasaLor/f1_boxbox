@@ -16,7 +16,7 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
     const cookieStore=await cookies();
     const auth = cookieStore.get('connect.sid');
     const user= cookieStore.get('username');
-
+    
     let review={};
     let lists=[];
 
@@ -96,7 +96,7 @@ export default async function RaceContent({data,logged,season,name,likedReviews}
                                     <WatchedLiked raceId={data.id}/>
                                 </div>
                                 <div className={styles["rating"]}>
-                                    <p>{data.rating !==0 ? 'Rated' : 'Rate'}</p>
+                                    
                                     <RatingComponent id={data.id}/>
                                 </div>
                                 <div className={styles["review"]}>

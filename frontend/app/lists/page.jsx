@@ -4,6 +4,11 @@ import { cookies } from "next/headers";
 import styles from "./listsPage.module.css";
 import Link from "next/link";
 
+export const metadata={
+    title:"Lists",
+    description:"The main page for all the lists",
+}
+
 export default async function Page(){
     const cookieStore = await cookies();
     const user = cookieStore.get('username');
