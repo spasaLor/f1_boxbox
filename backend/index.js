@@ -11,19 +11,24 @@ const ratingRouter = require("./routes/ratingsRouter");
 const commentRouter = require("./routes/commentsRouter");
 const listRouter = require("./routes/listsRouter");
 const ensureAuthenticated = require("./config/authMiddleware");
+const cors = require("cors");
+const {limiter,loginLimiter} = require("./config/rateLimits");
 
 const app = express();
 const upload = multer({storage,limits:{fileSize:2*1024*1024}});
+
 app.use(session({secret:process.env.SESSION_SECRET,resave:false,saveUninitialized:false,cookie:{secure:false,httpOnly:true,maxAge:1000*60*60*24,sameSite:'lax'}}));
 app.use(express.urlencoded({extended:false}));
 app.use(passport.session())
 app.use(express.json());
+app.use("/",limiter);
 
 app.use("/races",racesRouter);
 app.use("/reviews",reviewRouter);
 app.use("/comments",commentRouter);
 app.use("/ratings",ratingRouter);
 app.use("/lists",listRouter);
+app.use("/login",loginLimiter);
 
 app.post("/login",(req,res)=>{
     passport.authenticate('local',(err,user,info)=>{
