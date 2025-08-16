@@ -1,0 +1,78 @@
+.notfound-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--color-bg), var(--color-surface), var(--color-bg));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: white;
+}
+
+.checkered-flag {
+  display: grid;
+  grid-template-columns: repeat(8, 16px);
+  gap: 2px;
+  margin-bottom: 2rem;
+}
+
+.square {
+  width: 16px;
+  height: 16px;
+}
+
+.white {
+  background: white;
+}
+
+.black {
+  background: black;
+}
+
+.notfound-title {
+  font-size: 5rem;
+  font-weight: bold;
+  color: red;
+  animation: pulse 1s infinite;
+}
+
+.notfound-message {
+  font-size: 1.5rem;
+  color: #ccc;
+  margin-top: 0.5rem;
+}
+
+.race-line {
+  width: 260px;
+  height: 6px;
+  background: linear-gradient(to right, red, yellow, lime);
+  margin-top: 1.5rem;
+  border-radius: 4px;
+  animation: pulse 1s infinite alternate;
+}
+
+.pitstop-button {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: red;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.pitstop-button:hover {
+  background: darkred;
+  transform: scale(1.05);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}

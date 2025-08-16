@@ -33,7 +33,6 @@ export default async function Likes({params}){
                     </div>
                 ))}
             </div>
-           
         </main>
     )
 }

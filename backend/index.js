@@ -22,6 +22,10 @@ app.use(express.urlencoded({extended:false}));
 app.use(passport.session())
 app.use(express.json());
 app.use("/",limiter);
+app.use(cors({
+  origin: 'https://my-frontend.vercel.app',
+  credentials: true
+}));
 
 app.use("/races",racesRouter);
 app.use("/reviews",reviewRouter);

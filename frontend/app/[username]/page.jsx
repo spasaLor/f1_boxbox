@@ -83,22 +83,43 @@ export default async function Page({params}){
             </div>
             <NavigationBar main={true} username={username}/>
             <div className={styles["fav-races"]}>
-                {userData.favoriteRaces.length>0 ? <>
-                    <p className={styles.title}>Favorite Races</p>
-                    <FavRaces races = {userData.favoriteRaces}/>
-                </> : <p>Don't forget to select your <Link href={"/settings"}>favorite races</Link>! </p>}                
-            </div>         
-            <div className={styles["recent-races"]}>            
-                <p className={styles.title}>Recent Activity</p>
-                <RecentRatings races = {userData.latestActivity} username={username}/>                            
-            </div>         
-            <div className={styles["recent-reviews"]}>
-                <div className={styles.title}>
-                    <p>Recent Reviews</p>
-                    <Link href={"/"+username+"/races/reviews"}>More</Link> 
-                </div>
-                <RecentReviews reviews = {userData.latestReviews} username={username}/>
-            </div> 
+                {                
+                    userData.favoriteRaces.length>0 ?
+                    <>
+                        <p className={styles.title}>Favorite Races</p>
+                        <FavRaces races = {userData.favoriteRaces}/>
+                    </>
+                    : 
+                    isOwner ?
+                    <p>Don't forget to select your <Link href={"/settings"}>favorite races</Link>! </p>
+                    :
+                    null
+                }                
+            </div>
+            {
+                userData.latestActivity.length >0 ?         
+                <div className={styles["recent-races"]}>            
+                    <p className={styles.title}>Recent Activity</p>
+                    <RecentRatings races = {userData.latestActivity} username={username}/>                            
+                </div>       
+                :
+                null    
+            }
+
+            {
+                userData.latestReviews.length > 0 ?
+                    <div className={styles["recent-reviews"]}>
+                        <div className={styles.title}>
+                            <p>Recent Reviews</p>
+                            <Link href={"/"+username+"/races/reviews"}>More</Link> 
+                        </div>
+                        <RecentReviews reviews = {userData.latestReviews} username={username}/>
+                    </div>
+            
+                :
+                null
+            }
+             
             <div className={styles.following}>
                 <div className={styles.title}>
                     <p>Following</p>

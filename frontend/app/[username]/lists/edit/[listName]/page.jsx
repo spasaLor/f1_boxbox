@@ -34,7 +34,6 @@ export default async function EditList({params}){
                 <h2>Edit List</h2>
             </div>
             <ListForm races={races} listData={json.list}/>
-        </div>
-        
+        </div>        
     )
 }

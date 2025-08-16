@@ -35,14 +35,16 @@ export default function Navbar(){
                             <Link href={"/lists"}>Lists</Link>
                             <Link href="/races/2024">Seasons</Link>
                             <Link href={"/"+username+"/activity/friends"}>Activity</Link>
+                            <Link href={"/about"}>About</Link>
                             <Logout setIsLogged={setIsLogged}/>
                         </>
                         :
                         <>
                             <button type="button" onClick={()=>setOpen('signin')}> sign in</button>
                             <button type="button" onClick={()=>setOpen('register')}> Create account</button>
-                            <Link href="/lists">Lists</Link>
+                            <Link href="/lists">Lists</Link>                            
                             <Link href="/races/2024">Seasons</Link>
+                            <Link href={"/about"}>About</Link>
                         </>)
                     }              
                 </div>

@@ -11,7 +11,7 @@ export default function Displayitem({username}){
     const action=p.pop();
     const [times,setTimes]=useState(1);
     const [toShow,setToShow]=useState([]);
-    const [loading,setLoading]=useState(false);
+    const [loading,setLoading]=useState(true);
     const [show,setShow]=useState(false);
 
     useEffect(()=>{
@@ -19,11 +19,13 @@ export default function Displayitem({username}){
             const res = await fetch("/api/user/following/"+username+"?limit=10&offset=0");
             const item=await res.json();
             setToShow(item);
+            setLoading(false);
         }
         const getFollowers=async()=>{
             const res = await fetch("/api/user/followers/"+username+"?limit=10&offset=0");
             const item=await res.json();
             setToShow(item);
+            setLoading(false);
         }
         if(action==='following')
             getFollowing();
@@ -51,7 +53,17 @@ export default function Displayitem({username}){
         setTimes(prev=>prev+1);
         setLoading(false);
     }
-
+    if(loading)
+        return(
+            <>
+                <div className={styles.header}>
+                    <p>name</p>
+                    <p>Watched</p>
+                    <p>lists</p>
+                    <p>likes</p>
+                </div>                
+            </>
+        )
     return(
         <>
             <div className={styles.header}>

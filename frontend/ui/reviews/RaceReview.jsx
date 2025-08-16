@@ -48,7 +48,6 @@ export default async function RaceReview({isLogged,data,likes,username,lists,ini
                                 <WatchedLiked raceId={data.races.id}/>
                             </div>
                             <div className={sideStyles["rating"]}>
-                                {data.rating >0 ? <p>Rated</p> : <p>Rate</p>}
                                 <RatingComponent id={data.races.id}/>
                             </div>
                             <div className={sideStyles["review"]}>

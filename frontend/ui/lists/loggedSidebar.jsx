@@ -1,5 +1,4 @@
 'use client';
-import Cookies from "js-cookie";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import styles from './lists.module.css';
@@ -9,26 +8,23 @@ import Link from "next/link";
 export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,listName}){
     const [isLiked,setIsLiked]=useState(initialLiked);
     const [viewed,setViewed] = useState([]);
-    const cookieStore = Cookies;
-    const auth = cookieStore.get('connect.sid');
-    console.log(isLiked);
 
     useEffect(()=>{
         const getViewed = async()=>{
-            const res = await fetch(process.env.BACKEND_URL+"/races/viewed",{headers:{
-            'Cookie':'connect.sid='+auth
-            }});
+            console.log("fetching", "/api/user/" + username + "/races_viewed");
+            const res = await fetch("/api/user/"+username+"/races_viewed");
             const json = await res.json();
             setViewed(json);
         }
         getViewed();
     },[])
 
-
+    
     const percentage = ()=>{
+        if (!viewed?.races?.length) return 0;
         let count=0;
-        viewed.forEach(element => {
-            if(list.races.contains(element))
+        viewed.races.forEach(element => {
+            if(list.races.some(r=>r.id===element.id))
                 count++;
         });
         return Math.round(count / list.races.length *100);
@@ -59,6 +55,14 @@ export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,
         }        
     }
 
+    const watchedCount = () => {
+        if (!viewed?.races?.length) return 0;
+
+        return list.races.filter(race => 
+            viewed.races.some(v => v.id === race.id)
+        ).length;
+    };
+
     return(
         <div className={styles.sidebar}>
             <div className={styles.first}>
@@ -75,7 +79,7 @@ export default function LoggedSidebar({likes,initialLiked,list,isOwner,username,
                 <div className={styles.first}>
                     <div className="">
                         <p>You've watched</p>
-                        <p>{viewed.length} of {list.races.length}</p>
+                        <p>{watchedCount()} of {list.races.length}</p>
                     </div>
                     <h2>{percentage()} %</h2>
                 </div>

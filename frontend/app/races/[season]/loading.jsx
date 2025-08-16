@@ -3,7 +3,7 @@ import SkeletonRaceList from "@/ui/skeletons/skeletonRaceList";
 
 export default function Loading(){
     return(
-        <>
+        <main>
             <div className={styles.top}>
                 <p>RACES</p>
                 <p>BROWSE BY</p>
@@ -19,7 +19,7 @@ export default function Loading(){
                 </div>
             </div>
             <SkeletonRaceList/>
-        </>
+        </main>
     )
     
 }
